@@ -1,3 +1,8 @@
 from django.contrib import admin
+from apps.city.models import Government, Kingdom, Region, City
 
-# Register your models here.
+
+models_list = [Government, Kingdom, Region, City]
+
+for model in models_list:
+    admin.site.register(model, admin.ModelAdmin)

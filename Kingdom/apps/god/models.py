@@ -1,5 +1,4 @@
 from django.db import models
-from apps.character.models import MoralIntentions
 
 
 class Domains(models.Model):
@@ -17,4 +16,3 @@ class God(models.Model):
     sacred_color = models.CharField(max_length=100)
     domain = models.ForeignKey(Domains, on_delete=models.CASCADE, related_name='domain')
     chosen_weapon = models.CharField(max_length=100)
-    moral_intentions = models.ManyToManyField(MoralIntentions, related_name='moral_intentions')

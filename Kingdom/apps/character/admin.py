@@ -1,4 +1,7 @@
 from django.contrib import admin
-from apps.character.models import MoralIntentions
+from apps.character.models import MoralIntentions, ClassCharacter, Ruler
 
-admin.site.register(MoralIntentions)
+model_list = [MoralIntentions, ClassCharacter, Ruler]
+
+for model in model_list:
+    admin.site.register(model, admin.ModelAdmin)
