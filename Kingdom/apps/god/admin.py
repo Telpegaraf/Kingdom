@@ -1,3 +1,4 @@
 from django.contrib import admin
+from apps.god.models import God
 
-# Register your models here.
+admin.site.register(God)

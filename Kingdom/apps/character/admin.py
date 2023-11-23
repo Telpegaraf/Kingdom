@@ -1,3 +1,4 @@
 from django.contrib import admin
+from apps.character.models import MoralIntentions
 
-# Register your models here.
+admin.site.register(MoralIntentions)
