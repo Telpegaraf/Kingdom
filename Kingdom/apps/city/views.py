@@ -6,7 +6,7 @@ from .serializers import CityOverallSerializer
 from .models import Kingdom
 
 
-class CityOverall(APIView):
+class CityOverallView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = CityOverallSerializer
 
