@@ -11,6 +11,7 @@ class CharacterOverallView(APIView):
     serializer_class = CharacterOverallSerializer
 
     def get(self, request, *args, **kwargs):
-        character = Character.objects.all()
+        character = Character.objects.select_related('race', 'class_player', 'god', 'domain').\
+            prefetch_related('intentions').all()
         serializer = self.serializer_class(character, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

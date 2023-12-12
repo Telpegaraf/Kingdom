@@ -1,56 +1,17 @@
 from django.db import models
 
 
-class Armor(models.Model):
+class ArmorType(models.Model):
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=500)
 
     def __str__(self):
         return self.name
 
-    class Meta:
-        abstract = True
 
+class Equipment(models.Model):
+    type = models.ForeignKey(ArmorType, related_name='armor_type', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    description = models.TextField(max_length=1000)
 
-class Helmet(Armor):
-    pass
-
-
-class PlateArmor(Armor):
-    pass
-
-
-class FirstWeapon(Armor):
-    pass
-
-
-class SecondWeapon(Armor):
-    pass
-
-
-class FirstRing(Armor):
-    pass
-
-
-class SecondRing(Armor):
-    pass
-
-
-class Amulet(Armor):
-    pass
-
-
-class Gloves(Armor):
-    pass
-
-
-class FirstBracer(Armor):
-    pass
-
-
-class SecondBracer(Armor):
-    pass
-
-
-class Boots(Armor):
-    pass
+    def __str__(self):
+        return self.name
