@@ -80,9 +80,31 @@ class Character(models.Model):
         return f"{self.class_player} {self.first_name} {self.last_name} {self.level} уровня"
 
 
+class CharacterStats(models.Model):
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='character_stats')
+    strength = models.IntegerField(default=10)
+    dexterity = models.IntegerField(default=10)
+    constitution = models.IntegerField(default=10)
+    intelligence = models.IntegerField(default=10)
+    wisdom = models.IntegerField(default=10)
+    charisma = models.IntegerField(default=10)
+    max_speed = models.IntegerField(default=30)
+    speed = models.IntegerField(default=30)
+    armor_class = models.IntegerField(default=10)
+    attack_class = models.IntegerField(default=0)
+    damage_bonus = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.character}'s Stats"
+
+
 class CharacterBag(models.Model):
     character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='character_bag')
-    capacity = models.IntegerField(default=0)
+    max_capacity = models.IntegerField(default=0)
+    capacity = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+
+    def __str__(self):
+        return f"{self.character}'s Bag"
 
 
 class InventoryItems(models.Model):
@@ -90,3 +112,6 @@ class InventoryItems(models.Model):
     is_equip = models.BooleanField(default=False)
     item = models.ForeignKey(Equipment, on_delete=models.CASCADE, related_name='item')
     quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.item}({self.quantity})"

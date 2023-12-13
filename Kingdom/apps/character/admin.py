@@ -1,10 +1,10 @@
 from django.contrib import admin
 from apps.character.models import MoralIntentions, ClassCharacter, Ruler, CharacterNPC, Title, Race, Character,\
-    CharacterBag, InventoryItems
+    CharacterBag, InventoryItems, CharacterStats
 
 
 model_list = [MoralIntentions, ClassCharacter, CharacterNPC, Ruler, Title, Race,
-              Character, CharacterBag, InventoryItems]
+              Character, CharacterBag, InventoryItems, CharacterStats]
 
 for model in model_list:
     admin.site.register(model, admin.ModelAdmin)
