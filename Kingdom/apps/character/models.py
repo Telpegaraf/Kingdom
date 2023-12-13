@@ -1,5 +1,6 @@
 from django.db import models
 from apps.god.models import God, Domains
+from apps.equipment.models import Equipment
 
 
 class MoralIntentions(models.Model):
@@ -77,3 +78,15 @@ class Character(models.Model):
 
     def __str__(self):
         return f"{self.class_player} {self.first_name} {self.last_name} {self.level} уровня"
+
+
+class CharacterBag(models.Model):
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='character_bag')
+    capacity = models.IntegerField(default=0)
+
+
+class InventoryItems(models.Model):
+    inventory = models.ForeignKey(CharacterBag, on_delete=models.CASCADE, related_name='inventory')
+    is_equip = models.BooleanField(default=False)
+    item = models.ForeignKey(Equipment, on_delete=models.CASCADE, related_name='item')
+    quantity = models.IntegerField(default=1)

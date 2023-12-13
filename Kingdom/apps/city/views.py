@@ -8,6 +8,7 @@ from .models import Kingdom, City, Region
 
 
 class CityOverallView(APIView):
+    """ Show all cities """
     permission_classes = [IsAuthenticated]
     serializer_class = CityOverallSerializer
 

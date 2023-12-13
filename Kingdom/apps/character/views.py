@@ -7,6 +7,7 @@ from .models import Character
 
 
 class CharacterOverallView(APIView):
+    """ Show all character """
     permission_classes = [IsAuthenticated]
     serializer_class = CharacterOverallSerializer
 

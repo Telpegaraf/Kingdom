@@ -7,6 +7,7 @@ from .models import Equipment
 
 
 class EquipmentOverall(APIView):
+    """ Show all equipment """
     permission_classes = [IsAuthenticated]
     serializer_class = EquipmentOverallSerializer
 
