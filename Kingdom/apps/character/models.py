@@ -1,6 +1,7 @@
 from django.db import models
 from apps.god.models import God, Domains
 from apps.equipment.models import Equipment
+from apps.mastery.models import MasteryLevels
 
 
 class MoralIntentions(models.Model):
@@ -24,6 +25,22 @@ class ClassCharacter(models.Model):
         return self.name
 
 
+class Feats(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(max_length=500)
+    level = models.PositiveSmallIntegerField(default=1)
+
+    def __str__(self):
+        return self.name
+
+
+class Skills(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
 class Race(models.Model):
     name = models.CharField(max_length=100)
 
@@ -41,7 +58,7 @@ class CharacterNPC(models.Model):
     intentions = models.ManyToManyField(MoralIntentions, related_name='character_intentions')
     domain = models.ForeignKey(Domains, related_name='character_domain', on_delete=models.CASCADE, null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)
-    level = models.IntegerField(default=0)
+    level = models.PositiveSmallIntegerField(default=0)
     description = models.TextField(max_length=1000, null=True, blank=True)
 
     def __str__(self):
@@ -73,7 +90,7 @@ class Character(models.Model):
     intentions = models.ManyToManyField(MoralIntentions, related_name='player_intentions')
     domain = models.ForeignKey(Domains, related_name='player_domain', on_delete=models.CASCADE, null=True, blank=True)
     age = models.IntegerField()
-    level = models.IntegerField(default=1)
+    level = models.PositiveSmallIntegerField(default=1)
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -82,20 +99,91 @@ class Character(models.Model):
 
 class CharacterStats(models.Model):
     character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='character_stats')
-    strength = models.IntegerField(default=10)
-    dexterity = models.IntegerField(default=10)
-    constitution = models.IntegerField(default=10)
-    intelligence = models.IntegerField(default=10)
-    wisdom = models.IntegerField(default=10)
-    charisma = models.IntegerField(default=10)
-    max_speed = models.IntegerField(default=30)
-    speed = models.IntegerField(default=30)
-    armor_class = models.IntegerField(default=10)
-    attack_class = models.IntegerField(default=0)
-    damage_bonus = models.IntegerField(default=0)
+    strength = models.PositiveSmallIntegerField(default=10)
+    dexterity = models.PositiveSmallIntegerField(default=10)
+    constitution = models.PositiveSmallIntegerField(default=10)
+    intelligence = models.PositiveSmallIntegerField(default=10)
+    wisdom = models.PositiveSmallIntegerField(default=10)
+    charisma = models.PositiveSmallIntegerField(default=10)
+    max_speed = models.PositiveSmallIntegerField(default=30)
+    speed = models.PositiveSmallIntegerField(default=30)
 
     def __str__(self):
         return f"{self.character}'s Stats"
+
+
+class SecondaryStats(models.Model):
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='secondary_stats')
+    armor_class = models.SmallIntegerField(default=10)
+    un_armor_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+    light_armor_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+    medium_armor_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+    heavy_armor_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+    attack_class = models.SmallIntegerField(default=0)
+    damage_bonus = models.SmallIntegerField(default=0)
+    max_health = models.IntegerField(default=1)
+    health = models.IntegerField(default=0)
+    initiative = models.SmallIntegerField(default=0)
+    fortitude_saving = models.SmallIntegerField(default=0)
+    fortitude_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+    reflex_saving = models.SmallIntegerField(default=0)
+    reflex_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+    will_saving = models.SmallIntegerField(default=0)
+    will_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+
+    def __str__(self):
+        return f"{self.character}'s Secondary Stats"
+
+
+class CharacterSkillList(models.Model):
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='character_skills')
+
+    def __str__(self):
+        return f"{self.character}'s Skill List"
+
+
+class CharacterSkill(models.Model):
+    skill_list = models.ForeignKey(CharacterSkillList, on_delete=models.CASCADE, related_name='skill_list')
+    skill = models.ForeignKey(Skills, on_delete=models.CASCADE)
+    mastery_level = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+
+    class Meta:
+        unique_together = ['skill_list', 'skill', 'mastery_level']
+
+    def __str__(self):
+        return f"{self.skill_list.character} - {self.skill} - {self.mastery_level}"
 
 
 class CharacterBag(models.Model):
