@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'apps.city',
     'apps.equipment',
     'apps.god',
+    'apps.mastery',
 ]
 
 MIDDLEWARE = [
