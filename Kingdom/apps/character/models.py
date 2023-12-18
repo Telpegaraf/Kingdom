@@ -20,6 +20,7 @@ class Title(models.Model):
 
 class ClassCharacter(models.Model):
     name = models.CharField(max_length=50)
+    health_by_level = models.PositiveSmallIntegerField(default=6)
 
     def __str__(self):
         return self.name
@@ -90,6 +91,7 @@ class Character(models.Model):
     intentions = models.ManyToManyField(MoralIntentions, related_name='player_intentions')
     domain = models.ForeignKey(Domains, related_name='player_domain', on_delete=models.CASCADE, null=True, blank=True)
     age = models.IntegerField()
+    size = models.PositiveSmallIntegerField(null=True, blank=True)
     level = models.PositiveSmallIntegerField(default=1)
     description = models.TextField(blank=True, null=True)
 
@@ -163,15 +165,8 @@ class SecondaryStats(models.Model):
         return f"{self.character}'s Secondary Stats"
 
 
-class CharacterSkillList(models.Model):
-    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='character_skills')
-
-    def __str__(self):
-        return f"{self.character}'s Skill List"
-
-
 class CharacterSkill(models.Model):
-    skill_list = models.ForeignKey(CharacterSkillList, on_delete=models.CASCADE, related_name='skill_list')
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='skill_list')
     skill = models.ForeignKey(Skills, on_delete=models.CASCADE)
     mastery_level = models.CharField(
         max_length=10,
@@ -180,10 +175,10 @@ class CharacterSkill(models.Model):
     )
 
     class Meta:
-        unique_together = ['skill_list', 'skill', 'mastery_level']
+        unique_together = ['character', 'skill']
 
     def __str__(self):
-        return f"{self.skill_list.character} - {self.skill} - {self.mastery_level}"
+        return f"{self.character} - {self.skill} - {self.mastery_level}"
 
 
 class CharacterBag(models.Model):
