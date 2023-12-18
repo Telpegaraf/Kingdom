@@ -49,6 +49,13 @@ class Race(models.Model):
         return self.name
 
 
+class DamageType(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
 class CharacterNPC(models.Model):
     race = models.ForeignKey(Race, on_delete=models.CASCADE, related_name='character_race')
     first_name = models.CharField(max_length=100)
@@ -198,3 +205,13 @@ class InventoryItems(models.Model):
 
     def __str__(self):
         return f"{self.item}({self.quantity})"
+
+
+class DefenceAndVulnerabilityDamage(models.Model):
+    character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='defence_and_vulnerability')
+    immunity = models.ManyToManyField(DamageType, related_name='immunity', blank=True)
+    resistance = models.ManyToManyField(DamageType, related_name='resistance', blank=True)
+    weakness = models.ManyToManyField(DamageType, related_name='weakness', blank=True)
+
+    def __str__(self):
+        return f"{self.character}'s defences and vulnerabilities"
