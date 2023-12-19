@@ -21,6 +21,46 @@ class Title(models.Model):
 class ClassCharacter(models.Model):
     name = models.CharField(max_length=50)
     health_by_level = models.PositiveSmallIntegerField(default=6)
+    perception_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT
+    )
+    fortitude_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+    reflex_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+    will_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+    unarmed_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+    light_armor_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+    medium_armor_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+    heavy_armor_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
 
     def __str__(self):
         return self.name
@@ -116,15 +156,12 @@ class CharacterStats(models.Model):
     charisma = models.PositiveSmallIntegerField(default=10)
     max_speed = models.PositiveSmallIntegerField(default=30)
     speed = models.PositiveSmallIntegerField(default=30)
-
-    def __str__(self):
-        return f"{self.character}'s Stats"
-
-
-class SecondaryStats(models.Model):
-    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='secondary_stats')
-    armor_class = models.SmallIntegerField(default=10)
-    un_armor_mastery = models.CharField(
+    perception_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT
+    )
+    unarmed_mastery = models.CharField(
         max_length=10,
         choices=MasteryLevels.choices,
         default=MasteryLevels.ABSENT,
@@ -144,29 +181,38 @@ class SecondaryStats(models.Model):
         choices=MasteryLevels.choices,
         default=MasteryLevels.ABSENT,
     )
+    fortitude_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+    reflex_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+    will_mastery = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT,
+    )
+
+    def __str__(self):
+        return f"{self.character}'s Stats"
+
+
+class SecondaryStats(models.Model):
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='secondary_stats')
+    perception = models.SmallIntegerField(default=0)
+    armor_class = models.SmallIntegerField(default=10)
     attack_class = models.SmallIntegerField(default=0)
     damage_bonus = models.SmallIntegerField(default=0)
     max_health = models.IntegerField(default=1)
     health = models.IntegerField(default=0)
     initiative = models.SmallIntegerField(default=0)
     fortitude_saving = models.SmallIntegerField(default=0)
-    fortitude_mastery = models.CharField(
-        max_length=10,
-        choices=MasteryLevels.choices,
-        default=MasteryLevels.ABSENT,
-    )
     reflex_saving = models.SmallIntegerField(default=0)
-    reflex_mastery = models.CharField(
-        max_length=10,
-        choices=MasteryLevels.choices,
-        default=MasteryLevels.ABSENT,
-    )
     will_saving = models.SmallIntegerField(default=0)
-    will_mastery = models.CharField(
-        max_length=10,
-        choices=MasteryLevels.choices,
-        default=MasteryLevels.ABSENT,
-    )
 
     def __str__(self):
         return f"{self.character}'s Secondary Stats"
