@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from apps.god.models import God, Domains
 from apps.equipment.models import Equipment
@@ -251,6 +252,18 @@ class InventoryItems(models.Model):
 
     def __str__(self):
         return f"{self.item}({self.quantity})"
+
+    def clean(self):
+        if self.is_equip:
+            armor_type = self.item.type_item
+            max_slots = armor_type.max_slots
+
+            equipped_count = InventoryItems.objects.filter(
+                inventory=self.inventory, is_equip=True, item__type_item=armor_type
+            ).count()
+
+            if equipped_count >= max_slots and self.quantity > max_slots:
+                raise ValidationError("The maximum number of slots for this item type has been exceeded.")
 
 
 class DefenceAndVulnerabilityDamage(models.Model):
