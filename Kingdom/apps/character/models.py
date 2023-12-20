@@ -1,8 +1,9 @@
-from django.core.exceptions import ValidationError
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from apps.god.models import God, Domains
-from apps.equipment.models import Equipment
-from apps.mastery.models import MasteryLevels
+from apps.mastery.models import MasteryLevels, DamageType
+from apps.equipment.models import Item
 
 
 class MoralIntentions(models.Model):
@@ -84,13 +85,6 @@ class Skills(models.Model):
 
 
 class Race(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
-
-class DamageType(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -246,24 +240,11 @@ class CharacterBag(models.Model):
 
 class InventoryItems(models.Model):
     inventory = models.ForeignKey(CharacterBag, on_delete=models.CASCADE, related_name='inventory')
-    is_equip = models.BooleanField(default=False)
-    item = models.ForeignKey(Equipment, on_delete=models.CASCADE, related_name='item')
     quantity = models.IntegerField(default=1)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='item')
 
     def __str__(self):
-        return f"{self.item}({self.quantity})"
-
-    def clean(self):
-        if self.is_equip:
-            armor_type = self.item.type_item
-            max_slots = armor_type.max_slots
-
-            equipped_count = InventoryItems.objects.filter(
-                inventory=self.inventory, is_equip=True, item__type_item=armor_type
-            ).count()
-
-            if equipped_count >= max_slots and self.quantity > max_slots:
-                raise ValidationError("The maximum number of slots for this item type has been exceeded.")
+        return f"{self.item}({self.quantity}) in {self.inventory}'s inventory"
 
 
 class DefenceAndVulnerabilityDamage(models.Model):

@@ -22,15 +22,15 @@ class UserManager(BaseUserManager):
             raise ValueError("User must have password")
         user = self.model(username=username)
         user.set_password(password)
-        user.is_admin = is_admin,
-        user.is_staff = is_staff,
-        user.is_active = is_active,
-        user.is_superuser = is_superuser,
+        user.is_admin = is_admin
+        user.is_staff = is_staff
+        user.is_active = is_active
+        user.is_superuser = is_superuser
         user.save(using=self.db)
 
         return user
 
-    def create_superuser(self, username, password, email):
+    def create_superuser(self, username, email, password):
         if not username:
             raise ValueError("User must have username")
         if not email:
@@ -57,6 +57,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     avatar = models.ImageField(null=True, blank=True)
 
     objects =UserManager()
+
+    USERNAME_FIELD = 'username'
 
     def __str__(self):
         return self.username
