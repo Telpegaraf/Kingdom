@@ -1,9 +1,9 @@
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from apps.god.models import God, Domains
 from apps.mastery.models import MasteryLevels, DamageType
-from apps.equipment.models import Item
+from apps.equipment.models import Item, PlateArmor, Weapon, WornItems
 
 
 class MoralIntentions(models.Model):
@@ -244,7 +244,48 @@ class InventoryItems(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='item')
 
     def __str__(self):
-        return f"{self.item}({self.quantity}) in {self.inventory}'s inventory"
+        return f"{self.item.__str__()}({self.quantity})"
+
+
+class EquippedItems(models.Model):
+    equipped_items = models.ForeignKey(CharacterBag, on_delete=models.CASCADE, related_name='equipped_items')
+    plate_armor = models.ForeignKey(
+        InventoryItems,
+        on_delete=models.CASCADE,
+        related_name='plate_armor',
+        null=True,
+        blank=True,
+        limit_choices_to={
+            'pk__in': PlateArmor.objects.all().values_list('id', flat=True)}
+    )
+    first_weapon = models.ForeignKey(
+        InventoryItems,
+        on_delete=models.CASCADE,
+        related_name='first_weapon',
+        null=True,
+        blank=True,
+        limit_choices_to={
+            'pk__in': Weapon.objects.all().values_list('id', flat=True)}
+    )
+    second_weapon = models.ForeignKey(
+        InventoryItems,
+        on_delete=models.CASCADE,
+        related_name='second_weapon',
+        null=True,
+        blank=True,
+        limit_choices_to={
+            'pk__in': Weapon.objects.filter(two_hands=False).values_list('id', flat=True)}
+    )
+    worn_items = models.ManyToManyField(
+        InventoryItems,
+        related_name='worn_items',
+        blank=True,
+        limit_choices_to={
+            'pk__in': WornItems.objects.all().values_list('id', flat=True)}
+    )
+
+    def __str__(self):
+        return f"{self.equipped_items}'s equipped items"
 
 
 class DefenceAndVulnerabilityDamage(models.Model):

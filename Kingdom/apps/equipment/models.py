@@ -1,4 +1,5 @@
 from django.db import models
+from polymorphic.models import PolymorphicModel
 from apps.mastery.models import ArmorCategory, DamageType
 
 
@@ -16,6 +17,7 @@ class Item(models.Model):
     description = models.TextField(max_length=500)
     currency = models.ForeignKey(GoldAndCurrency, on_delete=models.SET_NULL, related_name='armor_currency', null=True)
     price = models.PositiveSmallIntegerField(null=True, blank=True)
+    weight = models.DecimalField(max_digits=5, decimal_places=2, default=0.01)
 
     def __str__(self):
         return self.name
@@ -58,7 +60,6 @@ class PlateArmor(Item):
     check_penalty = models.BooleanField(default=False)
     speed_penalty = models.BooleanField(default=False)
     strength = models.PositiveSmallIntegerField(null=True, blank=True)
-    weight = models.PositiveSmallIntegerField()
     group = models.ForeignKey(ArmorGroup, on_delete=models.CASCADE, related_name='armor_group')
     armor_traits = models.ManyToManyField(ArmorTrait, related_name='traits', blank=True)
     armor_specialization = models.ManyToManyField(ArmorSpecialization, related_name='specialization', blank=True)
@@ -101,7 +102,6 @@ class Weapon(Item):
                                            related_name='second_type_damage_weapon', null=True, blank=True)
     range = models.PositiveSmallIntegerField(null=True, blank=True)
     reload = models.PositiveSmallIntegerField(null=True, blank=True)
-    weight = models.DecimalField(max_digits=4, decimal_places=2, default=0.1)
     two_hands = models.BooleanField(default=True)
     weapon_traits = models.ManyToManyField(WeaponTrait, related_name='weapon_traits', blank=True)
     level = models.PositiveSmallIntegerField(default=1)
@@ -119,14 +119,19 @@ class WornTrait(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=500)
 
+    def __str__(self):
+        return self.name
+
 
 class WornItems(Item):
     slot = models.ForeignKey(TypeWornItems, on_delete=models.CASCADE, related_name='slot_item')
-    weight = models.DecimalField(max_digits=4, decimal_places=2, default=0.1)
     level = models.PositiveSmallIntegerField(default=1)
     worn_traits = models.ManyToManyField(WornTrait, related_name='worn_traits', blank=True)
     activate = models.TextField(max_length=500, null=True, blank=True)
     effect = models.TextField(max_length=500, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.slot})"
 
 
 class CommonItems(Item):
