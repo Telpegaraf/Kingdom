@@ -32,6 +32,7 @@ class CharacterDetailView(APIView):
 class LevelUpView(APIView):
     """ Increase character's level by id """
     permission_classes = [IsAuthenticated]
+
     def post(self, request, character_id):
         try:
             character = Character.objects.get(pk=character_id)
