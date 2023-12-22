@@ -1,16 +1,7 @@
-from django.core.exceptions import ValidationError
-from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from apps.god.models import God, Domains
-from apps.mastery.models import MasteryLevels, DamageType
+from apps.mastery.models import MasteryLevels, DamageType, MoralIntentions, Skills, Race
 from apps.equipment.models import Item, PlateArmor, Weapon, WornItems
-
-
-class MoralIntentions(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
 
 
 class Title(models.Model):
@@ -63,29 +54,6 @@ class ClassCharacter(models.Model):
         choices=MasteryLevels.choices,
         default=MasteryLevels.ABSENT,
     )
-
-    def __str__(self):
-        return self.name
-
-
-class Feats(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(max_length=500)
-    level = models.PositiveSmallIntegerField(default=1)
-
-    def __str__(self):
-        return self.name
-
-
-class Skills(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
-
-class Race(models.Model):
-    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name

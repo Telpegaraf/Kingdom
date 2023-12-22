@@ -1,5 +1,4 @@
 from django.db import models
-from polymorphic.models import PolymorphicModel
 from apps.mastery.models import ArmorCategory, DamageType
 
 
