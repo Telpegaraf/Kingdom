@@ -19,7 +19,6 @@ django-adminlte3==0.1.6
 django-extensions==3.2.1
 django-import-export==3.3.1
 django-phonenumber-field==7.1.0
-django-polymorphic==3.1.0
 django_debug_toolbar==3.8.1
 djangorestframework==3.14.0
 Eel==0.14.0

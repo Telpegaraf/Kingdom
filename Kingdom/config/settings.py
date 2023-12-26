@@ -51,10 +51,10 @@ INSTALLED_APPS = [
     #apps
     'apps.user',
     'apps.mastery',
+    'apps.equipment',
     'apps.god',
     'apps.character',
     'apps.city',
-    'apps.equipment',
 ]
 
 MIDDLEWARE = [

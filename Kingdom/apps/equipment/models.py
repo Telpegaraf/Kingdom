@@ -3,7 +3,7 @@ from apps.mastery.models import ArmorCategory, DamageType
 
 
 class GoldAndCurrency(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     price = models.PositiveSmallIntegerField()
     description = models.TextField(max_length=500)
 
@@ -12,7 +12,7 @@ class GoldAndCurrency(models.Model):
 
 
 class Item(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     description = models.TextField(max_length=500)
     currency = models.ForeignKey(GoldAndCurrency, on_delete=models.SET_NULL, related_name='armor_currency', null=True)
     price = models.PositiveSmallIntegerField(null=True, blank=True)
