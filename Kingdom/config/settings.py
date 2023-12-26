@@ -49,12 +49,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'debug_toolbar',
     #apps
-    'apps.character',
-    'apps.city',
+    'apps.user',
+    'apps.mastery',
     'apps.equipment',
     'apps.god',
-    'apps.mastery',
-    'apps.user'
+    'apps.character',
+    'apps.city',
 ]
 
 MIDDLEWARE = [
