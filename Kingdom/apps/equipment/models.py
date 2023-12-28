@@ -107,7 +107,7 @@ class Weapon(Item):
 
 
 class TypeWornItems(models.Model):
-    slot = models.CharField(max_length=100)
+    slot = models.CharField(max_length=100, unique=True)
     limit = models.BooleanField(default=True)
 
     def __str__(self):

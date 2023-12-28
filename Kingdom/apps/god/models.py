@@ -21,7 +21,7 @@ class God(models.Model):
     domain = models.ManyToManyField(Domains, related_name='domain')
     chosen_weapon = models.CharField(max_length=100)
     taro = models.CharField(max_length=100)
-    alignment = models.CharField(max_length=100, default="Неизвестно")
+    alignment = models.CharField(max_length=100, default="Unknown")
 
     def __str__(self):
         return f"{self.name}, {self.alias}"

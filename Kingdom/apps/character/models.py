@@ -106,7 +106,7 @@ class Character(models.Model):
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.class_player} {self.first_name} {self.last_name} {self.level} уровня"
+        return f"{self.class_player} {self.first_name} {self.last_name} {self.level} level"
 
 
 class CharacterStats(models.Model):

@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from apps.equipment.serializers import ItemSerializer
 from .serializers import CharacterOverallSerializer, CharacterDetailSerializer, CharacterSerializer
 from .models import Character
 
@@ -34,7 +35,7 @@ class CharacterCreateView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = CharacterSerializer
 
-    def post(self, request, format=None):
+    def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -55,3 +56,10 @@ class LevelUpView(APIView):
             return Response({'error': 'Character not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
+class AddItemView(APIView):
+    """ Add new item in inventory """
+    permission_classes = [IsAuthenticated]
+    serializer = ItemSerializer
+
+    def post(self):
+        pass
