@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from apps.equipment.serializers import ItemSerializer
-from .serializers import CharacterOverallSerializer, CharacterDetailSerializer, CharacterSerializer
+from apps.character.serializers import CharacterOverallSerializer, CharacterDetailSerializer, CharacterSerializer,\
+    AddItemSerializer
 from .models import Character
 
 
@@ -59,7 +59,11 @@ class LevelUpView(APIView):
 class AddItemView(APIView):
     """ Add new item in inventory """
     permission_classes = [IsAuthenticated]
-    serializer = ItemSerializer
+    serializer_class = AddItemSerializer
 
-    def post(self):
-        pass
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            inventory_item = serializer.save()
+            return Response({"message": f"Item added to inventory. {inventory_item}"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
