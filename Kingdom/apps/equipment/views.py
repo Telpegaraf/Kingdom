@@ -1,9 +1,6 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from .serializers import ItemSerializer, PlateArmorSerializer, WeaponSerializer, WornItemsSerializer,\
     PlateArmorDetailSerializer, WeaponDetailSerializer, WornItemsDetailSerializer
 from .models import Item, Weapon, PlateArmor, WornItems
@@ -59,17 +56,7 @@ class ItemDetailView(RetrieveAPIView):
         item_type = self.kwargs.get('item_type')
         item_id = self.kwargs.get('pk')
 
-        if item_type == 'armor':
-            return get_object_or_404(queryset, pk=item_id)
-        elif item_type == 'weapon':
-            return get_object_or_404(queryset, pk=item_id)
-        elif item_type == 'worn_items':
-            return get_object_or_404(queryset, pk=item_id)
-        elif item_type == 'all':
+        if item_type == 'armor' or item_type == 'weapon' or item_type == 'worn_items' or item_type == 'all':
             return get_object_or_404(queryset, pk=item_id)
         else:
             return None
-
-
-
-

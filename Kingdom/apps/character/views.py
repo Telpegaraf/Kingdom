@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from apps.character.serializers import CharacterOverallSerializer, CharacterDetailSerializer, CharacterSerializer,\
-    AddItemSerializer
+    AddItemSerializer, EquipItemSerializer
 from .models import Character
 
 
@@ -65,5 +65,17 @@ class AddItemView(APIView):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             inventory_item = serializer.save()
-            return Response({"message": f"Item added to inventory. {inventory_item}"}, status=status.HTTP_201_CREATED)
+            return Response({"message": f"Item added to inventory. {inventory_item}"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class EquipItemView(APIView):
+    """ Equip Item from inventory """
+    permission_classes = [IsAuthenticated]
+    serializer_class = EquipItemSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        item = serializer.save()
+        return Response({"message": f"{item} equipped"}, status=status.HTTP_200_OK)
