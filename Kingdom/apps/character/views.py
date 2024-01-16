@@ -1,11 +1,11 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from apps.character.serializers import CharacterOverallSerializer, CharacterDetailSerializer, CharacterSerializer,\
-    AddItemSerializer, EquipItemSerializer
-from .models import Character
+    AddItemSerializer, EquipItemSerializer, SecondaryStatsSerializer
+from apps.character.models import Character, SecondaryStats
 
 
 class CharacterOverallView(APIView):
@@ -42,20 +42,6 @@ class CharacterCreateView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class LevelUpView(APIView):
-    """ Increase character's level by id """
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, character_id):
-        try:
-            character = Character.objects.get(pk=character_id)
-            character.level += 1
-            character.save()
-            return Response({'message': 'Level increased successfully'}, status=status.HTTP_200_OK)
-        except Character.DoesNotExist:
-            return Response({'error': 'Character not found'}, status=status.HTTP_404_NOT_FOUND)
-
-
 class AddItemView(APIView):
     """ Add new item in inventory """
     permission_classes = [IsAuthenticated]
@@ -79,3 +65,17 @@ class EquipItemView(APIView):
         serializer.is_valid(raise_exception=True)
         item = serializer.save()
         return Response({"message": f"{item} equipped"}, status=status.HTTP_200_OK)
+
+
+class ChangeStatsView(APIView):
+    """ Change characteristics (health and e.t.c) """
+
+    permission_classes = [IsAuthenticated]
+    serializer_class = SecondaryStatsSerializer
+
+    def patch(self, request, pk):
+        secondary_stats = get_object_or_404(SecondaryStats, pk=pk)
+        serializer = self.serializer_class(secondary_stats, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
