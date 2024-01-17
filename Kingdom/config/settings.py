@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'apps.god',
     'apps.character',
     'apps.city',
+    'apps.spell',
 ]
 
 MIDDLEWARE = [
