@@ -2,58 +2,11 @@ from django.db import models
 from apps.god.models import God, Domains
 from apps.mastery.models import MasteryLevels, DamageType, MoralIntentions, Skills, Race
 from apps.equipment.models import Item, PlateArmor, Weapon, WornItems
+from apps.player_class.models import ClassCharacter, ClassFeat
 
 
 class Title(models.Model):
     name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
-
-class ClassCharacter(models.Model):
-    name = models.CharField(max_length=50)
-    health_by_level = models.PositiveSmallIntegerField(default=6)
-    perception_mastery = models.CharField(
-        max_length=10,
-        choices=MasteryLevels.choices,
-        default=MasteryLevels.ABSENT
-    )
-    fortitude_mastery = models.CharField(
-        max_length=10,
-        choices=MasteryLevels.choices,
-        default=MasteryLevels.ABSENT,
-    )
-    reflex_mastery = models.CharField(
-        max_length=10,
-        choices=MasteryLevels.choices,
-        default=MasteryLevels.ABSENT,
-    )
-    will_mastery = models.CharField(
-        max_length=10,
-        choices=MasteryLevels.choices,
-        default=MasteryLevels.ABSENT,
-    )
-    unarmed_mastery = models.CharField(
-        max_length=10,
-        choices=MasteryLevels.choices,
-        default=MasteryLevels.ABSENT,
-    )
-    light_armor_mastery = models.CharField(
-        max_length=10,
-        choices=MasteryLevels.choices,
-        default=MasteryLevels.ABSENT,
-    )
-    medium_armor_mastery = models.CharField(
-        max_length=10,
-        choices=MasteryLevels.choices,
-        default=MasteryLevels.ABSENT,
-    )
-    heavy_armor_mastery = models.CharField(
-        max_length=10,
-        choices=MasteryLevels.choices,
-        default=MasteryLevels.ABSENT,
-    )
 
     def __str__(self):
         return self.name
@@ -119,6 +72,8 @@ class CharacterStats(models.Model):
     charisma = models.PositiveSmallIntegerField(default=10)
     max_speed = models.PositiveSmallIntegerField(default=30)
     speed = models.PositiveSmallIntegerField(default=30)
+    skill_count = models.PositiveSmallIntegerField(default=0)
+    spell_count = models.PositiveSmallIntegerField(default=0)
     perception_mastery = models.CharField(
         max_length=10,
         choices=MasteryLevels.choices,
@@ -179,6 +134,11 @@ class SecondaryStats(models.Model):
 
     def __str__(self):
         return f"{self.character}'s Secondary Stats"
+
+
+class CharacterFeat(models.Model):
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='feet_list')
+    feat_class = models.ManyToManyField(ClassFeat, related_name='character_feat', blank=True)
 
 
 class CharacterSkill(models.Model):

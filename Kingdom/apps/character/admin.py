@@ -1,10 +1,10 @@
 from django.contrib import admin
-from apps.character.models import ClassCharacter, Ruler, CharacterNPC, Title, Character,\
+from apps.character.models import Ruler, CharacterNPC, Title, Character,\
     CharacterBag, InventoryItems, CharacterStats, SecondaryStats, CharacterSkill,\
     DefenceAndVulnerabilityDamage, EquippedItems
 
 
-model_list = [ClassCharacter, CharacterNPC, Ruler, Title,
+model_list = [CharacterNPC, Ruler, Title,
               Character, CharacterBag, InventoryItems, CharacterStats, SecondaryStats,
               CharacterSkill, DefenceAndVulnerabilityDamage, EquippedItems]
 

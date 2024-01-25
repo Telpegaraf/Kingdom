@@ -5,13 +5,13 @@ from apps.spell.models import Spell, SpellCast, SpellComponent, SpellTrait, Spel
 class SpellSchoolSerializer(serializers.ModelSerializer):
     class Meta:
         model = SpellSchool
-        fields = '__all__'
+        fields = ['name', 'description']
 
 
 class SpellTraditionSerializer(serializers.ModelSerializer):
     class Meta:
         model = SpellTradition
-        fields = '__all__'
+        fields = ['name', 'description']
 
 
 class SpellCastSerializer(serializers.ModelSerializer):
@@ -23,20 +23,28 @@ class SpellCastSerializer(serializers.ModelSerializer):
 class SpellComponentSerializer(serializers.ModelSerializer):
     class Meta:
         model = SpellComponent
-        fields = '__all__'
+        fields = ['name', 'description']
 
 
 class SpellTraitSerializer(serializers.ModelSerializer):
     class Meta:
         model = SpellTrait
-        fields = '__all__'
+        fields = ['name', 'description']
 
 
-class SpellOverallSerializer(serializers.ModelSerializer):
+class SpellListSerializer(serializers.ModelSerializer):
     school = serializers.StringRelatedField()
-    tradition = serializers.StringRelatedField(many=True)
-    trait = serializers.StringRelatedField(many=True)
-    component = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Spell
+        fields = ['name', 'school', 'level']
+
+
+class SpellDetailSerializer(serializers.ModelSerializer):
+    school = SpellSchoolSerializer()
+    tradition = SpellTraditionSerializer(many=True)
+    trait = SpellTraitSerializer(many=True)
+    component = SpellComponentSerializer(many=True)
     primary_check = serializers.StringRelatedField(many=True)
     secondary_check = serializers.StringRelatedField(many=True)
 

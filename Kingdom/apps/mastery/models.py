@@ -30,15 +30,6 @@ class MoralIntentions(models.Model):
         return self.name
 
 
-class Feats(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(max_length=500)
-    level = models.PositiveSmallIntegerField(default=1)
-
-    def __str__(self):
-        return self.name
-
-
 class Skills(models.Model):
     name = models.CharField(max_length=100)
 
@@ -48,6 +39,34 @@ class Skills(models.Model):
 
 class Race(models.Model):
     name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class Action(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class Prerequisite(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
+class FeatTrait(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+class Requirements(models.Model):
+    name = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name
