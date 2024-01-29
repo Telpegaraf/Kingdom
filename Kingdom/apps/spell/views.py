@@ -1,15 +1,11 @@
-from django.db.models import Prefetch
-from django.shortcuts import get_object_or_404
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics, status
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.db.models import ObjectDoesNotExist
 
-from apps.mastery.models import Skills
 from apps.spell.serializers import SpellDetailSerializer, SpellListSerializer
-from apps.spell.models import Spell, SpellComponent, SpellTrait, SpellTradition
+from apps.spell.models import Spell
 
 
 class SpellListView(APIView):
