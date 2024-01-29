@@ -1,6 +1,6 @@
 from django.test import TestCase
 from apps.character.models import ClassCharacter
-from apps.mastery.models import MasteryLevels
+from apps.general.models import MasteryLevels
 
 
 class ClassModelTestCase(TestCase):

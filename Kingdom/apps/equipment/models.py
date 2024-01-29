@@ -1,5 +1,5 @@
 from django.db import models
-from apps.mastery.models import ArmorCategory, DamageType
+from apps.general.models import ArmorCategory, DamageType
 
 
 class GoldAndCurrency(models.Model):

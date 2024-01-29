@@ -1,6 +1,6 @@
 from django.test import TestCase
 from apps.character.models import Character, Race, ClassCharacter
-from apps.mastery.models import MasteryLevels, MoralIntentions
+from apps.general.models import MasteryLevels, MoralIntentions
 from apps.god.models import God
 
 

@@ -1,6 +1,6 @@
 from django.db import models
 from apps.god.models import God, Domains
-from apps.mastery.models import MasteryLevels, DamageType, MoralIntentions, Skills, Race
+from apps.general.models import MasteryLevels, DamageType, MoralIntentions, Skills, Race
 from apps.equipment.models import Item, PlateArmor, Weapon, WornItems
 from apps.player_class.models import ClassCharacter, ClassFeat
 
