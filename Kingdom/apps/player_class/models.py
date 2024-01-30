@@ -80,7 +80,7 @@ class ClassFeature(models.Model):
     class_feat_count = models.PositiveSmallIntegerField(default=0)
     general_feat_count = models.PositiveSmallIntegerField(default=0)
     background_feat_count = models.PositiveSmallIntegerField(default=0)
-    stats_boost = models.BooleanField(default=False)
+    stats_boost = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):
         return f"{self.class_player} - {self.level}"

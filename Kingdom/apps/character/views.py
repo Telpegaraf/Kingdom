@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import status, generics
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from apps.character.serializers import CharacterOverallSerializer, CharacterDetailSerializer, CharacterSerializer,\
-    AddItemSerializer, EquipItemSerializer, SecondaryStatsSerializer
+    AddItemSerializer, EquipItemSerializer, SecondaryStatsSerializer, LevelUpSerializer
 from apps.character.models import Character, SecondaryStats
 
 
@@ -79,3 +79,21 @@ class ChangeStatsView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class LevelUpView(APIView):
+    """ Change character's level """
+
+    permission_classes = [IsAuthenticated]
+    serializer_class = LevelUpSerializer
+
+    def patch(self, request, pk):
+        character = get_object_or_404(Character, pk=pk)
+        serializer = self.serializer_class(character, data=request.data, partial=True)
+        new_level = serializer.initial_data.get('level')
+        if new_level is not None and new_level == character.level + 1 and new_level <= 20:
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Invalid level value'}, status=status.HTTP_400_BAD_REQUEST)

@@ -57,6 +57,10 @@ class Character(models.Model):
     size = models.PositiveSmallIntegerField(null=True, blank=True)
     level = models.PositiveSmallIntegerField(default=1)
     description = models.TextField(blank=True, null=True)
+    stat_count = models.PositiveSmallIntegerField(default=0)
+    class_feat_count = models.PositiveSmallIntegerField(default=0)
+    general_feat_count = models.PositiveSmallIntegerField(default=0)
+    background_feat_count = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):
         return f"{self.class_player} {self.first_name} {self.last_name} {self.level} level"
