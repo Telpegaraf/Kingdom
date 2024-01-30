@@ -137,8 +137,11 @@ class SecondaryStats(models.Model):
 
 
 class CharacterFeat(models.Model):
-    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='feet_list')
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='feat_list')
     feat_class = models.ManyToManyField(ClassFeat, related_name='character_feat', blank=True)
+
+    def __str__(self):
+        return f"{self.character}'s Feats"
 
 
 class CharacterSkill(models.Model):

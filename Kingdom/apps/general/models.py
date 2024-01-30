@@ -65,8 +65,16 @@ class FeatTrait(models.Model):
     def __str__(self):
         return self.name
 
+
 class Requirements(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=600)
+
+    def __str__(self):
+        return self.name
+
+
+class Trigger(models.Model):
+    name = models.CharField(max_length=600)
 
     def __str__(self):
         return self.name

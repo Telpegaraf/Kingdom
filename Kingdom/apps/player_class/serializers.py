@@ -9,11 +9,12 @@ class FeatsSerializer(serializers.ModelSerializer):
     prerequisite = serializers.StringRelatedField()
     requirements = serializers.StringRelatedField()
     traits = FeatTraitSerializer(many=True)
+    trigger = serializers.StringRelatedField()
 
     class Meta:
         model = ClassFeat
-        fields = ['id', 'name', 'description', 'class_character', 'level', 'action', 'prerequisite', 'traits',
-                  'requirements']
+        fields = ['id', 'name', 'description', 'trigger', 'class_character', 'level', 'action', 'prerequisite',
+                  'traits', 'requirements']
 
 
 class FeatureListSerializer(serializers.ModelSerializer):

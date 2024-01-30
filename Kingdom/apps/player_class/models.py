@@ -1,5 +1,5 @@
 from django.db import models
-from apps.general.models import MasteryLevels, Action, Prerequisite, FeatTrait, Requirements
+from apps.general.models import MasteryLevels, Action, Prerequisite, FeatTrait, Requirements, Trigger
 from apps.spell.models import SpellTradition
 
 
@@ -55,12 +55,14 @@ class ClassCharacter(models.Model):
 
 class ClassFeat(models.Model):
     name = models.CharField(max_length=200)
-    description = models.TextField(max_length=200)
+    description = models.TextField(max_length=600)
     class_character = models.ForeignKey(ClassCharacter, on_delete=models.CASCADE, related_name='feat',
                                         null=True, blank=True)
     level = models.PositiveSmallIntegerField(default=0)
     action = models.ForeignKey(Action, on_delete=models.CASCADE, related_name='action_feat',
                                null=True, blank=True)
+    trigger = models.ForeignKey(Trigger, on_delete=models.CASCADE, related_name='trigger_feat',
+                                null=True, blank=True)
     prerequisite = models.ForeignKey(Prerequisite, on_delete=models.CASCADE, related_name='prerequisite',
                                      null=True, blank=True)
     traits = models.ManyToManyField(FeatTrait, related_name='trait', blank=True)

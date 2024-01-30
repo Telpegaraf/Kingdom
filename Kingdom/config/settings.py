@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'debug_toolbar',
     'drf_yasg',
+    'social_django',
     #apps
     'apps.user',
     'apps.general',

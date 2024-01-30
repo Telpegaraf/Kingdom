@@ -5,4 +5,4 @@ from apps.general.models import FeatTrait
 class FeatTraitSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeatTrait
-        fields = ['id, name', 'description']
+        fields = ['id', 'name', 'description']
