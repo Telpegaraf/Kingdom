@@ -7,7 +7,6 @@ from apps.character.serializers import CharacterOverallSerializer, CharacterDeta
     AddItemSerializer, EquipItemSerializer, SecondaryStatsSerializer, LevelUpSerializer, SetStatsSerializer,\
     SetStatsDisplaySerializer
 from apps.character.models import Character, SecondaryStats, CharacterStats
-from apps.character.services import CharacterService
 
 
 class CharacterOverallView(APIView):
@@ -45,7 +44,7 @@ class CharacterCreateView(APIView):
 
 
 class SetStatsView(APIView):
-    """ Set stats, include leveling stats """
+    """ Sets stats, including when leveling up """
     permission_classes = [IsAuthenticated]
     serializer_class_display = SetStatsDisplaySerializer
     serializer_class = SetStatsSerializer
@@ -59,13 +58,6 @@ class SetStatsView(APIView):
          character = CharacterStats.objects.select_related('character').get(character_id=character_id)
          serializer = self.serializer_class(character, data=request.data, partial=True)
          serializer.is_valid(raise_exception=True)
-         temp = CharacterService.check_change_stats(
-                 serializer.validated_data,
-                 character.character,
-                 character
-             )
-         if temp is False:
-             return Response({"message": "Not enough stat points"}, status=status.HTTP_400_BAD_REQUEST)
          serializer.save()
          return Response(serializer.data, status=status.HTTP_200_OK)
 

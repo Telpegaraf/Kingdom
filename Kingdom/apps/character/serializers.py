@@ -3,6 +3,7 @@ from apps.equipment.models import Item, Weapon, PlateArmor, WornItems
 from apps.character.models import Character, CharacterStats, CharacterBag, InventoryItems, SecondaryStats,\
     CharacterSkill, DefenceAndVulnerabilityDamage, EquippedItems, CharacterFeat
 from apps.player_class.serializers import FeatsSerializer
+from itertools import islice
 
 
 class InventoryItemSerializer(serializers.ModelSerializer):
@@ -151,9 +152,26 @@ class SetStatsDisplaySerializer(serializers.ModelSerializer):
 class SetStatsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CharacterStats
-        fields = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma', 'max_speed',
-                  'perception_mastery', 'unarmed_mastery', 'light_armor_mastery', 'medium_armor_mastery',
-                  'heavy_armor_mastery', 'fortitude_mastery', 'reflex_mastery', 'will_mastery']
+        fields = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma']
+
+    def validate(self, data):
+        character = self.instance
+        if character.character.level == 1 and not all(value <= 18 for value in data.values()):
+            raise serializers.ValidationError("All stats must be 18 or lower at level 1.")
+
+        new_stats_sum = sum(list((data.values())))
+        old_stats_sum = character.strength + character.dexterity + \
+                        character.constitution + character.intelligence + \
+                        character.wisdom + character.charisma
+        stat_different = new_stats_sum - old_stats_sum
+        print(stat_different)
+        if stat_different < 0:
+            raise serializers.ValidationError("You can't decrease stats")
+        if stat_different > character.character.stat_count:
+            raise serializers.ValidationError("Not enough stat points.")
+        character.character.stat_count -= stat_different
+        character.character.save()
+        return data
 
 
 class AddItemSerializer(serializers.Serializer):
