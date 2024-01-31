@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.player_class.models import ClassFeature, ClassFeat
+from apps.player_class.models import ClassFeature, ClassFeat, ClassSpellFeature
 from apps.general.serializers import FeatTraitSerializer
 
 
@@ -24,4 +24,12 @@ class FeatureListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClassFeature
         fields = ['id', 'class_player', 'level', 'feats', 'class_feat_count', 'general_feat_count',
-                  'background_feat_count', 'stats_boost']
+                  'background_feat_count', 'skill_count', 'stats_boost']
+
+
+class SpellFeatureListSerializer(serializers.ModelSerializer):
+    class_player = serializers.StringRelatedField()
+
+    class Meta:
+        model = ClassSpellFeature
+        fields = '__all__'

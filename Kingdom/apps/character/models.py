@@ -61,6 +61,7 @@ class Character(models.Model):
     class_feat_count = models.PositiveSmallIntegerField(default=0)
     general_feat_count = models.PositiveSmallIntegerField(default=0)
     background_feat_count = models.PositiveSmallIntegerField(default=0)
+    skill_count = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):
         return f"{self.class_player} {self.first_name} {self.last_name} {self.level} level"

@@ -80,7 +80,33 @@ class ClassFeature(models.Model):
     class_feat_count = models.PositiveSmallIntegerField(default=0)
     general_feat_count = models.PositiveSmallIntegerField(default=0)
     background_feat_count = models.PositiveSmallIntegerField(default=0)
+    skill_count = models.PositiveSmallIntegerField(default=0)
     stats_boost = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        unique_together = ['class_player', 'level']
 
     def __str__(self):
         return f"{self.class_player} - {self.level}"
+
+
+class ClassSpellFeature(models.Model):
+    class_player = models.ForeignKey(ClassCharacter, on_delete=models.CASCADE, related_name='spell_feature')
+    class_level = models.PositiveSmallIntegerField(default=1)
+    cantrip = models.PositiveSmallIntegerField(default=0)
+    first_level = models.PositiveSmallIntegerField(default=0)
+    second_level = models.PositiveSmallIntegerField(default=0)
+    third_level = models.PositiveSmallIntegerField(default=0)
+    fourth_level = models.PositiveSmallIntegerField(default=0)
+    fifth_level = models.PositiveSmallIntegerField(default=0)
+    sixth_level = models.PositiveSmallIntegerField(default=0)
+    seventh_level = models.PositiveSmallIntegerField(default=0)
+    eighth_level = models.PositiveSmallIntegerField(default=0)
+    ninth_level = models.PositiveSmallIntegerField(default=0)
+    tenth_level = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        unique_together = ['class_player', 'class_level']
+
+    def __str__(self):
+        return f"{self.class_player} - {self.class_level}"
