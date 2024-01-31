@@ -4,8 +4,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from apps.character.serializers import CharacterOverallSerializer, CharacterDetailSerializer, CharacterSerializer,\
-    AddItemSerializer, EquipItemSerializer, SecondaryStatsSerializer, LevelUpSerializer
-from apps.character.models import Character, SecondaryStats
+    AddItemSerializer, EquipItemSerializer, SecondaryStatsSerializer, LevelUpSerializer, SetStatsSerializer,\
+    SetStatsDisplaySerializer
+from apps.character.models import Character, SecondaryStats, CharacterStats
+from apps.character.services import CharacterService
 
 
 class CharacterOverallView(APIView):
@@ -40,6 +42,32 @@ class CharacterCreateView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class SetStatsView(APIView):
+    """ Set stats, include leveling stats """
+    permission_classes = [IsAuthenticated]
+    serializer_class_display = SetStatsDisplaySerializer
+    serializer_class = SetStatsSerializer
+
+    def get(self, request, character_id):
+        character = CharacterStats.objects.get(character_id=character_id)
+        serializer = self.serializer_class_display(character)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, character_id):
+         character = CharacterStats.objects.select_related('character').get(character_id=character_id)
+         serializer = self.serializer_class(character, data=request.data, partial=True)
+         serializer.is_valid(raise_exception=True)
+         temp = CharacterService.check_change_stats(
+                 serializer.validated_data,
+                 character.character,
+                 character
+             )
+         if temp is False:
+             return Response({"message": "Not enough stat points"}, status=status.HTTP_400_BAD_REQUEST)
+         serializer.save()
+         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class AddItemView(APIView):

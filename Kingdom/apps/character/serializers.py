@@ -130,7 +130,30 @@ class CharacterDetailSerializer(serializers.ModelSerializer):
 class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Character
-        fields = '__all__'
+        fields = ['race', 'first_name', 'last_name', 'alias', 'class_player', 'god', 'intentions', 'domain',
+                  'age', 'size', 'description',]
+
+
+class CharacterStatsDisplay(serializers.ModelSerializer):
+    class Meta:
+        model = Character
+        fields = ['stat_count', 'class_feat_count', 'general_feat_count', 'background_feat_count', 'skill_count']
+
+
+class SetStatsDisplaySerializer(serializers.ModelSerializer):
+    character_stats = CharacterStatsDisplay(read_only=True)
+
+    class Meta:
+        model = CharacterStats
+        fields = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma', 'character_stats']
+
+
+class SetStatsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CharacterStats
+        fields = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma', 'max_speed',
+                  'perception_mastery', 'unarmed_mastery', 'light_armor_mastery', 'medium_armor_mastery',
+                  'heavy_armor_mastery', 'fortitude_mastery', 'reflex_mastery', 'will_mastery']
 
 
 class AddItemSerializer(serializers.Serializer):

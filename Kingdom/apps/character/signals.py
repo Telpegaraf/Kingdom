@@ -10,38 +10,41 @@ from apps.player_class.models import ClassFeature
 from apps.general.models import DamageType
 
 
-@receiver(pre_save, sender=Character)
-def character_level_changed(sender, instance, **kwargs):
-    character = Character.objects.prefetch_related('secondary_stats', 'character_stats').get(id=instance.id)
-    character_stats = instance.character_stats.first()
-    health_by_constitution = math.floor((character_stats.constitution/2) - 5)
-    secondary_stats = instance.secondary_stats.first()
-    character_class = character.class_player
-    level = instance.level
-    feature = ClassFeature.objects.select_related('class_player').get(level=level, class_player=character_class)
-    health = feature.class_player.health_by_level + health_by_constitution
-    instance.stat_count += feature.stats_boost
-    instance.class_feat_count += feature.class_feat_count
-    instance.general_feat_count += feature.general_feat_count
-    instance.background_feat_count += feature.background_feat_count
-    instance.skill_count += feature.skill_count
-    secondary_stats.max_health += health
-    secondary_stats.health += health
-    secondary_stats.save()
+# @receiver(pre_save, sender=Character)
+# def character_level_changed(sender, instance, **kwargs):
+#     if instance.level == 1:
+#         return
+#     character = Character.objects.prefetch_related('secondary_stats', 'character_stats').get(id=instance.id)
+#     character_stats = instance.character_stats.first()
+#     health_by_constitution = math.floor((character_stats.constitution/2) - 5)
+#     secondary_stats = instance.secondary_stats.first()
+#     character_class = character.class_player
+#     level = instance.level
+#     feature = ClassFeature.objects.select_related('class_player').get(level=level, class_player=character_class)
+#     health = feature.class_player.health_by_level + health_by_constitution
+#     instance.stat_count += feature.stats_boost
+#     instance.class_feat_count += feature.class_feat_count
+#     instance.general_feat_count += feature.general_feat_count
+#     instance.background_feat_count += feature.background_feat_count
+#     instance.skill_count += feature.skill_count
+#     secondary_stats.max_health += health
+#     secondary_stats.health += health
+#     secondary_stats.save()
 
 
 @receiver(post_save, sender=Character)
 def set_mastery(sender, instance, created, **kwargs):
     """ Set general when character created """
-    perception = instance.class_player.perception_mastery
-    fortitude = instance.class_player.fortitude_mastery
-    reflex = instance.class_player.reflex_mastery
-    will = instance.class_player.will_mastery
-    unarmed_mastery = instance.class_player.unarmed_mastery
-    light_armor_mastery = instance.class_player.light_armor_mastery
-    medium_armor_mastery = instance.class_player.medium_armor_mastery
-    heavy_armor_mastery = instance.class_player.heavy_armor_mastery
     if created:
+        perception = instance.class_player.perception_mastery
+        fortitude = instance.class_player.fortitude_mastery
+        reflex = instance.class_player.reflex_mastery
+        will = instance.class_player.will_mastery
+        unarmed_mastery = instance.class_player.unarmed_mastery
+        light_armor_mastery = instance.class_player.light_armor_mastery
+        medium_armor_mastery = instance.class_player.medium_armor_mastery
+        heavy_armor_mastery = instance.class_player.heavy_armor_mastery
+
         CharacterStats.objects.create(
             character=instance,
             perception_mastery=perception,
