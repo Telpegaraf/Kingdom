@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from apps.character.serializers import CharacterOverallSerializer, CharacterDetailSerializer, CharacterSerializer,\
     AddItemSerializer, EquipItemSerializer, SecondaryStatsSerializer, LevelUpSerializer, SetStatsSerializer,\
-    SetStatsDisplaySerializer, SetSpeedSerializer
+    SetStatsDisplaySerializer, SetSpeedSerializer, SetMasterySerializer
 from apps.character.models import Character, SecondaryStats, CharacterStats
 
 
@@ -72,6 +72,23 @@ class SetSpeedView(APIView):
         serializer = self.serializer_class(character)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def patch(self, request, character_id):
+        character = CharacterStats.objects.get(character_id=character_id)
+        serializer = self.serializer_class(character, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SetMasteryView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = SetMasterySerializer
+
+    def get(self, request, character_id):
+        character = CharacterStats.objects.get(character_id=character_id)
+        serializer = self.serializer_class(character)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def put(self, request, character_id):
         character = CharacterStats.objects.get(character_id=character_id)
         serializer = self.serializer_class(character, data=request.data, partial=True)
@@ -105,14 +122,14 @@ class EquipItemView(APIView):
         return Response({"message": f"{item} equipped"}, status=status.HTTP_200_OK)
 
 
-class ChangeStatsView(APIView):
+class ChangeSecondaryStatsView(APIView):
     """ Change characteristics (health and e.t.c) """
 
     permission_classes = [IsAuthenticated]
     serializer_class = SecondaryStatsSerializer
 
-    def patch(self, request, pk):
-        secondary_stats = get_object_or_404(SecondaryStats, pk=pk)
+    def patch(self, request, character_id):
+        secondary_stats = get_object_or_404(SecondaryStats, pk=character_id)
         serializer = self.serializer_class(secondary_stats, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -125,8 +142,8 @@ class LevelUpView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = LevelUpSerializer
 
-    def patch(self, request, pk):
-        character = get_object_or_404(Character, pk=pk)
+    def patch(self, request, character_id):
+        character = get_object_or_404(Character, pk=character_id)
         serializer = self.serializer_class(character, data=request.data, partial=True)
         new_level = serializer.initial_data.get('level')
         if new_level is not None and new_level == character.level + 1 and new_level <= 20:

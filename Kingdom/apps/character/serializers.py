@@ -1,9 +1,8 @@
 from rest_framework import serializers
 from apps.equipment.models import Item, Weapon, PlateArmor, WornItems
 from apps.character.models import Character, CharacterStats, CharacterBag, InventoryItems, SecondaryStats,\
-    CharacterSkill, DefenceAndVulnerabilityDamage, EquippedItems, CharacterFeat
+    CharacterSkillList, DefenceAndVulnerabilityDamage, EquippedItems, CharacterFeatList
 from apps.player_class.serializers import FeatsSerializer
-from itertools import islice
 
 
 class InventoryItemSerializer(serializers.ModelSerializer):
@@ -67,7 +66,7 @@ class CharacterSkillSerializer(serializers.ModelSerializer):
     skill = serializers.StringRelatedField()
 
     class Meta:
-        model = CharacterSkill
+        model = CharacterSkillList
         fields = ['id', 'skill', 'mastery_level']
 
 
@@ -75,7 +74,7 @@ class CharacterFeatsSerializer(serializers.ModelSerializer):
     feat_class = FeatsSerializer(many=True)
 
     class Meta:
-        model = CharacterFeat
+        model = CharacterFeatList
         fields = ['id', 'feat_class']
 
 
@@ -172,6 +171,13 @@ class SetSpeedSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("The speed should not exceed the maximum")
 
         return data
+
+
+class SetMasterySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CharacterStats
+        fields = ['perception_mastery', 'unarmed_mastery', 'light_armor_mastery', 'medium_armor_mastery',
+                  'heavy_armor_mastery', 'fortitude_mastery', 'reflex_mastery', 'will_mastery']
 
 
 class AddItemSerializer(serializers.Serializer):

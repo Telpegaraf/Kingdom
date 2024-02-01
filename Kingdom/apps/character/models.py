@@ -1,12 +1,12 @@
 from django.db import models
 from apps.god.models import God, Domains
-from apps.general.models import MasteryLevels, DamageType, MoralIntentions, Skills, Race
+from apps.general.models import MasteryLevels, DamageType, MoralIntentions, Skills, Race, WeaponMastery
 from apps.equipment.models import Item, PlateArmor, Weapon, WornItems
 from apps.player_class.models import ClassCharacter, Feat
 
 
 class Title(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
@@ -24,6 +24,9 @@ class CharacterNPC(models.Model):
     age = models.IntegerField(null=True, blank=True)
     level = models.PositiveSmallIntegerField(default=0)
     description = models.TextField(max_length=1000, null=True, blank=True)
+
+    class Meta:
+        unique_together = ['first_name', 'last_name']
 
     def __str__(self):
         name = self.first_name
@@ -67,7 +70,7 @@ class Character(models.Model):
 
 
 class CharacterStats(models.Model):
-    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='character_stats')
+    character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='character_stats')
     strength = models.PositiveSmallIntegerField(default=10)
     dexterity = models.PositiveSmallIntegerField(default=10)
     constitution = models.PositiveSmallIntegerField(default=10)
@@ -124,7 +127,7 @@ class CharacterStats(models.Model):
 
 
 class SecondaryStats(models.Model):
-    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='secondary_stats')
+    character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='secondary_stats')
     perception = models.SmallIntegerField(default=0)
     armor_class = models.SmallIntegerField(default=10)
     attack_class = models.SmallIntegerField(default=0)
@@ -140,16 +143,16 @@ class SecondaryStats(models.Model):
         return f"{self.character}'s Secondary Stats"
 
 
-class CharacterFeat(models.Model):
-    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='feat_list')
+class CharacterFeatList(models.Model):
+    character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='feat_list')
     feat_class = models.ManyToManyField(Feat, related_name='character_feat', blank=True)
 
     def __str__(self):
         return f"{self.character}'s Feats"
 
 
-class CharacterSkill(models.Model):
-    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='skill_list')
+class CharacterSkillList(models.Model):
+    character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='skill_list')
     skill = models.ForeignKey(Skills, on_delete=models.CASCADE)
     mastery_level = models.CharField(
         max_length=10,
@@ -164,8 +167,18 @@ class CharacterSkill(models.Model):
         return f"{self.character} - {self.skill} - {self.mastery_level}"
 
 
+class WeaponMasteryList(models.Model):
+    character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='weapon_mastery_list')
+    weapon = models.ForeignKey(WeaponMastery, on_delete=models.CASCADE)
+    mastery_level = models.CharField(
+        max_length=10,
+        choices=MasteryLevels.choices,
+        default=MasteryLevels.ABSENT
+    )
+
+
 class CharacterBag(models.Model):
-    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='character_bag')
+    character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='character_bag', unique=True)
     max_capacity = models.IntegerField(default=0)
     capacity = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 
@@ -174,7 +187,7 @@ class CharacterBag(models.Model):
 
 
 class InventoryItems(models.Model):
-    inventory = models.ForeignKey(CharacterBag, on_delete=models.CASCADE, related_name='inventory')
+    inventory = models.OneToOneField(CharacterBag, on_delete=models.CASCADE, related_name='inventory')
     quantity = models.IntegerField(default=1)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='item')
 
@@ -183,7 +196,7 @@ class InventoryItems(models.Model):
 
 
 class EquippedItems(models.Model):
-    equipped_items = models.ForeignKey(CharacterBag, on_delete=models.CASCADE, related_name='equipped_items')
+    equipped_items = models.OneToOneField(CharacterBag, on_delete=models.CASCADE, related_name='equipped_items',)
     plate_armor = models.ForeignKey(
         InventoryItems,
         on_delete=models.CASCADE,

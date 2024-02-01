@@ -1,7 +1,7 @@
 from django.contrib import admin
 from apps.character.models import Ruler, CharacterNPC, Title, Character,\
-    CharacterBag, InventoryItems, CharacterStats, SecondaryStats, CharacterSkill,\
-    DefenceAndVulnerabilityDamage, EquippedItems, CharacterFeat
+    CharacterBag, InventoryItems, CharacterStats, SecondaryStats, CharacterSkillList,\
+    DefenceAndVulnerabilityDamage, EquippedItems, CharacterFeatList
 
 
 class InventoryItemsAdmin(admin.ModelAdmin):
@@ -14,7 +14,7 @@ class EquippedItemsAdmin(admin.ModelAdmin):
 
 model_list = [CharacterNPC, Ruler, Title,
               Character, CharacterBag, CharacterStats, SecondaryStats,
-              CharacterSkill, DefenceAndVulnerabilityDamage, CharacterFeat]
+              CharacterSkillList, DefenceAndVulnerabilityDamage, CharacterFeatList]
 
 admin.site.register(InventoryItems, InventoryItemsAdmin)
 admin.site.register(EquippedItems, EquippedItemsAdmin)
