@@ -9,7 +9,7 @@ class Domains(models.Model):
 
 
 class God(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     alias = models.CharField(max_length=100)
     edict = models.CharField(max_length=250)
     anathema = models.CharField(max_length=250)
