@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import F
+
 from apps.god.models import God, Domains
 from apps.general.models import MasteryLevels, DamageType, MoralIntentions, Skills, Race, WeaponMastery
 from apps.equipment.models import Item, PlateArmor, Weapon, WornItems
@@ -60,10 +62,6 @@ class Character(models.Model):
     size = models.PositiveSmallIntegerField(null=True, blank=True)
     level = models.PositiveSmallIntegerField(default=1)
     description = models.TextField(blank=True, null=True)
-    class_feat_count = models.PositiveSmallIntegerField(default=0)
-    general_feat_count = models.PositiveSmallIntegerField(default=0)
-    background_feat_count = models.PositiveSmallIntegerField(default=0)
-    skill_count = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):
         return f"{self.class_player} {self.first_name} {self.last_name} {self.level} level"
@@ -79,8 +77,6 @@ class CharacterStats(models.Model):
     charisma = models.PositiveSmallIntegerField(default=10)
     max_speed = models.PositiveSmallIntegerField(default=30)
     speed = models.PositiveSmallIntegerField(default=30)
-    skill_count = models.PositiveSmallIntegerField(default=0)
-    spell_count = models.PositiveSmallIntegerField(default=0)
     perception_mastery = models.CharField(
         max_length=10,
         choices=MasteryLevels.choices,
@@ -153,7 +149,21 @@ class CharacterFeatList(models.Model):
 
 class CharacterSkillList(models.Model):
     character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='skill_list')
-    skill = models.ForeignKey(Skills, on_delete=models.CASCADE)
+    skill = models.ManyToManyField(Skills, blank=True, related_name='character_skill_list')
+
+
+    def __str__(self):
+        return f"{self.character}'s Skill List'"
+
+
+class CharacterSkillMastery(models.Model):
+    skill_list = models.ForeignKey(CharacterSkillList, on_delete=models.CASCADE, related_name='character_skill')
+    skill = models.ForeignKey(
+        Skills,
+        on_delete=models.CASCADE,
+        related_name='character_skill_mastery',
+        limit_choices_to={'character_skill_list': F('character_skill_list')}
+    )
     mastery_level = models.CharField(
         max_length=10,
         choices=MasteryLevels.choices,
@@ -161,10 +171,10 @@ class CharacterSkillList(models.Model):
     )
 
     class Meta:
-        unique_together = ['character', 'skill']
+        unique_together = ['skill_list', 'skill']
 
     def __str__(self):
-        return f"{self.character} - {self.skill} - {self.mastery_level}"
+        return f"{self.skill_list.character} - {self.skill} - {self.mastery_level}"
 
 
 class WeaponMasteryList(models.Model):

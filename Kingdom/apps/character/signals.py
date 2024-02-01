@@ -6,30 +6,7 @@ from django.db.models.signals import post_save, m2m_changed, pre_save, post_dele
 from django.dispatch import receiver
 from .models import CharacterStats, CharacterBag, InventoryItems, SecondaryStats, DefenceAndVulnerabilityDamage,\
      Character, EquippedItems
-from apps.player_class.models import ClassFeature
 from apps.general.models import DamageType
-
-
-# @receiver(pre_save, sender=Character)
-# def character_level_changed(sender, instance, **kwargs):
-#     if instance.level == 1:
-#         return
-#     character = Character.objects.prefetch_related('secondary_stats', 'character_stats').get(id=instance.id)
-#     character_stats = instance.character_stats.first()
-#     health_by_constitution = math.floor((character_stats.constitution/2) - 5)
-#     secondary_stats = instance.secondary_stats.first()
-#     character_class = character.class_player
-#     level = instance.level
-#     feature = ClassFeature.objects.select_related('class_player').get(level=level, class_player=character_class)
-#     health = feature.class_player.health_by_level + health_by_constitution
-#     instance.stat_count += feature.stats_boost
-#     instance.class_feat_count += feature.class_feat_count
-#     instance.general_feat_count += feature.general_feat_count
-#     instance.background_feat_count += feature.background_feat_count
-#     instance.skill_count += feature.skill_count
-#     secondary_stats.max_health += health
-#     secondary_stats.health += health
-#     secondary_stats.save()
 
 
 @receiver(post_save, sender=Character)
@@ -59,16 +36,10 @@ def set_mastery(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=CharacterStats)
-def set_max_capacity(sender, instance, **kwargs):
+def set_max_capacity(sender, instance, created, **kwargs):
     """ Set capacity character's bag"""
-    capacity = math.floor(instance.strength/2)+5
-    bag = instance.character.character_bag.first()
-
-    if bag:
-        bag.max_capacity = capacity
-        bag.save()
-    else:
-        CharacterBag.objects.create(character=instance.character, max_capacity=capacity)
+    if created:
+        CharacterBag.objects.create(character=instance.character)
 
 
 @receiver(post_save, sender=CharacterStats)
@@ -84,30 +55,6 @@ def set_secondary_stats(sender, instance, created, **kwargs):
             max_health=health,
             health=health
         )
-
-
-@receiver(post_save, sender=InventoryItems)
-def set_current_capacity(sender, instance, **kwargs):
-    """ Set current capacity, when inventory updated """
-    inventory = instance.inventory
-    total_weight = inventory.inventory.aggregate(
-        total_weight=Sum(F('item__weight') * F('quantity'), output_field=DecimalField())
-    )['total_weight'] or Decimal('0.0')
-    inventory.capacity = total_weight
-    inventory.save()
-
-
-@receiver(post_save, sender=CharacterBag)
-def set_speed(sender, instance, **kwargs):
-    """ Set character's speed by current capacity """
-    character_stats = instance.character.character_stats.first()
-    if instance.capacity > instance.max_capacity:
-        character_stats.speed = 0
-    elif instance.capacity >= (instance.max_capacity/2):
-        character_stats.speed = character_stats.speed/2
-    else:
-        character_stats.speed = character_stats.max_speed
-    CharacterStats.objects.filter(character_id=instance.character.id).update(speed=character_stats.speed)
 
 
 @receiver(m2m_changed, sender=DefenceAndVulnerabilityDamage.immunity.through)

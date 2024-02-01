@@ -1,7 +1,9 @@
+import math
+
 from rest_framework import serializers
 from apps.equipment.models import Item, Weapon, PlateArmor, WornItems
 from apps.character.models import Character, CharacterStats, CharacterBag, InventoryItems, SecondaryStats,\
-    CharacterSkillList, DefenceAndVulnerabilityDamage, EquippedItems, CharacterFeatList
+    CharacterSkillList, DefenceAndVulnerabilityDamage, EquippedItems, CharacterFeatList, CharacterSkillMastery
 from apps.player_class.serializers import FeatsSerializer
 
 
@@ -43,11 +45,13 @@ class CharacterStatsSerializer(serializers.ModelSerializer):
         model = CharacterStats
         fields = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma',
                   'max_speed', 'speed', 'perception_mastery', 'unarmed_mastery', 'light_armor_mastery',
-                  'medium_armor_mastery', 'heavy_armor_mastery', 'fortitude_mastery', 'reflex_mastery', 'will_mastery',
-                  'skill_count', 'spell_count', 'skill_count']
+                  'medium_armor_mastery', 'heavy_armor_mastery', 'fortitude_mastery',
+                  'reflex_mastery', 'will_mastery',]
 
 
 class SecondaryStatsSerializer(serializers.ModelSerializer):
+    armor_class = serializers.SerializerMethodField()
+
     class Meta:
         model = SecondaryStats
         fields = ['armor_class', 'attack_class', 'damage_bonus', 'max_health', 'health', 'initiative',
@@ -63,11 +67,15 @@ class CharacterOverallSerializer(serializers.ModelSerializer):
 
 
 class CharacterSkillSerializer(serializers.ModelSerializer):
-    skill = serializers.StringRelatedField()
-
     class Meta:
         model = CharacterSkillList
-        fields = ['id', 'skill', 'mastery_level']
+        fields = ['skill']
+
+
+class CharacterSkillMasterySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CharacterSkillMastery
+        fields = ['mastery_level']
 
 
 class CharacterFeatsSerializer(serializers.ModelSerializer):
@@ -286,6 +294,39 @@ class EquipItemSerializer(serializers.Serializer):
 
 
 class LevelUpSerializer(serializers.ModelSerializer):
+    old_level = serializers.SerializerMethodField()
+    max_health = serializers.IntegerField(source='secondary_stats.max_health')
+    health_by_level = serializers.IntegerField(source='class_player.health_by_level')
+    constitution_mod = serializers.SerializerMethodField()
+
     class Meta:
         model = Character
-        fields = ['level']
+        fields = ['id', 'old_level', 'level', 'max_health', 'health_by_level', 'constitution_mod']
+
+    def get_constitution_mod(self, obj):
+        return math.floor((obj.character_stats.constitution)/2-5)
+
+    def get_old_level(self, obj):
+        return obj.level
+
+    def validate(self, data):
+        new_level = data['level']
+        if new_level is None or new_level > 20:
+            return serializers.ValidationError("Invalid level value")
+
+        return data
+
+    def save(self, **kwargs):
+        character_id = self.data.get('id')
+        old_level = self.data.get('old_level')
+        constitution_mod = self.data.get('constitution_mod')
+        health_by_level = self.data.get('health_by_level')
+        level = self.validated_data.get('level')
+        level_difference = level - old_level
+        health_add = level_difference * (constitution_mod+health_by_level)
+        character = Character.objects.select_related('secondary_stats').get(id=character_id)
+        character.level = level
+        character.secondary_stats.max_health += health_add
+        character.secondary_stats.health += health_add
+        character.save()
+        character.secondary_stats.save()
