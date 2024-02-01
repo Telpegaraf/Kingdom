@@ -2,7 +2,7 @@ from django.db import models
 from apps.god.models import God, Domains
 from apps.general.models import MasteryLevels, DamageType, MoralIntentions, Skills, Race
 from apps.equipment.models import Item, PlateArmor, Weapon, WornItems
-from apps.player_class.models import ClassCharacter, ClassFeat
+from apps.player_class.models import ClassCharacter, Feat
 
 
 class Title(models.Model):
@@ -57,7 +57,6 @@ class Character(models.Model):
     size = models.PositiveSmallIntegerField(null=True, blank=True)
     level = models.PositiveSmallIntegerField(default=1)
     description = models.TextField(blank=True, null=True)
-    stat_count = models.PositiveSmallIntegerField(default=0)
     class_feat_count = models.PositiveSmallIntegerField(default=0)
     general_feat_count = models.PositiveSmallIntegerField(default=0)
     background_feat_count = models.PositiveSmallIntegerField(default=0)
@@ -143,7 +142,7 @@ class SecondaryStats(models.Model):
 
 class CharacterFeat(models.Model):
     character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='feat_list')
-    feat_class = models.ManyToManyField(ClassFeat, related_name='character_feat', blank=True)
+    feat_class = models.ManyToManyField(Feat, related_name='character_feat', blank=True)
 
     def __str__(self):
         return f"{self.character}'s Feats"

@@ -1,6 +1,6 @@
 from django.urls import path
 from apps.character.views import CharacterOverallView, CharacterDetailView, CharacterCreateView,\
-    AddItemView, EquipItemView, ChangeStatsView, LevelUpView, SetStatsView
+    AddItemView, EquipItemView, ChangeStatsView, LevelUpView, SetStatsView, SetSpeedView
 
 
 urlpatterns = [
@@ -12,4 +12,5 @@ urlpatterns = [
     path('change-stats/<int:pk>/', ChangeStatsView.as_view(), name='change-stats'),
     path('level-up/<int:pk>/', LevelUpView.as_view(), name='level-up'),
     path('set-stats/<int:character_id>/', SetStatsView.as_view(), name='set-stats'),
+    path('set-speed/<int:character_id>/', SetSpeedView.as_view(), name='set-speed'),
 ]

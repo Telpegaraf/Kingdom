@@ -1,10 +1,10 @@
 from django.db import models
-from apps.general.models import MasteryLevels, Action, Prerequisite, FeatTrait, Requirements, Trigger
+from apps.general.models import MasteryLevels, Action, Prerequisite, FeatTrait, Requirements, Trigger, Skills
 from apps.spell.models import SpellTradition
 
 
 class ClassCharacter(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100, unique=True)
     health_by_level = models.PositiveSmallIntegerField(default=6)
     perception_mastery = models.CharField(
         max_length=10,
@@ -53,8 +53,8 @@ class ClassCharacter(models.Model):
         return self.name
 
 
-class ClassFeat(models.Model):
-    name = models.CharField(max_length=200)
+class Feat(models.Model):
+    name = models.CharField(max_length=200, unique=True)
     description = models.TextField(max_length=600)
     class_character = models.ForeignKey(ClassCharacter, on_delete=models.CASCADE, related_name='feat',
                                         null=True, blank=True)
@@ -73,10 +73,20 @@ class ClassFeat(models.Model):
         return self.name
 
 
+class Background(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    description = models.CharField(max_length=1000)
+    skill_list = models.ManyToManyField(Skills, blank=True, related_name='skill_background')
+    feat = models.ManyToManyField(Feat, blank=True, related_name='background_feat')
+
+    def __str__(self):
+        return self.name
+
+
 class ClassFeature(models.Model):
     class_player = models.ForeignKey(ClassCharacter, on_delete=models.CASCADE, related_name='feature')
     level = models.PositiveSmallIntegerField(default=1)
-    feats = models.ManyToManyField(ClassFeat, blank=True, related_name='feats_feature')
+    feats = models.ManyToManyField(Feat, blank=True, related_name='feats_feature')
     class_feat_count = models.PositiveSmallIntegerField(default=0)
     general_feat_count = models.PositiveSmallIntegerField(default=0)
     background_feat_count = models.PositiveSmallIntegerField(default=0)

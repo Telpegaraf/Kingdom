@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.player_class.models import ClassCharacter, ClassFeat, ClassFeature, ClassSpellFeature
+from apps.player_class.models import ClassCharacter, Feat, ClassFeature, ClassSpellFeature, Background
 
 
 class ClassFeatureAdmin(admin.ModelAdmin):
@@ -10,7 +10,7 @@ class ClassSpellFeatureAdmin(admin.ModelAdmin):
     ordering = ('class_player__name', 'class_level')
 
 
-model_list = [ClassCharacter, ClassFeat]
+model_list = [ClassCharacter, Feat, Background]
 
 admin.site.register(ClassFeature, ClassFeatureAdmin)
 admin.site.register(ClassSpellFeature, ClassSpellFeatureAdmin)

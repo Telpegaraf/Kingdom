@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from apps.character.serializers import CharacterOverallSerializer, CharacterDetailSerializer, CharacterSerializer,\
     AddItemSerializer, EquipItemSerializer, SecondaryStatsSerializer, LevelUpSerializer, SetStatsSerializer,\
-    SetStatsDisplaySerializer
+    SetStatsDisplaySerializer, SetSpeedSerializer
 from apps.character.models import Character, SecondaryStats, CharacterStats
 
 
@@ -54,12 +54,30 @@ class SetStatsView(APIView):
         serializer = self.serializer_class_display(character)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def put(self, request, character_id):
+    def patch(self, request, character_id):
          character = CharacterStats.objects.select_related('character').get(character_id=character_id)
          serializer = self.serializer_class(character, data=request.data, partial=True)
          serializer.is_valid(raise_exception=True)
          serializer.save()
          return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SetSpeedView(APIView):
+    """ Set charachter's speed """
+    permission_classes = [IsAuthenticated]
+    serializer_class = SetSpeedSerializer
+
+    def get(self, request, character_id):
+        character = CharacterStats.objects.get(character_id=character_id)
+        serializer = self.serializer_class(character)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, character_id):
+        character = CharacterStats.objects.get(character_id=character_id)
+        serializer = self.serializer_class(character, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class AddItemView(APIView):

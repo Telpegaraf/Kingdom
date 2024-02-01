@@ -159,22 +159,18 @@ class SetStatsSerializer(serializers.ModelSerializer):
         if character.character.level == 1 and not all(value <= 18 for value in data.values()):
             raise serializers.ValidationError("All stats must be 18 or lower at level 1.")
 
-        new_stats_sum = sum(list((data.values())))
-        old_stats_sum = sum([
-            character.strength,
-            character.dexterity,
-            character.constitution,
-            character.intelligence,
-            character.wisdom,
-            character.charisma,
-            ])
-        stat_different = new_stats_sum - old_stats_sum
-        if stat_different < 0:
-            raise serializers.ValidationError("You can't decrease stats")
-        if stat_different > character.character.stat_count:
-            raise serializers.ValidationError("Not enough stat points.")
-        character.character.stat_count -= stat_different
-        character.character.save()
+        return data
+
+
+class SetSpeedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CharacterStats
+        fields = ['max_speed', 'speed']
+
+    def validate(self, data):
+        if data['speed'] > data['max_speed']:
+            raise serializers.ValidationError("The speed should not exceed the maximum")
+
         return data
 
 
