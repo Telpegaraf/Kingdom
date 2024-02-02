@@ -5,6 +5,7 @@ from apps.god.models import God, Domains
 from apps.general.models import MasteryLevels, DamageType, MoralIntentions, Skills, Race, WeaponMastery
 from apps.equipment.models import Item, PlateArmor, Weapon, WornItems
 from apps.player_class.models import ClassCharacter, Feat
+from apps.spell.models import Spell
 
 
 class Title(models.Model):
@@ -201,7 +202,15 @@ class CharacterWeaponMastery(models.Model):
         unique_together = ['weapon_list', 'weapon']
 
     def __str__(self):
-        return f"{self.weapon.character} - {self.skill} - {self.mastery_level}"
+        return f"{self.weapon_list.character} - {self.weapon} - {self.mastery_level}"
+
+
+class SpellList(models.Model):
+    character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='character_spell_list')
+    spell = models.ManyToManyField(Spell, blank=True, related_name='character_spell')
+
+    def __str__(self):
+        return f"{self.character}'s Spell List"
 
 
 class CharacterBag(models.Model):

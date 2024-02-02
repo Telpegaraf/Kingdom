@@ -3,7 +3,8 @@ import math
 from rest_framework import serializers
 from apps.equipment.models import Item, Weapon, PlateArmor, WornItems
 from apps.character.models import Character, CharacterStats, CharacterBag, InventoryItems, SecondaryStats,\
-    CharacterSkillList, DefenceAndVulnerabilityDamage, EquippedItems, CharacterFeatList, CharacterSkillMastery
+    CharacterSkillList, DefenceAndVulnerabilityDamage, EquippedItems, CharacterFeatList, CharacterSkillMastery,\
+    SpellList
 from apps.player_class.serializers import FeatsSerializer
 
 
@@ -106,6 +107,12 @@ class SetFeatSerializer(serializers.ModelSerializer):
             print(feat.level)
 
         return data
+
+
+class SetSpellSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SpellList
+        fields = ['spell']
 
 
 class DefenceAndVulnerabilitySerializer(serializers.ModelSerializer):
@@ -352,3 +359,4 @@ class LevelUpSerializer(serializers.ModelSerializer):
         character.secondary_stats.health += health_add
         character.save()
         character.secondary_stats.save()
+

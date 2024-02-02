@@ -4,9 +4,10 @@ from django.core.exceptions import ValidationError
 from django.db.models import Sum, DecimalField, F
 from django.db.models.signals import post_save, m2m_changed, pre_save, post_delete
 from django.dispatch import receiver
-from .models import CharacterStats, CharacterBag, InventoryItems, SecondaryStats, DefenceAndVulnerabilityDamage,\
-     Character, EquippedItems
-from apps.general.models import DamageType
+from apps.character.models import CharacterStats, CharacterBag, SecondaryStats, DefenceAndVulnerabilityDamage,\
+     Character, EquippedItems, CharacterFeatList, SpellList, WeaponList, CharacterSkillList, CharacterSkillMastery,\
+    CharacterWeaponMastery
+from apps.general.models import DamageType, Skills, WeaponMastery
 
 
 @receiver(post_save, sender=Character)
@@ -33,6 +34,30 @@ def set_mastery(sender, instance, created, **kwargs):
             medium_armor_mastery=medium_armor_mastery,
             heavy_armor_mastery=heavy_armor_mastery
         )
+
+
+@receiver(post_save, sender=Character)
+def create_list(sender, instance, created, **kwargs):
+    """ create skill, feat, spell, weapon_mastery lists, when created character """
+    if created:
+        CharacterFeatList.objects.create(character=instance)
+        CharacterSkillList.objects.create(character=instance)
+        WeaponList.objects.create(character=instance)
+        SpellList.objects.create(character=instance)
+
+        existing_skills = Skills.objects.all()
+        for skill in existing_skills:
+            CharacterSkillMastery.objects.create(
+                skill_list=instance.skill_list,
+                skill=skill,
+            )
+
+        existing_weapon_mastery = WeaponMastery.objects.all()
+        for weapon_mastery in existing_weapon_mastery:
+            CharacterWeaponMastery.objects.create(
+                weapon_list=instance.weapon_list,
+                weapon=weapon_mastery,
+            )
 
 
 @receiver(post_save, sender=CharacterStats)

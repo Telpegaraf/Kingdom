@@ -9,4 +9,5 @@ urlpatterns = [
     path('user/', include('apps.user.urls')),
     path('spell/', include('apps.spell.urls')),
     path('class/', include('apps.player_class.urls')),
+    path('general/', include('apps.general.urls')),
 ]
