@@ -151,7 +151,6 @@ class CharacterSkillList(models.Model):
     character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='skill_list')
     skill = models.ManyToManyField(Skills, blank=True, related_name='character_skill_list')
 
-
     def __str__(self):
         return f"{self.character}'s Skill List'"
 
@@ -162,7 +161,6 @@ class CharacterSkillMastery(models.Model):
         Skills,
         on_delete=models.CASCADE,
         related_name='character_skill_mastery',
-        limit_choices_to={'character_skill_list': F('character_skill_list')}
     )
     mastery_level = models.CharField(
         max_length=10,
@@ -177,14 +175,33 @@ class CharacterSkillMastery(models.Model):
         return f"{self.skill_list.character} - {self.skill} - {self.mastery_level}"
 
 
-class WeaponMasteryList(models.Model):
-    character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='weapon_mastery_list')
-    weapon = models.ForeignKey(WeaponMastery, on_delete=models.CASCADE)
+class WeaponList(models.Model):
+    character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='weapon_list')
+    weapon = models.ManyToManyField(WeaponMastery, blank=True, related_name='character_weapon_list')
+
+    def __str__(self):
+        return f"{self.character}'s Weapon Mastery List"
+
+
+class CharacterWeaponMastery(models.Model):
+    weapon_list = models.ForeignKey(WeaponList, on_delete=models.CASCADE, related_name='character_weapon')
+    weapon = models.ForeignKey(
+        WeaponMastery,
+        on_delete=models.CASCADE,
+        related_name='character_weapon_mastery',
+        limit_choices_to={'character_weapon_list': F('character_weapon_list')}
+    )
     mastery_level = models.CharField(
         max_length=10,
         choices=MasteryLevels.choices,
         default=MasteryLevels.ABSENT
     )
+
+    class Meta:
+        unique_together = ['weapon_list', 'weapon']
+
+    def __str__(self):
+        return f"{self.weapon.character} - {self.skill} - {self.mastery_level}"
 
 
 class CharacterBag(models.Model):

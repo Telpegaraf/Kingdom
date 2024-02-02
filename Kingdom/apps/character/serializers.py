@@ -86,6 +86,28 @@ class CharacterFeatsSerializer(serializers.ModelSerializer):
         fields = ['id', 'feat_class']
 
 
+class SetFeatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CharacterFeatList
+        fields = ['feat_class']
+
+    def validate(self, data):
+        print(self.context)
+        player_class = self.context.get('class_player')
+        player_level = self.context.get('class_level')
+        feat_list = data.get('feat_class')
+        print(data)
+        for feat in feat_list:
+            if feat.class_character is not None and feat.class_character != player_class:
+                raise serializers.ValidationError(f"Wrong class, {feat} only for {feat.class_character}")
+            if feat.level is not None and feat.level > player_level:
+                raise serializers.ValidationError(f"Wrong level, {feat} need {feat.level} level")
+            print(feat.class_character)
+            print(feat.level)
+
+        return data
+
+
 class DefenceAndVulnerabilitySerializer(serializers.ModelSerializer):
     immunity = serializers.StringRelatedField(read_only=True, many=True)
     resistance = serializers.StringRelatedField(read_only=True, many=True)

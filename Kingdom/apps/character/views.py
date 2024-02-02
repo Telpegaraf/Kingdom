@@ -6,8 +6,9 @@ from rest_framework.views import APIView
 from apps.character.serializers import CharacterOverallSerializer, CharacterDetailSerializer, CharacterSerializer, \
     AddItemSerializer, EquipItemSerializer, SecondaryStatsSerializer, LevelUpSerializer, SetStatsSerializer, \
     SetStatsDisplaySerializer, SetSpeedSerializer, SetMasterySerializer, CharacterSkillSerializer, \
-    CharacterSkillMasterySerializer
-from apps.character.models import Character, SecondaryStats, CharacterStats, CharacterSkillList, CharacterSkillMastery
+    CharacterSkillMasterySerializer, CharacterFeatsSerializer, SetFeatSerializer
+from apps.character.models import Character, SecondaryStats, CharacterStats, CharacterSkillList, CharacterSkillMastery, \
+    CharacterFeatList
 
 
 class CharacterOverallView(APIView):
@@ -180,7 +181,7 @@ class SetSkillsView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = CharacterSkillSerializer
 
-    def patch(self, request, character_id):
+    def put(self, request, character_id):
         character_skills = get_object_or_404(CharacterSkillList, character_id=character_id)
         serializer = self.serializer_class(character_skills, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -192,9 +193,41 @@ class SetSkillMasteryView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = CharacterSkillMasterySerializer
 
+    def get(self, request, skill_id):
+        mastery = get_object_or_404(CharacterSkillMastery.objects.select_related('skill_list'), id=skill_id)
+        serializer = self.serializer_class(mastery)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def put(self, request, skill_id):
         mastery = get_object_or_404(CharacterSkillMastery.objects.select_related('skill_list'), id=skill_id)
         serializer = self.serializer_class(mastery, data=request.data, partial=True)
         serializer.is_valid()
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SetFeatView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = SetFeatSerializer
+
+    def get(self, request, character_id):
+        feat_list = get_object_or_404(CharacterFeatList.objects.
+                                      select_related('character').
+                                      prefetch_related('feat_class'), character_id=character_id)
+        print(feat_list.character.class_player)
+        print(feat_list.character.level)
+        serializer = self.serializer_class(feat_list)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, character_id):
+        feat_list = get_object_or_404(CharacterFeatList.objects.
+                                      select_related('character').
+                                      prefetch_related('feat_class'), character_id=character_id)
+        serializer = self.serializer_class(feat_list,
+                                           data=request.data,
+                                           context={"class_player":feat_list.character.class_player,
+                                                    "class_level": feat_list.character.level},
+                                           partial=True)
+        serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)

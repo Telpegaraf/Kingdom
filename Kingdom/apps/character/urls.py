@@ -1,7 +1,7 @@
 from django.urls import path
-from apps.character.views import CharacterOverallView, CharacterDetailView, CharacterCreateView,\
-    AddItemView, EquipItemView, SetSecondaryStatsView, LevelUpView, SetStatsView, SetSpeedView, SetMasteryView,\
-    SecondaryStatsView, SetSkillsView, SetSkillMasteryView
+from apps.character.views import CharacterOverallView, CharacterDetailView, CharacterCreateView, \
+    AddItemView, EquipItemView, SetSecondaryStatsView, LevelUpView, SetStatsView, SetSpeedView, SetMasteryView, \
+    SecondaryStatsView, SetSkillsView, SetSkillMasteryView, SetFeatView
 
 urlpatterns = [
     path('overall/', CharacterOverallView.as_view(), name='character-overall'),
@@ -15,6 +15,7 @@ urlpatterns = [
     path('set-mastery/<int:character_id>/', SetMasteryView.as_view(), name='set-mastery'),
     path('secondary-stats/<int:character_id>/', SecondaryStatsView.as_view(), name='secondary-stats'),
     path('set-secondary-stats/<int:character_id>/', SetSecondaryStatsView.as_view(), name='change-stats'),
-    path('set-skills/<int:character_id>/', SetSkillsView.as_view(), name='set-skills'),
+    path('set-skill/<int:character_id>/', SetSkillsView.as_view(), name='set-skills'),
     path('set-skill-mastery/<int:skill_id>/', SetSkillMasteryView.as_view(), name='set-skill-mastery'),
+    path('set-feat/<int:character_id>/', SetFeatView.as_view(), name='set-feat'),
 ]
