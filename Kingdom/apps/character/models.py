@@ -223,7 +223,7 @@ class CharacterBag(models.Model):
 
 
 class InventoryItems(models.Model):
-    inventory = models.OneToOneField(CharacterBag, on_delete=models.CASCADE, related_name='inventory')
+    inventory = models.ForeignKey(CharacterBag, on_delete=models.CASCADE, related_name='inventory')
     quantity = models.IntegerField(default=1)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='item')
 

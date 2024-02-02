@@ -6,9 +6,9 @@ from rest_framework.views import APIView
 from apps.character.serializers import CharacterOverallSerializer, CharacterDetailSerializer, CharacterSerializer, \
     AddItemSerializer, EquipItemSerializer, SecondaryStatsSerializer, LevelUpSerializer, SetStatsSerializer, \
     SetStatsDisplaySerializer, SetSpeedSerializer, SetMasterySerializer, CharacterSkillSerializer, \
-    CharacterSkillMasterySerializer, SetFeatSerializer, SetSpellSerializer
+    CharacterSkillMasterySerializer, SetFeatSerializer, SetSpellSerializer, SetConditionSerializer
 from apps.character.models import Character, SecondaryStats, CharacterStats, CharacterSkillList, CharacterSkillMastery, \
-    CharacterFeatList, SpellList
+    CharacterFeatList, SpellList, DefenceAndVulnerabilityDamage
 
 
 class CharacterOverallView(APIView):
@@ -246,5 +246,25 @@ class SetSpellView(APIView):
         feat_list = get_object_or_404(SpellList, character_id=character_id)
         serializer = self.serializer_class(feat_list, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SetCondition(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = SetConditionSerializer
+
+    def get(self, request, character_id):
+        conditions = get_object_or_404(DefenceAndVulnerabilityDamage.objects.
+                                       select_related('character'), character_id=character_id)
+        serializer = self.serializer_class(conditions)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, character_id):
+        conditions = get_object_or_404(DefenceAndVulnerabilityDamage.objects.
+                                       select_related('character'), character_id=character_id)
+        serializer = self.serializer_class(conditions, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.validated_data['character_id'] = character_id
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)

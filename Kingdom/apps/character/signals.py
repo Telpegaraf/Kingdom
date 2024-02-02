@@ -44,6 +44,7 @@ def create_list(sender, instance, created, **kwargs):
         CharacterSkillList.objects.create(character=instance)
         WeaponList.objects.create(character=instance)
         SpellList.objects.create(character=instance)
+        DefenceAndVulnerabilityDamage.objects.create(character=instance)
 
         existing_skills = Skills.objects.all()
         for skill in existing_skills:

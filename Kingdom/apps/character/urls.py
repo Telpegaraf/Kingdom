@@ -1,7 +1,7 @@
 from django.urls import path
 from apps.character.views import CharacterOverallView, CharacterDetailView, CharacterCreateView, \
     AddItemView, EquipItemView, SetSecondaryStatsView, LevelUpView, SetStatsView, SetSpeedView, SetMasteryView, \
-    SecondaryStatsView, SetSkillsView, SetSkillMasteryView, SetFeatView, SetSpellView
+    SecondaryStatsView, SetSkillsView, SetSkillMasteryView, SetFeatView, SetSpellView, SetCondition
 
 urlpatterns = [
     path('overall/', CharacterOverallView.as_view(), name='character-overall'),
@@ -19,4 +19,5 @@ urlpatterns = [
     path('set-skill-mastery/<int:skill_id>/', SetSkillMasteryView.as_view(), name='set-skill-mastery'),
     path('set-feat/<int:character_id>/', SetFeatView.as_view(), name='set-feat'),
     path('set-spell/<int:character_id>/', SetSpellView.as_view(), name='set-spell'),
+    path('set-condition/<int:character_id>/', SetCondition.as_view(), name='set-condition'),
 ]
