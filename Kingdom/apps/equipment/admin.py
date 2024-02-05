@@ -1,8 +1,8 @@
 from django.contrib import admin
-from apps.equipment.models import GoldAndCurrency, ArmorTrait, ArmorGroup, ArmorSpecialization,\
+from apps.equipment.models import Currency, ArmorTrait, ArmorGroup, ArmorSpecialization,\
     PlateArmor, WeaponTrait, WeaponGroup, WeaponSpecialization, Weapon, TypeWornItems, WornItems, CommonItems
 
-models_list = [GoldAndCurrency, ArmorTrait, ArmorGroup, ArmorSpecialization,
+models_list = [Currency, ArmorTrait, ArmorGroup, ArmorSpecialization,
                PlateArmor, WeaponTrait, WeaponGroup, WeaponSpecialization, Weapon,
                TypeWornItems, WornItems, CommonItems]
 

@@ -1,9 +1,8 @@
 from django.db import models
-from django.db.models import F
 
 from apps.god.models import God, Domains
 from apps.general.models import MasteryLevels, DamageType, MoralIntentions, Skills, Race, WeaponMastery
-from apps.equipment.models import Item, PlateArmor, Weapon, WornItems
+from apps.equipment.models import Item, Currency
 from apps.player_class.models import ClassCharacter, Feat
 from apps.spell.models import Spell
 
@@ -190,7 +189,6 @@ class CharacterWeaponMastery(models.Model):
         WeaponMastery,
         on_delete=models.CASCADE,
         related_name='character_weapon_mastery',
-        limit_choices_to={'character_weapon_list': F('character_weapon_list')}
     )
     mastery_level = models.CharField(
         max_length=10,
@@ -214,7 +212,7 @@ class SpellList(models.Model):
 
 
 class CharacterBag(models.Model):
-    character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='character_bag', unique=True)
+    character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='character_bag')
     max_capacity = models.IntegerField(default=0)
     capacity = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 
@@ -222,13 +220,22 @@ class CharacterBag(models.Model):
         return f"{self.character}'s Bag"
 
 
+class CharacterCurrency(models.Model):
+    character = models.ForeignKey(CharacterBag, on_delete=models.CASCADE, related_name='character_currency')
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name='currency')
+    quantity = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.character}'s currency"
+
+
 class InventoryItems(models.Model):
     inventory = models.ForeignKey(CharacterBag, on_delete=models.CASCADE, related_name='inventory')
-    quantity = models.IntegerField(default=1)
+    quantity = models.PositiveIntegerField(default=1)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='item')
 
     def __str__(self):
-        return f"{self.item.__str__()}({self.quantity})"
+        return f"{self.inventory} - {self.item.__str__()}({self.quantity})"
 
 
 class EquippedItems(models.Model):
@@ -239,8 +246,6 @@ class EquippedItems(models.Model):
         related_name='plate_armor',
         null=True,
         blank=True,
-        limit_choices_to={
-            'pk__in': PlateArmor.objects.all().values_list('id', flat=True)}
     )
     first_weapon = models.ForeignKey(
         InventoryItems,
@@ -248,8 +253,6 @@ class EquippedItems(models.Model):
         related_name='first_weapon',
         null=True,
         blank=True,
-        limit_choices_to={
-            'pk__in': Weapon.objects.all().values_list('id', flat=True)}
     )
     second_weapon = models.ForeignKey(
         InventoryItems,
@@ -257,15 +260,11 @@ class EquippedItems(models.Model):
         related_name='second_weapon',
         null=True,
         blank=True,
-        limit_choices_to={
-            'pk__in': Weapon.objects.filter(two_hands=False).values_list('id', flat=True)}
     )
     worn_items = models.ManyToManyField(
         InventoryItems,
         related_name='worn_items',
         blank=True,
-        limit_choices_to={
-            'pk__in': WornItems.objects.all().values_list('id', flat=True)}
     )
 
     def __str__(self):

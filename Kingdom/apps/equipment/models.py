@@ -2,10 +2,11 @@ from django.db import models
 from apps.general.models import ArmorCategory, DamageType
 
 
-class GoldAndCurrency(models.Model):
+class Currency(models.Model):
     name = models.CharField(max_length=100, unique=True)
     price = models.PositiveSmallIntegerField()
     description = models.TextField(max_length=500)
+    weight = models.DecimalField(max_digits=5, decimal_places=2, default=0.01)
 
     def __str__(self):
         return self.name
@@ -14,7 +15,7 @@ class GoldAndCurrency(models.Model):
 class Item(models.Model):
     name = models.CharField(max_length=200, unique=True)
     description = models.TextField(max_length=500)
-    currency = models.ForeignKey(GoldAndCurrency, on_delete=models.SET_NULL, related_name='armor_currency', null=True)
+    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, related_name='armor_currency', null=True)
     price = models.PositiveSmallIntegerField(null=True, blank=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2, default=0.01)
 

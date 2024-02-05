@@ -1,11 +1,12 @@
 import math
 
 from rest_framework import serializers
-from apps.equipment.models import Item, Weapon, PlateArmor, WornItems
+from apps.equipment.models import Item
 from apps.character.models import Character, CharacterStats, CharacterBag, InventoryItems, SecondaryStats,\
     CharacterSkillList, DefenceAndVulnerabilityDamage, EquippedItems, CharacterFeatList, CharacterSkillMastery,\
     SpellList
 from apps.player_class.serializers import FeatsSerializer
+from apps.equipment.serializers import ItemSerializer
 
 
 class InventoryItemSerializer(serializers.ModelSerializer):
@@ -217,31 +218,29 @@ class SetMasterySerializer(serializers.ModelSerializer):
                   'heavy_armor_mastery', 'fortitude_mastery', 'reflex_mastery', 'will_mastery']
 
 
-class AddItemSerializer(serializers.Serializer):
-    item_id = serializers.IntegerField()
-    quantity = serializers.IntegerField(default=1)
-    inventory_id = serializers.IntegerField()
+class AddItemSerializer(serializers.ModelSerializer):
+    item = serializers.IntegerField(source='item.id')
+
+    class Meta:
+        model = InventoryItems
+        fields = ['quantity', 'item']
 
     def validate(self, data):
-        item_id = data.get('item_id')
-        inventory_id = data.get('inventory_id')
+        item_id = data.get('item')['id']
 
         try:
             Item.objects.get(pk=item_id)
-            CharacterBag.objects.get(pk=inventory_id)
         except Item.DoesNotExist:
             raise serializers.ValidationError("Item with specified ID does not exist.")
-        except InventoryItems.DoesNotExist:
-            raise serializers.ValidationError("Inventory with specified ID does not exist.")
 
         return data
 
     def save(self):
-        item_id = self.validated_data['item_id']
+        item_id = self.validated_data['item']['id']
         quantity = self.validated_data.get('quantity', 1)
-        inventory_id = self.validated_data['inventory_id']
+        inventory = self.context.get('inventory')
+        print(inventory)
 
-        inventory = CharacterBag.objects.get(pk=inventory_id)
         item = Item.objects.get(pk=item_id)
         inventory_item, created = InventoryItems.objects.get_or_create(inventory=inventory, item=item)
 
@@ -253,47 +252,53 @@ class AddItemSerializer(serializers.Serializer):
 
 
 class EquipItemSerializer(serializers.Serializer):
-    equipped_items = serializers.IntegerField()
-    item_id = serializers.IntegerField()
+    class Meta:
+        model = EquippedItems
+        fields = ['equipped_items', 'plate_armor', 'first_weapon', 'second_weapon', 'worn_items']
 
-    def validate(self, data):
-        item_id = data.get('item_id')
-        equipped_items = data.get('equipped_items')
-        type_item = None
 
-        try:
-            item = Weapon.objects.get(item_ptr_id=item_id)
-            if item.two_hands:
-                type_item = '2h_weapon'
-            else:
-                type_item = '1h_weapon'
-        except Weapon.DoesNotExist:
-            pass
-
-        try:
-            item = PlateArmor.objects.get(item_ptr_id=item_id)
-            type_item = 'plate_armor'
-        except PlateArmor.DoesNotExist:
-            pass
-
-        try:
-            item = WornItems.objects.get(item_ptr_id=item_id)
-            type_item = 'worn_item'
-        except WornItems.DoesNotExist:
-            pass
-
-        try:
-            bag = CharacterBag.objects.get(pk=equipped_items)
-        except EquippedItems.DoesNotExist:
-            raise serializers.ValidationError("Inventory with specified ID does not exist.")
-
-        if type_item is None:
-            raise serializers.ValidationError(
-                "Item with specified ID does not exist or is not one of the supported types.")
-
-        data['type_item'] = type_item
-
-        return data
+# class EquipItemSerializer(serializers.Serializer):
+#     equipped_items = serializers.IntegerField()
+#     item_id = serializers.IntegerField()
+#
+#     def validate(self, data):
+#         item_id = data.get('item_id')
+#         equipped_items = data.get('equipped_items')
+#         type_item = None
+#
+#         try:
+#             item = Weapon.objects.get(item_ptr_id=item_id)
+#             if item.two_hands:
+#                 type_item = '2h_weapon'
+#             else:
+#                 type_item = '1h_weapon'
+#         except Weapon.DoesNotExist:
+#             pass
+#
+#         try:
+#             item = PlateArmor.objects.get(item_ptr_id=item_id)
+#             type_item = 'plate_armor'
+#         except PlateArmor.DoesNotExist:
+#             pass
+#
+#         try:
+#             item = WornItems.objects.get(item_ptr_id=item_id)
+#             type_item = 'worn_item'
+#         except WornItems.DoesNotExist:
+#             pass
+#
+#         try:
+#             bag = CharacterBag.objects.get(pk=equipped_items)
+#         except EquippedItems.DoesNotExist:
+#             raise serializers.ValidationError("Inventory with specified ID does not exist.")
+#
+#         if type_item is None:
+#             raise serializers.ValidationError(
+#                 "Item with specified ID does not exist or is not one of the supported types.")
+#
+#         data['type_item'] = type_item
+#
+#         return data
 
     def save(self):
         item_id = self.validated_data['item_id']

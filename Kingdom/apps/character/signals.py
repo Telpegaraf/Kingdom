@@ -1,13 +1,12 @@
 import math
-from decimal import Decimal
 from django.core.exceptions import ValidationError
-from django.db.models import Sum, DecimalField, F
-from django.db.models.signals import post_save, m2m_changed, pre_save, post_delete
+from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from apps.character.models import CharacterStats, CharacterBag, SecondaryStats, DefenceAndVulnerabilityDamage,\
      Character, EquippedItems, CharacterFeatList, SpellList, WeaponList, CharacterSkillList, CharacterSkillMastery,\
-    CharacterWeaponMastery
-from apps.general.models import DamageType, Skills, WeaponMastery
+     CharacterWeaponMastery, CharacterCurrency
+from apps.general.models import Skills, WeaponMastery
+from apps.equipment.models import Currency
 
 
 @receiver(post_save, sender=Character)
@@ -68,6 +67,20 @@ def set_max_capacity(sender, instance, created, **kwargs):
         CharacterBag.objects.create(character=instance.character)
 
 
+@receiver(post_save, sender=CharacterBag)
+def set_max_capacity(sender, instance, created, **kwargs):
+    """ Set capacity character's bag"""
+    if created:
+        EquippedItems.objects.create(equipped_items=instance)
+
+        all_currency = Currency.objects.all()
+        for currency in all_currency:
+            CharacterCurrency.objects.create(
+                character=instance,
+                currency=currency
+            )
+
+
 @receiver(post_save, sender=CharacterStats)
 def set_secondary_stats(sender, instance, created, **kwargs):
     """ set secondary stats, when created character """
@@ -81,17 +94,6 @@ def set_secondary_stats(sender, instance, created, **kwargs):
             max_health=health,
             health=health
         )
-
-
-@receiver(m2m_changed, sender=DefenceAndVulnerabilityDamage.immunity.through)
-@receiver(m2m_changed, sender=DefenceAndVulnerabilityDamage.resistance.through)
-@receiver(m2m_changed, sender=DefenceAndVulnerabilityDamage.weakness.through)
-def validate_unique_damage_types(sender, instance, action, reverse, model, pk_set, **kwargs):
-    if action == "pre_add":
-        all_damage_types = set(instance.immunity.all()) | set(instance.resistance.all()) | set(instance.weakness.all())
-        new_damage_types = set(DamageType.objects.filter(pk__in=pk_set))
-        if len(all_damage_types.intersection(new_damage_types)) > 0:
-            raise ValidationError("Damage cannot be present in more than one field.")
 
 
 @receiver(m2m_changed, sender=EquippedItems.worn_items.through)

@@ -8,7 +8,7 @@ from apps.character.serializers import CharacterOverallSerializer, CharacterDeta
     SetStatsDisplaySerializer, SetSpeedSerializer, SetMasterySerializer, CharacterSkillSerializer, \
     CharacterSkillMasterySerializer, SetFeatSerializer, SetSpellSerializer, SetConditionSerializer
 from apps.character.models import Character, SecondaryStats, CharacterStats, CharacterSkillList, CharacterSkillMastery, \
-    CharacterFeatList, SpellList, DefenceAndVulnerabilityDamage
+    CharacterFeatList, SpellList, DefenceAndVulnerabilityDamage, CharacterBag, EquippedItems, InventoryItems
 
 
 class CharacterOverallView(APIView):
@@ -105,18 +105,36 @@ class AddItemView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = AddItemSerializer
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            inventory_item = serializer.save()
-            return Response({"message": f"Item added to inventory. {inventory_item}"}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, character_id):
+        bag = get_object_or_404(CharacterBag.objects.prefetch_related('inventory'), character_id=character_id)
+        serializer = self.serializer_class(bag.inventory.all(), many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, character_id):
+        bag = get_object_or_404(CharacterBag.objects.prefetch_related('inventory'), character_id=character_id)
+        serializer = self.serializer_class(data=request.data,
+                                           context={"inventory": bag})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    # def post(self, request, *args, **kwargs):
+    #     serializer = self.serializer_class(data=request.data)
+    #     if serializer.is_valid():
+    #         inventory_item = serializer.save()
+    #         return Response({"message": f"Item added to inventory. {inventory_item}"}, status=status.HTTP_200_OK)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class EquipItemView(APIView):
     """ Equip Item from inventory """
     permission_classes = [IsAuthenticated]
     serializer_class = EquipItemSerializer
+
+    def get(self, request, character_id):
+        bag = get_object_or_404(EquippedItems, equipped_items_id=character_id)
+        serializer = self.serializer_class(bag)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -190,6 +208,8 @@ class SetSkillsView(APIView):
 
 
 class SetSkillMasteryView(APIView):
+    """ Set Character's skill mastery """
+
     permission_classes = [IsAuthenticated]
     serializer_class = CharacterSkillMasterySerializer
 
@@ -207,6 +227,8 @@ class SetSkillMasteryView(APIView):
 
 
 class SetFeatView(APIView):
+    """ Set character's feat list """
+
     permission_classes = [IsAuthenticated]
     serializer_class = SetFeatSerializer
 
@@ -234,6 +256,8 @@ class SetFeatView(APIView):
 
 
 class SetSpellView(APIView):
+    """ Set character's spell list """
+
     permission_classes = [IsAuthenticated]
     serializer_class = SetSpellSerializer
 
@@ -251,6 +275,8 @@ class SetSpellView(APIView):
 
 
 class SetCondition(APIView):
+    """ Set character's defence and vulnerability """
+
     permission_classes = [IsAuthenticated]
     serializer_class = SetConditionSerializer
 
@@ -260,7 +286,7 @@ class SetCondition(APIView):
         serializer = self.serializer_class(conditions)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def put(self, request, character_id):
+    def patch(self, request, character_id):
         conditions = get_object_or_404(DefenceAndVulnerabilityDamage.objects.
                                        select_related('character'), character_id=character_id)
         serializer = self.serializer_class(conditions, data=request.data, partial=True)
