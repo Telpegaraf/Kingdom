@@ -1,14 +1,20 @@
+from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from apps.character.models import EquippedItems
 from apps.character.serializers import CharacterOverallSerializer, CharacterDetailSerializer, CharacterSerializer, \
     AddItemSerializer, EquipItemSerializer, SecondaryStatsSerializer, LevelUpSerializer, SetStatsSerializer, \
     SetStatsDisplaySerializer, SetSpeedSerializer, SetMasterySerializer, CharacterSkillSerializer, \
-    CharacterSkillMasterySerializer, SetFeatSerializer, SetSpellSerializer, SetConditionSerializer
-from apps.character.models import Character, SecondaryStats, CharacterStats, CharacterSkillList, CharacterSkillMastery, \
-    CharacterFeatList, SpellList, DefenceAndVulnerabilityDamage, CharacterBag, EquippedItems, InventoryItems
+    CharacterSkillMasterySerializer, SetFeatSerializer, SetSpellSerializer, SetConditionSerializer, \
+    UnEquipSerializer, UnEquipWornItemSerializer
+
+from apps.character.models import Character, SecondaryStats, CharacterStats, CharacterSkillList, CharacterSkillMastery,\
+    CharacterFeatList, SpellList, DefenceAndVulnerabilityDamage, CharacterBag, InventoryItems
+from apps.permissions import IsOwner
 
 
 class CharacterOverallView(APIView):
@@ -41,18 +47,18 @@ class CharacterCreateView(APIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        serializer.save(user=self.request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class SetStatsView(APIView):
     """ Sets stats, including when leveling up """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwner]
     serializer_class_display = SetStatsDisplaySerializer
     serializer_class = SetStatsSerializer
 
     def get(self, request, character_id):
-        character = get_object_or_404(CharacterStats, character_id=character_id)
+        character = get_object_or_404(CharacterStats.objects.select_related('character'), character_id=character_id)
         serializer = self.serializer_class_display(character)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -65,7 +71,7 @@ class SetStatsView(APIView):
 
 
 class SetSpeedView(APIView):
-    """ Set charachter's speed """
+    """ Set character's speed """
     permission_classes = [IsAuthenticated]
     serializer_class = SetSpeedSerializer
 
@@ -106,41 +112,85 @@ class AddItemView(APIView):
     serializer_class = AddItemSerializer
 
     def get(self, request, character_id):
-        bag = get_object_or_404(CharacterBag.objects.prefetch_related('inventory'), character_id=character_id)
+        bag = get_object_or_404(CharacterBag.objects.select_related('character').
+                                prefetch_related('inventory'), character_id=character_id)
         serializer = self.serializer_class(bag.inventory.all(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, character_id):
-        bag = get_object_or_404(CharacterBag.objects.prefetch_related('inventory'), character_id=character_id)
+        bag = get_object_or_404(CharacterBag.objects.select_related('character').
+                                prefetch_related('inventory'), character_id=character_id)
         serializer = self.serializer_class(data=request.data,
                                            context={"inventory": bag})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    # def post(self, request, *args, **kwargs):
-    #     serializer = self.serializer_class(data=request.data)
-    #     if serializer.is_valid():
-    #         inventory_item = serializer.save()
-    #         return Response({"message": f"Item added to inventory. {inventory_item}"}, status=status.HTTP_200_OK)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class RemoveItemView(APIView):
+    """ Delete item from character's inventory """
+
+    permission_classes = [IsAuthenticated, IsOwner]
+
+    def delete(self, request, item_id):
+        item = get_object_or_404(InventoryItems.objects.select_related('bag'), id=item_id)
+        item.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class EquipItemView(APIView):
     """ Equip Item from inventory """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwner]
     serializer_class = EquipItemSerializer
-
-    def get(self, request, character_id):
-        bag = get_object_or_404(EquippedItems, equipped_items_id=character_id)
-        serializer = self.serializer_class(bag)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        item = serializer.save()
-        return Response({"message": f"{item} equipped"}, status=status.HTTP_200_OK)
+        serializer.save()
+        return Response({"message": f"item equipped"}, status=status.HTTP_200_OK)
+
+
+class BaseUnEquipView(APIView):
+    permission_classes = [IsAuthenticated, IsOwner]
+    serializer_class = UnEquipSerializer
+    un_equip_message = ""
+
+    def patch(self, request, character_id):
+        equipped_items = get_object_or_404(EquippedItems, bag_id=character_id)
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        if serializer.validated_data.get('un_equip'):
+            self.un_equip_item(equipped_items)
+            return Response({"message": self.un_equip_message}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "No changes made"}, status=status.HTTP_200_OK)
+
+    def un_equip_item(self, equipped_items):
+        raise NotImplementedError("Method un_equip_item must be implemented in child class")
+
+
+class UnEquipArmorView(BaseUnEquipView):
+    un_equip_message = "Armor unequipped successfully"
+
+    def un_equip_item(self, equipped_items):
+        equipped_items.plate_armor = None
+        equipped_items.save()
+
+
+class UnEquipFirstWeaponView(BaseUnEquipView):
+    un_equip_message = "First weapon unequipped successfully"
+
+    def un_equip_item(self, equipped_items):
+        equipped_items.first_weapon = None
+        equipped_items.save()
+
+
+class UnEquipSecondWeaponView(BaseUnEquipView):
+    un_equip_message = "Second weapon unequipped successfully"
+
+    def un_equip_item(self, equipped_items):
+        equipped_items.second_weapon = None
+        equipped_items.save()
 
 
 class SetSecondaryStatsView(APIView):
@@ -160,6 +210,16 @@ class SetSecondaryStatsView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class DeleteWornItemView(APIView):
+    permission_classes = [IsAuthenticated, IsOwner]
+
+    def delete(self, request, character_id, item_id):
+        equipped_items = get_object_or_404(EquippedItems, bag_id=character_id)
+        item_to_remove = get_object_or_404(equipped_items.worn_items, pk=item_id)
+        equipped_items.worn_items.remove(item_to_remove)
+        return Response({"message": "Item removed from worn items successfully"}, status=status.HTTP_204_NO_CONTENT)
 
 
 class SecondaryStatsView(APIView):

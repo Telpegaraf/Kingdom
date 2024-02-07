@@ -6,11 +6,11 @@ from apps.character.models import Ruler, CharacterNPC, Title, Character,\
 
 
 class InventoryItemsAdmin(admin.ModelAdmin):
-    ordering = ['inventory']
+    ordering = ['bag']
 
 
 class EquippedItemsAdmin(admin.ModelAdmin):
-    ordering = ('equipped_items', 'plate_armor', 'first_weapon', 'second_weapon', 'worn_items')
+    ordering = ['bag']
 
 
 class CharacterSkillMasteryAdmin(admin.ModelAdmin):

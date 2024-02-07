@@ -1,7 +1,8 @@
 from django.urls import path
 from apps.character.views import CharacterOverallView, CharacterDetailView, CharacterCreateView, \
     AddItemView, EquipItemView, SetSecondaryStatsView, LevelUpView, SetStatsView, SetSpeedView, SetMasteryView, \
-    SecondaryStatsView, SetSkillsView, SetSkillMasteryView, SetFeatView, SetSpellView, SetCondition
+    SecondaryStatsView, SetSkillsView, SetSkillMasteryView, SetFeatView, SetSpellView, SetCondition, \
+    UnEquipArmorView, UnEquipFirstWeaponView, UnEquipSecondWeaponView, DeleteWornItemView
 
 urlpatterns = [
     path('overall/', CharacterOverallView.as_view(), name='character-overall'),
@@ -9,6 +10,10 @@ urlpatterns = [
     path('create/', CharacterCreateView.as_view(), name='character-create'),
     path('add-item/<int:character_id>/', AddItemView.as_view(), name='add-item'),
     path('equip-item/<int:character_id>/', EquipItemView.as_view(), name='equip-item'),
+    path('un-equip-armor/<int:character_id>/', UnEquipArmorView.as_view(), name='un-equip-armor'),
+    path('un-equip-first/<int:character_id>/', UnEquipFirstWeaponView.as_view(), name='un-equip-first'),
+    path('un-equip-second/<int:character_id>/', UnEquipSecondWeaponView.as_view(), name='un-equip-second'),
+    path('un-equip-worn/<int:character_id>/<int:item_id>/', DeleteWornItemView.as_view(), name='un-equip-worn'),
     path('level-up/<int:character_id>/', LevelUpView.as_view(), name='level-up'),
     path('set-stats/<int:character_id>/', SetStatsView.as_view(), name='set-stats'),
     path('set-speed/<int:character_id>/', SetSpeedView.as_view(), name='set-speed'),

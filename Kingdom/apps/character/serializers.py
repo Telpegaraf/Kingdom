@@ -1,13 +1,13 @@
 import math
 
+from django.db.models import Q
 from rest_framework import serializers
 from apps.equipment.models import Item
 from apps.character.models import Character, CharacterStats, CharacterBag, InventoryItems, SecondaryStats,\
     CharacterSkillList, DefenceAndVulnerabilityDamage, EquippedItems, CharacterFeatList, CharacterSkillMastery,\
     SpellList
 from apps.player_class.serializers import FeatsSerializer
-from apps.equipment.serializers import ItemSerializer
-
+from apps.equipment.models import PlateArmor, Weapon, WornItems
 
 class InventoryItemSerializer(serializers.ModelSerializer):
     item = serializers.StringRelatedField()
@@ -94,18 +94,14 @@ class SetFeatSerializer(serializers.ModelSerializer):
         fields = ['feat_class']
 
     def validate(self, data):
-        print(self.context)
         player_class = self.context.get('class_player')
         player_level = self.context.get('class_level')
         feat_list = data.get('feat_class')
-        print(data)
         for feat in feat_list:
             if feat.class_character is not None and feat.class_character != player_class:
                 raise serializers.ValidationError(f"Wrong class, {feat} only for {feat.class_character}")
             if feat.level is not None and feat.level > player_level:
                 raise serializers.ValidationError(f"Wrong level, {feat} need {feat.level} level")
-            print(feat.class_character)
-            print(feat.level)
 
         return data
 
@@ -239,10 +235,9 @@ class AddItemSerializer(serializers.ModelSerializer):
         item_id = self.validated_data['item']['id']
         quantity = self.validated_data.get('quantity', 1)
         inventory = self.context.get('inventory')
-        print(inventory)
 
         item = Item.objects.get(pk=item_id)
-        inventory_item, created = InventoryItems.objects.get_or_create(inventory=inventory, item=item)
+        inventory_item, created = InventoryItems.objects.get_or_create(bag=inventory, item=item)
 
         if not created:
             inventory_item.quantity += quantity
@@ -251,62 +246,65 @@ class AddItemSerializer(serializers.ModelSerializer):
         return inventory_item
 
 
-class EquipItemSerializer(serializers.Serializer):
+class WornItemSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source='item.name', read_only=True)
+
     class Meta:
-        model = EquippedItems
-        fields = ['equipped_items', 'plate_armor', 'first_weapon', 'second_weapon', 'worn_items']
+        model = InventoryItems
+        fields = ['name']
 
 
-# class EquipItemSerializer(serializers.Serializer):
-#     equipped_items = serializers.IntegerField()
-#     item_id = serializers.IntegerField()
-#
-#     def validate(self, data):
-#         item_id = data.get('item_id')
-#         equipped_items = data.get('equipped_items')
-#         type_item = None
-#
-#         try:
-#             item = Weapon.objects.get(item_ptr_id=item_id)
-#             if item.two_hands:
-#                 type_item = '2h_weapon'
-#             else:
-#                 type_item = '1h_weapon'
-#         except Weapon.DoesNotExist:
-#             pass
-#
-#         try:
-#             item = PlateArmor.objects.get(item_ptr_id=item_id)
-#             type_item = 'plate_armor'
-#         except PlateArmor.DoesNotExist:
-#             pass
-#
-#         try:
-#             item = WornItems.objects.get(item_ptr_id=item_id)
-#             type_item = 'worn_item'
-#         except WornItems.DoesNotExist:
-#             pass
-#
-#         try:
-#             bag = CharacterBag.objects.get(pk=equipped_items)
-#         except EquippedItems.DoesNotExist:
-#             raise serializers.ValidationError("Inventory with specified ID does not exist.")
-#
-#         if type_item is None:
-#             raise serializers.ValidationError(
-#                 "Item with specified ID does not exist or is not one of the supported types.")
-#
-#         data['type_item'] = type_item
-#
-#         return data
+class EquipItemSerializer(serializers.Serializer):
+    bag_id = serializers.IntegerField()
+    item_id = serializers.IntegerField()
+
+    def validate(self, data):
+        item_id = data.get('item_id')
+        bag_id = data.get('bag_id')
+        type_item = None
+        print(data)
+
+        try:
+            CharacterBag.objects.get(id=bag_id)
+        except CharacterBag.DoesNotExist:
+            raise serializers.ValidationError("Inventory with specified ID does not exist.")
+
+        try:
+            item = Weapon.objects.get(item_ptr_id=item_id)
+            if item.two_hands:
+                type_item = '2h_weapon'
+            else:
+                type_item = '1h_weapon'
+        except Weapon.DoesNotExist:
+            pass
+
+        try:
+            PlateArmor.objects.get(item_ptr_id=item_id)
+            type_item = 'plate_armor'
+        except PlateArmor.DoesNotExist:
+            pass
+
+        try:
+            WornItems.objects.get(item_ptr_id=item_id)
+            type_item = 'worn_item'
+        except WornItems.DoesNotExist:
+            pass
+
+        if type_item is None:
+            raise serializers.ValidationError(
+                "Item with specified ID does not exist or is not one of the supported types.")
+
+        data['type_item'] = type_item
+
+        return data
 
     def save(self):
         item_id = self.validated_data['item_id']
-        equipped_items_id = self.validated_data['equipped_items']
+        equipped_items_id = self.validated_data['bag_id']
         type_item = self.validated_data['type_item']
-        equipped_items, created = EquippedItems.objects.get_or_create(equipped_items_id=equipped_items_id)
+        equipped_items, created = EquippedItems.objects.get_or_create(bag_id=equipped_items_id)
         try:
-            item = InventoryItems.objects.get(item_id=item_id)
+            item = InventoryItems.objects.get(item_id=item_id, bag_id=equipped_items_id)
         except:
             raise serializers.ValidationError("Item does not exist in Inventory")
         if type_item == 'plate_armor':
@@ -325,6 +323,14 @@ class EquipItemSerializer(serializers.Serializer):
         equipped_items.save()
 
         return equipped_items
+
+
+class UnEquipSerializer(serializers.Serializer):
+    un_equip = serializers.BooleanField(default=False)
+
+
+class UnEquipWornItemSerializer(serializers.Serializer):
+    item_id = serializers.IntegerField()
 
 
 class LevelUpSerializer(serializers.ModelSerializer):

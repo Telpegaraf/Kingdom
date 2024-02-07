@@ -5,6 +5,7 @@ from apps.general.models import MasteryLevels, DamageType, MoralIntentions, Skil
 from apps.equipment.models import Item, Currency
 from apps.player_class.models import ClassCharacter, Feat
 from apps.spell.models import Spell
+from apps.user.models import CustomUser
 
 
 class Title(models.Model):
@@ -50,6 +51,7 @@ class Ruler(models.Model):
 
 
 class Character(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='character')
     race = models.ForeignKey(Race, on_delete=models.CASCADE, related_name='player_race')
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200, null=True, blank=True)
@@ -221,7 +223,7 @@ class CharacterBag(models.Model):
 
 
 class CharacterCurrency(models.Model):
-    character = models.ForeignKey(CharacterBag, on_delete=models.CASCADE, related_name='character_currency')
+    bag = models.ForeignKey(CharacterBag, on_delete=models.CASCADE, related_name='character_currency')
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name='currency')
     quantity = models.IntegerField(default=0)
 
@@ -230,16 +232,16 @@ class CharacterCurrency(models.Model):
 
 
 class InventoryItems(models.Model):
-    inventory = models.ForeignKey(CharacterBag, on_delete=models.CASCADE, related_name='inventory')
+    bag = models.ForeignKey(CharacterBag, on_delete=models.CASCADE, related_name='inventory')
     quantity = models.PositiveIntegerField(default=1)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='item')
 
     def __str__(self):
-        return f"{self.inventory} - {self.item.__str__()}({self.quantity})"
+        return f"{self.bag} - {self.item}({self.quantity})"
 
 
 class EquippedItems(models.Model):
-    equipped_items = models.OneToOneField(CharacterBag, on_delete=models.CASCADE, related_name='equipped_items',)
+    bag = models.OneToOneField(CharacterBag, on_delete=models.CASCADE, related_name='equipped_items')
     plate_armor = models.ForeignKey(
         InventoryItems,
         on_delete=models.CASCADE,
@@ -268,7 +270,7 @@ class EquippedItems(models.Model):
     )
 
     def __str__(self):
-        return f"{self.equipped_items}'s equipped items"
+        return f"{self.bag}'s equipped items"
 
 
 class DefenceAndVulnerabilityDamage(models.Model):
