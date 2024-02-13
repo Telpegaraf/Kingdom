@@ -7,9 +7,11 @@ from apps.character.models import CharacterStats, CharacterBag, SecondaryStats, 
      CharacterWeaponMastery, CharacterCurrency
 from apps.general.models import Skills, WeaponMastery
 from apps.equipment.models import Currency
+from apps.utils import disable_for_loaddata
 
 
 @receiver(post_save, sender=Character)
+@disable_for_loaddata
 def set_mastery(sender, instance, created, **kwargs):
     """ Set general when character created """
     if created:
@@ -36,6 +38,7 @@ def set_mastery(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Character)
+@disable_for_loaddata
 def create_list(sender, instance, created, **kwargs):
     """ create skill, feat, spell, weapon_mastery lists, when created character """
     if created:
@@ -61,6 +64,7 @@ def create_list(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=CharacterStats)
+@disable_for_loaddata
 def set_max_capacity(sender, instance, created, **kwargs):
     """ Set capacity character's bag"""
     if created:
@@ -68,20 +72,22 @@ def set_max_capacity(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=CharacterBag)
+@disable_for_loaddata
 def set_max_capacity(sender, instance, created, **kwargs):
     """ Set capacity character's bag"""
     if created:
-        EquippedItems.objects.create(equipped_items=instance)
+        EquippedItems.objects.create(bag=instance)
 
         all_currency = Currency.objects.all()
         for currency in all_currency:
             CharacterCurrency.objects.create(
-                character=instance,
+                bag=instance,
                 currency=currency
             )
 
 
 @receiver(post_save, sender=CharacterStats)
+@disable_for_loaddata
 def set_secondary_stats(sender, instance, created, **kwargs):
     """ set secondary stats, when created character """
     level = instance.character.level
@@ -94,11 +100,3 @@ def set_secondary_stats(sender, instance, created, **kwargs):
             max_health=health,
             health=health
         )
-
-
-@receiver(m2m_changed, sender=EquippedItems.worn_items.through)
-def check_max_worn_items(sender, instance, action, reverse, model, pk_set, **kwargs):
-    max_worn_items = 10
-
-    if action == 'pre_add' and len(pk_set) + instance.worn_items.count() > max_worn_items:
-        raise ValidationError(f"Adding more than {max_worn_items} worn items is not allowed.")

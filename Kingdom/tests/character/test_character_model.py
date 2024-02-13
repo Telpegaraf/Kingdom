@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from apps.character.models import Character, Race, ClassCharacter
 from apps.general.models import MasteryLevels, MoralIntentions
@@ -10,8 +11,10 @@ class CharacterModelTestCase(TestCase):
     ]
 
     def test_create_character(self):
+        user = get_user_model().objects.first()
         moral_intentions = MoralIntentions.objects.get(id=1)
         new_character = Character.objects.create(
+            user = user,
             race=Race.objects.first(),
             first_name="Test name",
             class_player=ClassCharacter.objects.first(),

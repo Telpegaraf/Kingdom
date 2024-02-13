@@ -1,6 +1,4 @@
 import math
-
-from django.db.models import Q
 from rest_framework import serializers
 from apps.equipment.models import Item
 from apps.character.models import Character, CharacterStats, CharacterBag, InventoryItems, SecondaryStats,\
@@ -8,6 +6,7 @@ from apps.character.models import Character, CharacterStats, CharacterBag, Inven
     SpellList
 from apps.player_class.serializers import FeatsSerializer
 from apps.equipment.models import PlateArmor, Weapon, WornItems
+
 
 class InventoryItemSerializer(serializers.ModelSerializer):
     item = serializers.StringRelatedField()
@@ -52,8 +51,6 @@ class CharacterStatsSerializer(serializers.ModelSerializer):
 
 
 class SecondaryStatsSerializer(serializers.ModelSerializer):
-    armor_class = serializers.SerializerMethodField()
-
     class Meta:
         model = SecondaryStats
         fields = ['armor_class', 'attack_class', 'damage_bonus', 'max_health', 'health', 'initiative',
@@ -165,7 +162,13 @@ class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Character
         fields = ['race', 'first_name', 'last_name', 'alias', 'class_player', 'god', 'intentions', 'domain',
-                  'age', 'size', 'description',]
+                  'age', 'size', 'description']
+
+    def create(self, validated_data):
+        intentions_data = validated_data.pop('intentions', [])
+        character = Character.objects.create(user=self.context['user'], **validated_data)
+        character.intentions.set(intentions_data)
+        return character
 
 
 class CharacterStatsDisplay(serializers.ModelSerializer):
@@ -237,7 +240,7 @@ class AddItemSerializer(serializers.ModelSerializer):
         inventory = self.context.get('inventory')
 
         item = Item.objects.get(pk=item_id)
-        inventory_item, created = InventoryItems.objects.get_or_create(bag=inventory, item=item)
+        inventory_item, created = InventoryItems.objects.get_or_create(bag=inventory, item=item, quantity=quantity)
 
         if not created:
             inventory_item.quantity += quantity
@@ -262,13 +265,10 @@ class EquipItemSerializer(serializers.Serializer):
         item_id = data.get('item_id')
         bag_id = data.get('bag_id')
         type_item = None
-        print(data)
-
         try:
             CharacterBag.objects.get(id=bag_id)
         except CharacterBag.DoesNotExist:
             raise serializers.ValidationError("Inventory with specified ID does not exist.")
-
         try:
             item = Weapon.objects.get(item_ptr_id=item_id)
             if item.two_hands:
@@ -277,7 +277,6 @@ class EquipItemSerializer(serializers.Serializer):
                 type_item = '1h_weapon'
         except Weapon.DoesNotExist:
             pass
-
         try:
             PlateArmor.objects.get(item_ptr_id=item_id)
             type_item = 'plate_armor'
@@ -295,7 +294,6 @@ class EquipItemSerializer(serializers.Serializer):
                 "Item with specified ID does not exist or is not one of the supported types.")
 
         data['type_item'] = type_item
-
         return data
 
     def save(self):
@@ -352,7 +350,7 @@ class LevelUpSerializer(serializers.ModelSerializer):
     def validate(self, data):
         new_level = data['level']
         if new_level is None or new_level > 20:
-            return serializers.ValidationError("Invalid level value")
+            raise serializers.ValidationError("Invalid level value")
 
         return data
 
@@ -361,7 +359,7 @@ class LevelUpSerializer(serializers.ModelSerializer):
         old_level = self.data.get('old_level')
         constitution_mod = self.data.get('constitution_mod')
         health_by_level = self.data.get('health_by_level')
-        level = self.validated_data.get('level')
+        level = self.validated_data['level']
         level_difference = level - old_level
         health_add = level_difference * (constitution_mod+health_by_level)
         character = Character.objects.select_related('secondary_stats').get(id=character_id)
@@ -383,15 +381,6 @@ class SetConditionSerializer(serializers.ModelSerializer):
         weakness = data.get('weakness', [])
         combined_list = immunity + resistance + weakness
         unique_elements = set(map(lambda x: x.id, combined_list))
-
         if len(unique_elements) != len(combined_list):
             raise serializers.ValidationError({"non_field_errors": ["Values must be unique."]})
         return data
-
-    def update(self, instance, validated_data):
-        instance.immunity.set(validated_data.get('immunity', []))
-        instance.resistance.set(validated_data.get('resistance', []))
-        instance.weakness.set(validated_data.get('weakness', []))
-        instance.save()
-
-        return instance

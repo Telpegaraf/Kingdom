@@ -1,8 +1,8 @@
 from rest_framework.test import APITestCase
-from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import status
-from apps.character.models import Race, ClassCharacter
+from apps.general.models import Race
+from apps.player_class.models import ClassCharacter
 from apps.god.models import God
 
 
@@ -24,7 +24,6 @@ class CreateCharacterTest(APITestCase):
            "age": 18,
            "god": 1,
            "intentions": [1]
-
         }
 
     def test_create_client(self):
@@ -35,7 +34,7 @@ class CreateCharacterTest(APITestCase):
     def test_no_auth(self):
         self.client.logout()
         response = self.client.post(self.url, self.data, format="json")
-        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_wrong_data(self):
         self.data['god'] = None
