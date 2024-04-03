@@ -23,7 +23,7 @@ env = environ.Env(
     ALLOWED_HOSTS=(list, "127.0.0.1")
 )
 
-environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+environ.Env.read_env(os.path.join(BASE_DIR, ".env_docker"))
 
 
 # Quick-start development settings - unsuitable for production
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'drf_yasg',
     'social_django',
+    'django_filters',
     #apps
     'apps.user',
     'apps.general',

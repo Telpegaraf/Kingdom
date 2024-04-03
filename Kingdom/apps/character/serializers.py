@@ -333,6 +333,7 @@ class UnEquipWornItemSerializer(serializers.Serializer):
 
 class LevelUpSerializer(serializers.ModelSerializer):
     old_level = serializers.SerializerMethodField()
+    level = serializers.IntegerField(min_value=1, max_value=20)
     max_health = serializers.IntegerField(source='secondary_stats.max_health')
     health_by_level = serializers.IntegerField(source='class_player.health_by_level')
     constitution_mod = serializers.SerializerMethodField()
@@ -346,13 +347,6 @@ class LevelUpSerializer(serializers.ModelSerializer):
 
     def get_old_level(self, obj):
         return obj.level
-
-    def validate(self, data):
-        new_level = data['level']
-        if new_level is None or new_level > 20:
-            raise serializers.ValidationError("Invalid level value")
-
-        return data
 
     def save(self, **kwargs):
         character_id = self.data.get('id')
