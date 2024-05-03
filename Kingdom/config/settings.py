@@ -23,7 +23,7 @@ env = environ.Env(
     ALLOWED_HOSTS=(list, "127.0.0.1")
 )
 
-environ.Env.read_env(os.path.join(BASE_DIR, ".env_docker"))
+environ.Env.read_env(os.path.join(BASE_DIR, "..env_docker"))
 
 
 # Quick-start development settings - unsuitable for production
