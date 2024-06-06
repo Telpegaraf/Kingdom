@@ -1,0 +1,15 @@
+.idea
+.pytest_cache/
+__pycache__/
+*__pycache__/
+/db.sqlite3
+venv/
+/migrations/*.py
+!/migrations/__init__.py
+*.env
+docker/.env_docker
+static/**
+media/audio/*
+/apps/chat/voice.wav
+/apps/chat/voice.ogg
+.DS_Store
