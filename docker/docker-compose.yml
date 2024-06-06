@@ -1,8 +1,8 @@
 services:
   wsgi: &wsgi
      build:
-       context: ../Kingdom
-       dockerfile: Dockerfile_web
+       context: ..
+       dockerfile: docker/Dockerfile_web
      depends_on:
        - db
      volumes:

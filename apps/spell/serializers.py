@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.spell.apps import Spell, SpellCast, SpellComponent, SpellTrait, SpellSchool, SpellTradition
+from apps.spell.models import Spell, SpellCast, SpellComponent, SpellTrait, SpellSchool, SpellTradition
 
 
 class SpellSchoolSerializer(serializers.ModelSerializer):

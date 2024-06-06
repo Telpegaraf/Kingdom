@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.spell.apps import SpellListView, SpellDetailView
+from apps.spell.views import SpellListView, SpellDetailView
 
 
 urlpatterns = [

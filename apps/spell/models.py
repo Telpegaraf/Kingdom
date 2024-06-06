@@ -1,5 +1,5 @@
 from django.db import models
-from apps.spell.apps import Skills
+from apps.player_class.models import Skills
 
 
 class SpellTradition(models.Model):

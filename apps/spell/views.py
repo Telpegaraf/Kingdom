@@ -4,8 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.db.models import ObjectDoesNotExist
 
-from apps.spell.apps import SpellDetailSerializer, SpellListSerializer
-from apps.spell.apps import Spell
+from apps.spell.serializers import SpellDetailSerializer, SpellListSerializer
+from apps.spell.models import Spell
 
 
 class SpellListView(APIView):

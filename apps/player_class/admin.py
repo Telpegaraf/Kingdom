@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.player_class.apps import ClassCharacter, Feat, ClassFeature, ClassSpellFeature, Background
+from apps.player_class.models import ClassCharacter, Feat, ClassFeature, ClassSpellFeature, Background
 
 
 class ClassFeatureAdmin(admin.ModelAdmin):

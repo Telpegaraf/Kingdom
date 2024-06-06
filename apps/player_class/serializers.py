@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from apps.player_class.apps import ClassFeature, Feat, ClassSpellFeature
-from apps.player_class.apps import FeatTraitSerializer
+from apps.player_class.models import ClassFeature, Feat, ClassSpellFeature
+from apps.general.serializers import FeatTraitSerializer
 
 
 class FeatsSerializer(serializers.ModelSerializer):

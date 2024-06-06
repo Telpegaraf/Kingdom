@@ -1,7 +1,7 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from apps.player_class.apps import FeatureListSerializer, SpellFeatureListSerializer
-from apps.player_class.apps import ClassFeature
+from apps.player_class.serializers import FeatureListSerializer, SpellFeatureListSerializer
+from apps.player_class.models import ClassFeature
 from rest_framework import status
 from rest_framework.response import Response
 

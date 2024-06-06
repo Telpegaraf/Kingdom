@@ -3,8 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
-from apps.general.apps import Skills, WeaponMastery
-from apps.general.apps import SkillListSerializer, WeaponMasteryListSerializer
+from apps.general.models import Skills, WeaponMastery
+from apps.general.serializers import SkillListSerializer, WeaponMasteryListSerializer
 
 
 class SkillListView(ListAPIView):

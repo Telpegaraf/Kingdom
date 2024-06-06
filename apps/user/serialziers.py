@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.user.apps import Google
+from apps.user.utils import Google
 
 
 class GoogleSerializer(serializers.Serializer):

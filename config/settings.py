@@ -39,8 +39,8 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = ['127.0.0.1', '172.18.0.4', 'localhost', '172.0.0.0']
 
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'http://172.18.0.4', 'http://127.0.0.1:8069', 'http://172.18.0.4:8069',
-                        "http://localhost:88", 'http://172.0.0.0']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://172.18.0.4', 'http://127.0.0.1:8069', 'http://172.18.0.4:8069',
+                        "http://localhost:88", 'http://172.0.0.0', "http://localhost:8000"]
 
 
 # Application definition
@@ -55,9 +55,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'debug_toolbar',
-    'drf_yasg',
     'social_django',
     'django_filters',
+    'drf_spectacular',
     #apps
     'apps.user',
     'apps.general',
@@ -71,6 +71,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -89,7 +90,15 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         "rest_framework.authentication.SessionAuthentication",
-    )
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Kingdom API',
+    'DESCRIPTION': 'Kingdom description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 SIMPLE_JWT = {

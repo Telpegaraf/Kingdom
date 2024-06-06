@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.city.apps import Government, Kingdom, Region, City
+from apps.city.models import Government, Kingdom, Region, City
 
 models_list = [Government, Kingdom, Region, City]
 

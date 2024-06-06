@@ -1,5 +1,12 @@
 from django.contrib import admin
-from apps.god.apps import God, Domains
+from apps.god import models
 
-admin.site.register(God, admin.ModelAdmin)
-admin.site.register(Domains, admin.ModelAdmin)
+
+@admin.register(models.God)
+class GodAdmin(admin.ModelAdmin):
+    ordering = ('name',)
+
+
+@admin.register(models.Domains)
+class DomainsAdmin(admin.ModelAdmin):
+    ordering = ('name',)

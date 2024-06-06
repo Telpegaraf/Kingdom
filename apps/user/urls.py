@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.user.apps import GoogleView
+from apps.user.views import GoogleView
 
 
 urlpatterns = [

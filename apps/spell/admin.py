@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.spell.apps import Spell, SpellCast, SpellTrait, SpellComponent, SpellSchool, SpellTradition
+from apps.spell.models import Spell, SpellCast, SpellTrait, SpellComponent, SpellSchool, SpellTradition
 
 
 admin.site.register(Spell)

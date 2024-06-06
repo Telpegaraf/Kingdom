@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.equipment.apps import Item, Weapon, PlateArmor, WornItems
+from apps.equipment.models import Item, Weapon, PlateArmor, WornItems
 
 
 class ItemSerializer(serializers.ModelSerializer):

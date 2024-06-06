@@ -23,13 +23,6 @@ class DamageType(models.Model):
         return self.name
 
 
-class MoralIntentions(models.Model):
-    name = models.CharField(max_length=400, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Skills(models.Model):
     name = models.CharField(max_length=200, unique=True)
     description = models.CharField(max_length=1000)
@@ -48,6 +41,14 @@ class WeaponMastery(models.Model):
 
 class Race(models.Model):
     name = models.CharField(max_length=200, unique=True)
+    health = models.PositiveSmallIntegerField(default=6)
+    strength = models.SmallIntegerField(default=0)
+    dexterity = models.SmallIntegerField(default=0)
+    constitution = models.SmallIntegerField(default=0)
+    intelligence = models.SmallIntegerField(default=0)
+    wisdom = models.SmallIntegerField(default=0)
+    charisma = models.SmallIntegerField(default=0)
+    free = models.SmallIntegerField(default=0)
     description = models.TextField(max_length=1000)
 
     def __str__(self):

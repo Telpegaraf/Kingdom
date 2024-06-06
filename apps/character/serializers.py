@@ -1,11 +1,11 @@
 import math
 from rest_framework import serializers
-from apps.character.apps import Item
-from apps.character.apps import Character, CharacterStats, CharacterBag, InventoryItems, SecondaryStats,\
+from apps.character.models import Item
+from apps.character.models import Character, CharacterStats, CharacterBag, InventoryItems, SecondaryStats,\
     CharacterSkillList, DefenceAndVulnerabilityDamage, EquippedItems, CharacterFeatList, CharacterSkillMastery,\
     SpellList
-from apps.character.apps import FeatsSerializer
-from apps.character.apps import PlateArmor, Weapon, WornItems
+from apps.player_class.serializers import FeatsSerializer
+from apps.equipment.models import PlateArmor, Weapon, WornItems
 
 
 class InventoryItemSerializer(serializers.ModelSerializer):
@@ -161,13 +161,11 @@ class CharacterDetailSerializer(serializers.ModelSerializer):
 class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Character
-        fields = ['race', 'first_name', 'last_name', 'alias', 'class_player', 'god', 'intentions', 'domain',
+        fields = ['race', 'first_name', 'last_name', 'alias', 'class_player', 'god', 'domain',
                   'age', 'size', 'description']
 
     def create(self, validated_data):
-        intentions_data = validated_data.pop('intentions', [])
         character = Character.objects.create(user=self.context['user'], **validated_data)
-        character.intentions.set(intentions_data)
         return character
 
 
@@ -185,17 +183,61 @@ class SetStatsDisplaySerializer(serializers.ModelSerializer):
         fields = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma', 'character_stats']
 
 
-class SetStatsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CharacterStats
-        fields = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma']
+class ChangeStatSerializer(serializers.Serializer):
+    stat_point = serializers.CharField(max_length=50)
+    increase = serializers.BooleanField()
+
+    def validate_stat_point(self, value):
+        allowed_stats = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma']
+        if value not in allowed_stats:
+            raise serializers.ValidationError(f"Invalid stat name. Allowed values are: {', '.join(allowed_stats)}")
+        return value
 
     def validate(self, data):
-        character = self.instance
-        if character.character.level == 1 and not all(value <= 18 for value in data.values()):
+        character_stats = self.instance
+        stat_point = data['stat_point']
+        is_increase = data['increase']
+        if is_increase and character_stats.character.character_stat_points.free == 0 and \
+                getattr(character_stats.character.character_stat_points, stat_point) == 0:
+            raise serializers.ValidationError("Not enough stat points")
+        if getattr(character_stats, stat_point) == 0 and is_increase is False:
+            raise serializers.ValidationError("You can't decrease stat below zero")
+        if getattr(character_stats, stat_point) == 18 and is_increase and character_stats.character.level == 1:
             raise serializers.ValidationError("All stats must be 18 or lower at level 1.")
-
         return data
+
+    def update(self, instance, validated_data):
+        stat_name = validated_data['stat_point']
+        increase = validated_data['increase']
+        current_value = getattr(instance, stat_name)
+        setattr(instance, stat_name, current_value + 1) if increase else setattr(instance, stat_name, current_value - 1)
+
+        character_points = instance.character.character_stat_points
+
+        stat_value = getattr(character_points, stat_name)
+
+        if increase and stat_value > 0:
+            setattr(character_points, stat_name, stat_value - 1)
+        elif increase:
+            character_points.free -= 1
+        else:
+            setattr(character_points, stat_name, stat_value + 1)
+        character_points.save()
+
+        instance.save()
+        return instance
+
+    def to_representation(self, instance):
+        stat_name = self.validated_data['stat_point']
+
+        return {
+            'character_id': instance.character.id,
+            'stat_name': stat_name,
+            'stat_value': getattr(instance, self.validated_data['stat_point']),
+            f'remaining_{stat_name}_points':
+                getattr(instance.character.character_stat_points, self.validated_data['stat_point']),
+            'remaining_free_points': instance.character.character_stat_points.free
+        }
 
 
 class SetSpeedSerializer(serializers.ModelSerializer):

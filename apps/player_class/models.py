@@ -1,6 +1,6 @@
 from django.db import models
-from apps.player_class.apps import MasteryLevels, Action, Prerequisite, FeatTrait, Requirements, Trigger, Skills
-from apps.player_class.apps import SpellTradition
+from apps.general.models import MasteryLevels, Action, Prerequisite, FeatTrait, Requirements, Trigger, Skills
+from apps.spell.models import SpellTradition
 
 
 class ClassCharacter(models.Model):

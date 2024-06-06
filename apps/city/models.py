@@ -1,6 +1,6 @@
 from django.db import models
-from apps.city.apps import Ruler
-from apps.city.apps import God
+from apps.character.models import Ruler
+from apps.god.models import God
 
 
 class Government(models.Model):

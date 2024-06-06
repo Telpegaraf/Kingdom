@@ -1,11 +1,12 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
-from apps.character.apps import God, Domains
-from apps.character.apps import MasteryLevels, DamageType, MoralIntentions, Skills, Race, WeaponMastery
-from apps.character.apps import Item, Currency
-from apps.character.apps import ClassCharacter, Feat
-from apps.character.apps import Spell
-from apps.character.apps import CustomUser
+from apps.god.models import God, Domains
+from apps.general.models import MasteryLevels, DamageType, Skills, Race, WeaponMastery
+from apps.equipment.models import Item, Currency
+from apps.player_class.models import ClassCharacter, Feat
+from apps.spell.models import Spell
+from apps.user.models import CustomUser
 
 
 class Title(models.Model):
@@ -22,7 +23,6 @@ class CharacterNPC(models.Model):
     alias = models.CharField(max_length=100, null=True, blank=True)
     class_character = models.ForeignKey(ClassCharacter, related_name='character_class', on_delete=models.CASCADE)
     god = models.ForeignKey(God, related_name='character_god', on_delete=models.CASCADE)
-    intentions = models.ManyToManyField(MoralIntentions, related_name='character_intentions')
     domain = models.ForeignKey(Domains, related_name='character_domain', on_delete=models.CASCADE, null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)
     level = models.PositiveSmallIntegerField(default=0)
@@ -58,7 +58,6 @@ class Character(models.Model):
     alias = models.CharField(max_length=200, null=True, blank=True)
     class_player = models.ForeignKey(ClassCharacter, related_name='player_class', on_delete=models.CASCADE)
     god = models.ForeignKey(God, related_name='player_god', on_delete=models.CASCADE)
-    intentions = models.ManyToManyField(MoralIntentions, related_name='player_intentions')
     domain = models.ForeignKey(Domains, related_name='player_domain', on_delete=models.CASCADE, null=True, blank=True)
     age = models.IntegerField()
     size = models.PositiveSmallIntegerField(null=True, blank=True)
@@ -66,7 +65,7 @@ class Character(models.Model):
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.class_player} {self.first_name} {self.last_name} {self.level} level"
+        return f"{self.class_player} {self.first_name} {self.last_name}"
 
 
 class CharacterStats(models.Model):
@@ -122,6 +121,20 @@ class CharacterStats(models.Model):
 
     def __str__(self):
         return f"{self.character}'s Stats"
+
+
+class CharacterPoints(models.Model):
+    character = models.OneToOneField(Character, on_delete=models.CASCADE, related_name='character_stat_points')
+    strength = models.PositiveSmallIntegerField(default=0)
+    dexterity = models.PositiveSmallIntegerField(default=0)
+    constitution = models.PositiveSmallIntegerField(default=0)
+    intelligence = models.PositiveSmallIntegerField(default=0)
+    wisdom = models.PositiveSmallIntegerField(default=0)
+    charisma = models.PositiveSmallIntegerField(default=0)
+    free = models.PositiveSmallIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.character}'s Stat Points"
 
 
 class SecondaryStats(models.Model):

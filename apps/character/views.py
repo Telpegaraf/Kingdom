@@ -1,27 +1,23 @@
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.character.apps import EquippedItems
-from apps.character.apps import CharacterOverallSerializer, CharacterDetailSerializer, CharacterSerializer, \
-    AddItemSerializer, EquipItemSerializer, SecondaryStatsSerializer, LevelUpSerializer, SetStatsSerializer, \
-    SetStatsDisplaySerializer, SetSpeedSerializer, SetMasterySerializer, CharacterSkillSerializer, \
-    CharacterSkillMasterySerializer, SetFeatSerializer, SetSpellSerializer, SetConditionSerializer, \
-    UnEquipSerializer
-from apps.character.apps import Character, SecondaryStats, CharacterStats, CharacterSkillList, CharacterSkillMastery,\
-    CharacterFeatList, SpellList, DefenceAndVulnerabilityDamage, CharacterBag, InventoryItems
-from apps.character.apps import IsOwner
+from apps.character.models import EquippedItems
+from apps.character import serializers
+from apps.character import models as character_models
+from apps.permissions import IsOwner
 
 
 class CharacterOverallView(APIView):
     """ Show all characters """
     permission_classes = [IsAuthenticated]
-    serializer_class = CharacterOverallSerializer
+    serializer_class = serializers.CharacterOverallSerializer
 
     def get(self, request, *args, **kwargs):
-        character = Character.objects.all()
+        character = character_models.Character.objects.all()
         serializer = self.serializer_class(character, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -29,10 +25,10 @@ class CharacterOverallView(APIView):
 class CharacterDetailView(APIView):
     """ Show detail info about character """
     permission_classes = [IsAuthenticated]
-    serializer_class = CharacterDetailSerializer
+    serializer_class = serializers.CharacterDetailSerializer
 
     def get(self, request, character_id):
-        character = get_object_or_404(Character, pk=character_id)
+        character = get_object_or_404(character_models.Character, pk=character_id)
         serializer = self.serializer_class(character)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -40,7 +36,7 @@ class CharacterDetailView(APIView):
 class CharacterCreateView(APIView):
     """ Create new character """
     permission_classes = [IsAuthenticated]
-    serializer_class = CharacterSerializer
+    serializer_class = serializers.CharacterSerializer
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data,
@@ -51,40 +47,67 @@ class CharacterCreateView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class SetStatsView(APIView):
-    """ Sets stats, including when leveling up """
+@extend_schema_view(
+    get=extend_schema(
+        parameters=[
+            OpenApiParameter(name='character_id', description='character_id', type=int),
+        ]
+    ),
+    patch=extend_schema(
+        parameters=[
+            OpenApiParameter(name='character_id', description='character_id', type=int),
+        ]
+    )
+)
+class ChangeStatView(APIView):
     permission_classes = [IsAuthenticated, IsOwner]
-    serializer_class_display = SetStatsDisplaySerializer
-    serializer_class = SetStatsSerializer
+    serializer_class_display = serializers.SetStatsDisplaySerializer
+    serializer_class = serializers.ChangeStatSerializer
 
-    def get(self, request, character_id):
-        character = get_object_or_404(CharacterStats.objects.select_related('character'), character_id=character_id)
+    def get(self, request):
+        character_id = request.query_params.get('character_id')
+        character = get_object_or_404(character_models.CharacterStats.objects.select_related('character')
+                                      , character_id=character_id)
         serializer = self.serializer_class_display(character)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def patch(self, request, character_id):
-        character = get_object_or_404(CharacterStats.objects.select_related('character'), character_id=character_id)
-        if not IsOwner().has_object_permission(request, self, character):
+    def patch(self, request):
+        character_id = request.query_params.get('character_id')
+        character_stats = get_object_or_404(character_models.CharacterStats.objects.
+                                            select_related('character__character_stat_points')
+                                            , character_id=character_id)
+
+        if not IsOwner().has_object_permission(request, self, character_stats):
             return Response({"error": "You do not have permission to perform this action."},
                             status=status.HTTP_403_FORBIDDEN)
-        serializer = self.serializer_class(character, data=request.data, partial=True)
+
+        serializer = self.serializer_class(instance=character_stats, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@extend_schema_view(
+    get=extend_schema(
+        parameters=[
+            OpenApiParameter(name='character_id', description='character_id', type=int),
+        ]
+    )
+)
 class SetSpeedView(APIView):
     """ Set character's speed """
     permission_classes = [IsAuthenticated, IsOwner]
-    serializer_class = SetSpeedSerializer
+    serializer_class = serializers.SetSpeedSerializer
 
-    def get(self, request, character_id):
-        character = get_object_or_404(CharacterStats, character_id=character_id)
+    def get(self, request):
+        character_id = request.query_params.get('character_id')
+        character = get_object_or_404(character_models.CharacterStats, character_id=character_id)
         serializer = self.serializer_class(character)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def patch(self, request, character_id):
-        character = get_object_or_404(CharacterStats, character_id=character_id)
+    def patch(self, request):
+        character_id = request.query_params.get('character_id')
+        character = get_object_or_404(character_models.CharacterStats, character_id=character_id)
         if not IsOwner().has_object_permission(request, self, character):
             return Response({"error": "You do not have permission to perform this action."},
                             status=status.HTTP_403_FORBIDDEN)
@@ -97,15 +120,15 @@ class SetSpeedView(APIView):
 class SetMasteryView(APIView):
     """ Change mastery levels """
     permission_classes = [IsAuthenticated, IsOwner]
-    serializer_class = SetMasterySerializer
+    serializer_class = serializers.SetMasterySerializer
 
     def get(self, request, character_id):
-        character = get_object_or_404(CharacterStats, character_id=character_id)
+        character = get_object_or_404(character_models.CharacterStats, character_id=character_id)
         serializer = self.serializer_class(character)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, character_id):
-        character = get_object_or_404(CharacterStats, character_id=character_id)
+        character = get_object_or_404(character_models.CharacterStats, character_id=character_id)
         if not IsOwner().has_object_permission(request, self, character):
             return Response({"error": "You do not have permission to perform this action."},
                             status=status.HTTP_403_FORBIDDEN)
@@ -118,16 +141,16 @@ class SetMasteryView(APIView):
 class AddItemView(APIView):
     """ Add new item in inventory """
     permission_classes = [IsAuthenticated, IsOwner]
-    serializer_class = AddItemSerializer
+    serializer_class = serializers.AddItemSerializer
 
     def get(self, request, character_id):
-        bag = get_object_or_404(CharacterBag.objects.select_related('character').
+        bag = get_object_or_404(character_models.CharacterBag.objects.select_related('character').
                                 prefetch_related('inventory'), character_id=character_id)
         serializer = self.serializer_class(bag.inventory.all(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, character_id):
-        bag = get_object_or_404(CharacterBag.objects.select_related('character').
+        bag = get_object_or_404(character_models.CharacterBag.objects.select_related('character').
                                 prefetch_related('inventory'), character_id=character_id)
         if not IsOwner().has_object_permission(request, self, bag):
             return Response({"error": "You do not have permission to perform this action."},
@@ -145,7 +168,7 @@ class RemoveItemView(APIView):
     permission_classes = [IsAuthenticated, IsOwner]
 
     def delete(self, request, item_id):
-        item = get_object_or_404(InventoryItems.objects.select_related('bag'), id=item_id)
+        item = get_object_or_404(character_models.InventoryItems.objects.select_related('bag'), id=item_id)
         if not IsOwner().has_object_permission(request, self, item.bag):
             return Response({"error": "You do not have permission to perform this action."},
                             status=status.HTTP_403_FORBIDDEN)
@@ -156,10 +179,10 @@ class RemoveItemView(APIView):
 class EquipItemView(APIView):
     """ Equip Item from inventory """
     permission_classes = [IsAuthenticated, IsOwner]
-    serializer_class = EquipItemSerializer
+    serializer_class = serializers.EquipItemSerializer
 
     def post(self, request, *args, **kwargs):
-        bag = get_object_or_404(CharacterBag, id=request.data.get('bag_id'))
+        bag = get_object_or_404(character_models.CharacterBag, id=request.data.get('bag_id'))
         if not IsOwner().has_object_permission(request, self, bag):
             return Response({"error": "You do not have permission to perform this action."},
                             status=status.HTTP_403_FORBIDDEN)
@@ -171,7 +194,7 @@ class EquipItemView(APIView):
 
 class BaseUnEquipView(APIView):
     permission_classes = [IsAuthenticated, IsOwner]
-    serializer_class = UnEquipSerializer
+    serializer_class = serializers.UnEquipSerializer
     un_equip_message = ""
 
     def patch(self, request, character_id):
@@ -219,15 +242,15 @@ class SetSecondaryStatsView(APIView):
     """ Change characteristics (health and e.t.c) """
 
     permission_classes = [IsAuthenticated, IsOwner]
-    serializer_class = SecondaryStatsSerializer
+    serializer_class = serializers.SecondaryStatsSerializer
 
     def get(self, request, character_id):
-        secondary_stats = get_object_or_404(SecondaryStats, character_id=character_id)
+        secondary_stats = get_object_or_404(character_models.SecondaryStats, character_id=character_id)
         serializer = self.serializer_class(secondary_stats)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, character_id):
-        secondary_stats = get_object_or_404(SecondaryStats, character_id=character_id)
+        secondary_stats = get_object_or_404(character_models.SecondaryStats, character_id=character_id)
         if not IsOwner().has_object_permission(request, self, secondary_stats):
             return Response({"error": "You do not have permission to perform this action."},
                             status=status.HTTP_403_FORBIDDEN)
@@ -253,10 +276,10 @@ class DeleteWornItemView(APIView):
 class SecondaryStatsView(APIView):
     """ Display secondary characteristics """
     permission_classes = [IsAuthenticated, IsOwner]
-    serializer_class = SecondaryStatsSerializer
+    serializer_class = serializers.SecondaryStatsSerializer
 
     def get(self, request, character_id):
-        secondary_stats = get_object_or_404(SecondaryStats, character_id=character_id)
+        secondary_stats = get_object_or_404(character_models.SecondaryStats, character_id=character_id)
         if not IsOwner().has_object_permission(request, self, secondary_stats):
             return Response({"error": "You do not have permission to perform this action."},
                             status=status.HTTP_403_FORBIDDEN)
@@ -268,15 +291,15 @@ class LevelUpView(APIView):
     """ Change character's level """
 
     permission_classes = [IsAuthenticated, IsOwner]
-    serializer_class = LevelUpSerializer
+    serializer_class = serializers.LevelUpSerializer
 
     def get(self, request, character_id):
-        character = get_object_or_404(Character, pk=character_id)
+        character = get_object_or_404(character_models.Character, pk=character_id)
         serializer = self.serializer_class(character)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, character_id):
-        character = get_object_or_404(Character.objects.select_related
+        character = get_object_or_404(character_models.Character.objects.select_related
                                       ('class_player', 'character_stats', 'secondary_stats'), pk=character_id)
         if not IsOwner().has_object_permission(request, self, character):
             return Response({"error": "You do not have permission to perform this action."},
@@ -291,10 +314,10 @@ class SetSkillsView(APIView):
     """ Set character's skills """
 
     permission_classes = [IsAuthenticated, IsOwner]
-    serializer_class = CharacterSkillSerializer
+    serializer_class = serializers.CharacterSkillSerializer
 
     def patch(self, request, character_id):
-        character_skills = get_object_or_404(CharacterSkillList, character_id=character_id)
+        character_skills = get_object_or_404(character_models.CharacterSkillList, character_id=character_id)
         if not IsOwner().has_object_permission(request, self, character_skills):
             return Response({"error": "You do not have permission to perform this action."},
                             status=status.HTTP_403_FORBIDDEN)
@@ -308,15 +331,17 @@ class SetSkillMasteryView(APIView):
     """ Set Character's skill mastery """
 
     permission_classes = [IsAuthenticated, IsOwner]
-    serializer_class = CharacterSkillMasterySerializer
+    serializer_class = serializers.CharacterSkillMasterySerializer
 
     def get(self, request, skill_id):
-        mastery = get_object_or_404(CharacterSkillMastery.objects.select_related('skill_list'), id=skill_id)
+        mastery = get_object_or_404(character_models.CharacterSkillMastery.objects.select_related('skill_list')
+                                    , id=skill_id)
         serializer = self.serializer_class(mastery)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, skill_id):
-        mastery = get_object_or_404(CharacterSkillMastery.objects.select_related('skill_list'), id=skill_id)
+        mastery = get_object_or_404(character_models.CharacterSkillMastery.objects.select_related('skill_list')
+                                    , id=skill_id)
         if not IsOwner().has_object_permission(request, self, mastery):
             return Response({"error": "You do not have permission to perform this action."},
                             status=status.HTTP_403_FORBIDDEN)
@@ -330,17 +355,17 @@ class SetFeatView(APIView):
     """ Set character's feat list """
 
     permission_classes = [IsAuthenticated, IsOwner]
-    serializer_class = SetFeatSerializer
+    serializer_class = serializers.SetFeatSerializer
 
     def get(self, request, character_id):
-        feat_list = get_object_or_404(CharacterFeatList.objects.
+        feat_list = get_object_or_404(character_models.CharacterFeatList.objects.
                                       select_related('character').
                                       prefetch_related('feat_class'), character_id=character_id)
         serializer = self.serializer_class(feat_list)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, character_id):
-        feat_list = get_object_or_404(CharacterFeatList.objects.
+        feat_list = get_object_or_404(character_models.CharacterFeatList.objects.
                                       select_related('character').
                                       prefetch_related('feat_class'), character_id=character_id)
         if not IsOwner().has_object_permission(request, self, feat_list):
@@ -360,15 +385,15 @@ class SetSpellView(APIView, IsOwner):
     """ Set character's spell list """
 
     permission_classes = [IsAuthenticated]
-    serializer_class = SetSpellSerializer
+    serializer_class = serializers.SetSpellSerializer
 
     def get(self, request, character_id):
-        feat_list = get_object_or_404(SpellList, character_id=character_id)
+        feat_list = get_object_or_404(character_models.SpellList, character_id=character_id)
         serializer = self.serializer_class(feat_list)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, character_id):
-        feat_list = get_object_or_404(SpellList, character_id=character_id)
+        feat_list = get_object_or_404(character_models.SpellList, character_id=character_id)
         if not IsOwner().has_object_permission(request, self, feat_list):
             return Response({"error": "You do not have permission to perform this action."},
                             status=status.HTTP_403_FORBIDDEN)
@@ -382,16 +407,16 @@ class SetCondition(APIView):
     """ Set character's defence and vulnerability """
 
     permission_classes = [IsAuthenticated, IsOwner]
-    serializer_class = SetConditionSerializer
+    serializer_class = serializers.SetConditionSerializer
 
     def get(self, request, character_id):
-        conditions = get_object_or_404(DefenceAndVulnerabilityDamage.objects.
+        conditions = get_object_or_404(character_models.DefenceAndVulnerabilityDamage.objects.
                                        select_related('character'), character_id=character_id)
         serializer = self.serializer_class(conditions)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, character_id):
-        conditions = get_object_or_404(DefenceAndVulnerabilityDamage.objects.
+        conditions = get_object_or_404(character_models.DefenceAndVulnerabilityDamage.objects.
                                        select_related('character'), character_id=character_id)
         if not IsOwner().has_object_permission(request, self, conditions):
             return Response({"error": "You do not have permission to perform this action."},

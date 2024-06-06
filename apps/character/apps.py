@@ -7,4 +7,4 @@ class CharacterConfig(AppConfig):
     name = 'apps.character'
 
     def ready(self) -> None:
-        pass
+        import apps.character.signals

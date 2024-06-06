@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.general.apps import FeatTrait, Skills, WeaponMastery
+from apps.general.models import FeatTrait, Skills, WeaponMastery
 
 
 class FeatTraitSerializer(serializers.ModelSerializer):

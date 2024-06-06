@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.equipment.apps import ItemView, ItemDetailView
+from apps.equipment.views import ItemView, ItemDetailView
 
 
 urlpatterns = [
