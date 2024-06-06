@@ -1,0 +1,49 @@
+FROM python:3.11-slim as python
+
+FROM python as python-build-stage
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    gcc \
+    libc6-dev
+
+COPY ../requirements.txt .
+
+RUN pip wheel --wheel-dir /usr/src/app/wheels -r requirements.txt
+
+FROM python as python-run-stage
+
+ENV PYTHONUNBUFFERED 1
+WORKDIR /app
+
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    gcc \
+    libffi-dev \
+    libssl-dev \
+    libgl1 \
+    flac \
+    libc6-dev \
+    # cleaning up unused files
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=python-build-stage /usr/src/app/wheels  /wheels/
+
+RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
+	&& rm -rf /wheels/
+
+RUN pip3 install gunicorn
+
+# WSGI
+COPY ./docker/start-wsgi /start-wsgi
+RUN sed -i 's/\r$//g' /start-wsgi
+RUN chmod +x /start-wsgi
+
+# Entrypoint
+COPY ./docker/entrypoint /entrypoint
+RUN sed -i 's/\r$//g' /entrypoint
+RUN chmod +x /entrypoint
+
+COPY .. .
+
+ENTRYPOINT ["/entrypoint"]

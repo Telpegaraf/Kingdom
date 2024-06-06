@@ -1,0 +1,45 @@
+services:
+  wsgi: &wsgi
+     build:
+       context: ..
+       dockerfile: docker/Dockerfile_web
+     depends_on:
+       - db
+     volumes:
+       - ../logs/wsgi_docker/:/config/logs/
+       - media:/app/media
+     env_file: .env_docker
+     ports:
+       - "8069:8069"
+     restart: always
+     command: /start-wsgi
+
+  db:
+    image: postgres:alpine
+    env_file: .env_docker
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:alpine
+    command: redis-server --loglevel debug --timeout 86400 --maxclients 100000
+    ports:
+      - "6379:6379"
+    restart: always
+
+  nginx:
+    image: nginx:1.21.3-alpine
+    depends_on:
+      - wsgi
+    volumes:
+      - ../nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "88:88"
+      - "443:443"
+    restart: always
+
+volumes:
+  media: {}
+  pg_data:
