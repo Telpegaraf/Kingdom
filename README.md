@@ -1,8 +1,8 @@
-# Kingdom
-Kingdoms for Pathfinder's World
+My personal project, which is under constant development. I'll add more as I have free time. 
 
-# Apply migrations
-apply_migrations.bat
+
+# Kingdom
+Character's Sheet for Pathfinder 2E
 
 #Docker
 
