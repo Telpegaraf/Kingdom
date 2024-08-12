@@ -105,7 +105,7 @@ class SetSpeedView(APIView):
         serializer = self.serializer_class(character)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def patch(self, request):
+    def put(self, request):
         character_id = request.query_params.get('character_id')
         character = get_object_or_404(character_models.CharacterStats, character_id=character_id)
         if not IsOwner().has_object_permission(request, self, character):

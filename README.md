@@ -1,9 +1,5 @@
 # Kingdom
-Kingdoms for Pathfinder's World
+Character Sheet for Pathfinder Second Edition
 
-# Apply migrations
-apply_migrations.bat
-
-#Docker
-
+# Docker
 docker compose -f docker/docker-compose.yml --project-name kingdom up -d --build
