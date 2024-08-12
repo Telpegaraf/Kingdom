@@ -1,12 +1,15 @@
 from django.contrib import admin
-from apps.god import models
+from import_export.admin import ImportExportModelAdmin
+from apps.god import models, resources
 
 
 @admin.register(models.God)
-class GodAdmin(admin.ModelAdmin):
+class GodAdmin(ImportExportModelAdmin):
     ordering = ('name',)
+    resource_class = resources.GodResource
 
 
 @admin.register(models.Domains)
-class DomainsAdmin(admin.ModelAdmin):
+class DomainsAdmin(ImportExportModelAdmin):
     ordering = ('name',)
+    resource_class = resources.DomainResources

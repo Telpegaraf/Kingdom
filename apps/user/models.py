@@ -56,7 +56,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     avatar = models.ImageField(null=True, blank=True)
 
-    objects =UserManager()
+    objects = UserManager()
 
     USERNAME_FIELD = 'username'
 

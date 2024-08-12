@@ -13,11 +13,11 @@ python manage.py migrate --verbosity 2
 echo "Collecting static..."
 python manage.py collectstatic -c --no-input
 
-echo "Loading fixtures..."
-python3 manage.py loaddata ./fixtures/test_db.json
+#echo "Loading fixtures..."
+#python3 manage.py loaddata ./fixtures/test_db.json
 
-echo "Creating superuser..."
-python manage.py createsuperuser --email=${DJANGO_SUPERUSER_EMAIL} --noinput || echo "Superuser exists, skipping"
+#echo "Creating superuser..."
+#python manage.py createsuperuser --email=${DJANGO_SUPERUSER_EMAIL} --noinput || echo "Superuser exists, skipping"
 
 echo "Starting the server..."
 gunicorn config.wsgi:application --bind 0.0.0.0:8069 --access-logfile -
