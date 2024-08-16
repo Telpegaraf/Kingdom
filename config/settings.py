@@ -19,8 +19,6 @@ from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env(
-    DEBUG=(bool, True),
-    ALLOWED_HOSTS=(list, "127.0.0.1")
 )
 
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
@@ -35,12 +33,9 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-#ALLOWED_HOSTS = [env("ALLOWED_HOSTS")]
+ALLOWED_HOSTS = [env("ALLOWED_HOSTS")]
 
-ALLOWED_HOSTS = ['127.0.0.1', '172.18.0.4', 'localhost', '172.0.0.0']
-
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://172.18.0.4', 'http://127.0.0.1:8069', 'http://172.18.0.4:8069',
-                        "http://localhost:88", 'http://172.0.0.0', "http://localhost:8000"]
+CSRF_TRUSTED_ORIGINS = [env("CSRF_TRUSTED_ORIGINS")]
 
 
 # Application definition
