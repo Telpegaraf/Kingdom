@@ -1,6 +1,8 @@
+import environ
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+env = environ.Env()
 
 
 class UserManager(BaseUserManager):
@@ -35,7 +37,7 @@ class UserManager(BaseUserManager):
             raise ValueError("User must have username")
         if not password:
             raise ValueError("User must have password")
-        user = self.create_user(username=username, password=password)
+        user = self.create_user(username=username, password=password, email=env("DJANGO_SUPERUSER_EMAIL"))
         user.is_superuser = True
         user.is_staff = True
         user.is_admin = True
