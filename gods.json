@@ -1,0 +1,1989 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2024-06-06T12:00:18.876Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "1",
+    "object_repr": "Везение",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2024-06-06T12:00:21.050Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "1",
+    "object_repr": "Везение",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2024-06-06T12:00:26.045Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "2",
+    "object_repr": "Путешествие",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2024-06-06T12:00:29.580Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "3",
+    "object_repr": "Уверенность",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2024-06-06T12:00:32.376Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "3",
+    "object_repr": "Уверенность",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2024-06-06T12:00:37.102Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "4",
+    "object_repr": "Свобода",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2024-06-06T12:01:18.521Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "5",
+    "object_repr": "Знания",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2024-06-06T12:01:22.086Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "6",
+    "object_repr": "Совершенство",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2024-06-06T12:01:25.548Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "7",
+    "object_repr": "Амбиция",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2024-06-06T12:01:30.238Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "8",
+    "object_repr": "Тайна",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2024-06-06T12:01:46.107Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "9",
+    "object_repr": "Мощь",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2024-06-06T12:01:48.736Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "10",
+    "object_repr": "Правда",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2024-06-06T12:01:51.629Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "11",
+    "object_repr": "Рвение",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2024-06-06T12:02:00.004Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "12",
+    "object_repr": "Смерть",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2024-06-06T12:02:03.330Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "13",
+    "object_repr": "Хитрость",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2024-06-06T12:02:06.448Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "14",
+    "object_repr": "Бред",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2024-06-06T12:02:09.269Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "15",
+    "object_repr": "Кошмары",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2024-06-06T12:02:16.738Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "16",
+    "object_repr": "Природа",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2024-06-06T12:02:20.154Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "17",
+    "object_repr": "Холод",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2024-06-06T12:02:22.955Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "18",
+    "object_repr": "Огонь",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2024-06-06T12:02:33.016Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "19",
+    "object_repr": "Судьба",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2024-06-06T12:02:35.181Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "20",
+    "object_repr": "Магия",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2024-06-06T12:02:41.394Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "21",
+    "object_repr": "Время",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2024-06-06T12:02:52.075Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "22",
+    "object_repr": "Разрушение",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2024-06-06T12:02:55.008Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "23",
+    "object_repr": "Долг",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2024-06-06T12:02:57.826Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "24",
+    "object_repr": "Солнце",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2024-06-06T12:03:07.590Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "25",
+    "object_repr": "Молния",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2024-06-06T12:03:14.196Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "26",
+    "object_repr": "Глиф",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2024-06-06T12:03:16.685Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "27",
+    "object_repr": "Душа",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2024-06-06T12:03:23.853Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "28",
+    "object_repr": "Земля",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2024-06-06T12:03:26.238Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "29",
+    "object_repr": "Семья",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 32,
+  "fields": {
+    "action_time": "2024-06-06T12:03:33.355Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "30",
+    "object_repr": "Богатство",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 33,
+  "fields": {
+    "action_time": "2024-06-06T12:03:41.391Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "31",
+    "object_repr": "Творчество",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2024-06-06T12:03:47.727Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "32",
+    "object_repr": "Страсть",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 35,
+  "fields": {
+    "action_time": "2024-06-06T12:03:50.174Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "33",
+    "object_repr": "Покой",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 36,
+  "fields": {
+    "action_time": "2024-06-06T12:04:06.966Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "34",
+    "object_repr": "Потворство",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 37,
+  "fields": {
+    "action_time": "2024-06-06T12:04:31.681Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "35",
+    "object_repr": "Луна",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 38,
+  "fields": {
+    "action_time": "2024-06-06T12:04:34.045Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "36",
+    "object_repr": "Тьма",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 39,
+  "fields": {
+    "action_time": "2024-06-06T12:04:36.744Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "37",
+    "object_repr": "Звёзды",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 40,
+  "fields": {
+    "action_time": "2024-06-06T12:04:43.741Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "38",
+    "object_repr": "Пыль",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 41,
+  "fields": {
+    "action_time": "2024-06-06T12:04:50.891Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "39",
+    "object_repr": "Тирания",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 42,
+  "fields": {
+    "action_time": "2024-06-06T12:05:03.526Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "40",
+    "object_repr": "Изменения",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 43,
+  "fields": {
+    "action_time": "2024-06-06T12:07:57.909Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "41",
+    "object_repr": "Города",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 44,
+  "fields": {
+    "action_time": "2024-06-06T12:08:11.628Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "42",
+    "object_repr": "Пустота",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 45,
+  "fields": {
+    "action_time": "2024-06-06T12:08:14.219Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "43",
+    "object_repr": "Нежить",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 46,
+  "fields": {
+    "action_time": "2024-06-06T12:08:17.646Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "44",
+    "object_repr": "Разложение",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 47,
+  "fields": {
+    "action_time": "2024-06-06T12:08:19.905Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "45",
+    "object_repr": "Мор",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 48,
+  "fields": {
+    "action_time": "2024-06-06T12:08:28.735Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "46",
+    "object_repr": "Труд",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 49,
+  "fields": {
+    "action_time": "2024-06-06T12:08:33.860Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "47",
+    "object_repr": "Исцеление",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 50,
+  "fields": {
+    "action_time": "2024-06-06T12:39:50.578Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "1",
+    "object_repr": "Дункан, Странник",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 51,
+  "fields": {
+    "action_time": "2024-06-06T12:42:31.892Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "2",
+    "object_repr": "Алатейя, Вестник Прогресса",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 52,
+  "fields": {
+    "action_time": "2024-06-06T12:44:06.403Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "48",
+    "object_repr": "Вода",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 53,
+  "fields": {
+    "action_time": "2024-06-06T12:44:09.629Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "49",
+    "object_repr": "Ветер",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 54,
+  "fields": {
+    "action_time": "2024-06-06T12:44:36.697Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "3",
+    "object_repr": "Розмари Карни, Покорительница Штормов",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 55,
+  "fields": {
+    "action_time": "2024-06-06T12:45:26.604Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "1",
+    "object_repr": "Дункан, Странник",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Areas of interest\", \"Worship\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 56,
+  "fields": {
+    "action_time": "2024-06-06T12:46:01.604Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "2",
+    "object_repr": "Алатейя, Вестник Прогресса",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Areas of interest\", \"Temples\", \"Worship\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 57,
+  "fields": {
+    "action_time": "2024-06-06T12:47:34.338Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "4",
+    "object_repr": "Онифэ, Непобедимая",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 58,
+  "fields": {
+    "action_time": "2024-06-06T12:49:33.478Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "5",
+    "object_repr": "Алистер Дрейк, Трикстер",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 59,
+  "fields": {
+    "action_time": "2024-06-06T13:03:59.010Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "6",
+    "object_repr": "Фаомерай, Мудрая Мать",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 60,
+  "fields": {
+    "action_time": "2024-06-06T13:06:14.568Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "7",
+    "object_repr": "Ви, Хранители Реальности",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 61,
+  "fields": {
+    "action_time": "2024-06-06T13:08:07.285Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "8",
+    "object_repr": "Кантарос, Светоносец",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 62,
+  "fields": {
+    "action_time": "2024-06-06T13:10:01.110Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "9",
+    "object_repr": "Маэдон Моргус, Первейший",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 63,
+  "fields": {
+    "action_time": "2024-06-06T13:11:59.884Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "10",
+    "object_repr": "Эрдли Антария, Зелёная Всадница",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 64,
+  "fields": {
+    "action_time": "2024-06-06T13:13:38.903Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "11",
+    "object_repr": "Падрафэр, Глас Истины",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 65,
+  "fields": {
+    "action_time": "2024-06-06T13:15:48.130Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "12",
+    "object_repr": "Мархосиас, Хозяин Монет",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 66,
+  "fields": {
+    "action_time": "2024-06-06T13:17:43.115Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "13",
+    "object_repr": "Хемунд, Щит Невиновных",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 67,
+  "fields": {
+    "action_time": "2024-06-06T13:19:30.678Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "14",
+    "object_repr": "Эллейн, Леди Ночь",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 68,
+  "fields": {
+    "action_time": "2024-06-06T13:21:27.328Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "15",
+    "object_repr": "Жаргот, Король Королей",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 69,
+  "fields": {
+    "action_time": "2024-06-06T13:23:46.420Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "16",
+    "object_repr": "Дарли, Поступь Ветра",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 70,
+  "fields": {
+    "action_time": "2024-06-06T13:25:33.165Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "17",
+    "object_repr": "Джан Джак, Простак",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 71,
+  "fields": {
+    "action_time": "2024-06-06T13:27:08.845Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "18",
+    "object_repr": "Шоургронд, Моровой Всадник",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 72,
+  "fields": {
+    "action_time": "2024-06-06T13:28:40.262Z",
+    "user": 1,
+    "content_type": 36,
+    "object_id": "19",
+    "object_repr": "Кантамэлла, Алая Смерть",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 73,
+  "fields": {
+    "action_time": "2024-08-09T11:09:36.672Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "1",
+    "object_repr": "Эльф",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 74,
+  "fields": {
+    "action_time": "2024-08-09T11:09:43.638Z",
+    "user": 1,
+    "content_type": 65,
+    "object_id": "1",
+    "object_repr": "ыва",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 75,
+  "fields": {
+    "action_time": "2024-08-09T11:09:48.516Z",
+    "user": 1,
+    "content_type": 54,
+    "object_id": "1",
+    "object_repr": "ыва авыаы None",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 76,
+  "fields": {
+    "action_time": "2024-08-09T11:10:09.292Z",
+    "user": 1,
+    "content_type": 44,
+    "object_id": "1",
+    "object_repr": "ыва авыаы None's Stats",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Strength\", \"Dexterity\", \"Constitution\", \"Intelligence\", \"Wisdom\", \"Charisma\"]}}]"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "7al5smgg2461ogo22bjb6wfm4hwyzyx6",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hAmwBRcuvcMhGGoVA0kpV0Z764kXej2v_f-S4S4byXsPa9hYXEWIE6_G8X0yHUAvsd6azK1uq0LyaHIg3Z5bZyfl8P9Oyixl2_tfPIuo0LltAdCSzApTSrrTMiWPHg9URwIVDSABmB2jGhncomNeH8Au6M3Fw:1sFBb3:E86sf7JdjWFRcE91s4fD0dJwxhaR1K_Vg2WBlrYDfMU",
+    "expire_date": "2024-06-20T11:47:57.587Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "wqmfmd6inwppofm71sx9qvwh6tts7tqx",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hAmwBRcuvcMhGGoVA0kpV0Z764kXej2v_f-S4S4byXsPa9hYXEWIE6_G8X0yHUAvsd6azK1uq0LyaHIg3Z5bZyfl8P9Oyixl2_tfPIuo0LltAdCSzApTSrrTMiWPHg9URwIVDSABmB2jGhncomNeH8Au6M3Fw:1scNUc:VzVCqFZCSR_Q3YedzS4VxYU8_4NFCcDMp0ffGVtEjqI",
+    "expire_date": "2024-08-23T11:09:10.873Z"
+  }
+},
+{
+  "model": "user.customuser",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$339WsXI0YgPhlXggbY8qwT$GKLtY2bTh2NOrIp7xP7F+2sq5oa/mWWKguuRh369Des=",
+    "last_login": "2024-08-09T11:09:10.798Z",
+    "username": "admin",
+    "email": "",
+    "is_active": true,
+    "is_staff": true,
+    "is_admin": true,
+    "is_superuser": true,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "general.race",
+  "pk": 1,
+  "fields": {
+    "name": "Эльф",
+    "health": 6,
+    "strength": 0,
+    "dexterity": 0,
+    "constitution": 0,
+    "intelligence": 0,
+    "wisdom": 0,
+    "charisma": 0,
+    "free": 0,
+    "description": "ыва"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 1,
+  "fields": {
+    "name": "Везение"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 2,
+  "fields": {
+    "name": "Путешествие"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 3,
+  "fields": {
+    "name": "Уверенность"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 4,
+  "fields": {
+    "name": "Свобода"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 5,
+  "fields": {
+    "name": "Знания"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 6,
+  "fields": {
+    "name": "Совершенство"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 7,
+  "fields": {
+    "name": "Амбиция"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 8,
+  "fields": {
+    "name": "Тайна"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 9,
+  "fields": {
+    "name": "Мощь"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 10,
+  "fields": {
+    "name": "Правда"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 11,
+  "fields": {
+    "name": "Рвение"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 12,
+  "fields": {
+    "name": "Смерть"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 13,
+  "fields": {
+    "name": "Хитрость"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 14,
+  "fields": {
+    "name": "Бред"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 15,
+  "fields": {
+    "name": "Кошмары"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 16,
+  "fields": {
+    "name": "Природа"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 17,
+  "fields": {
+    "name": "Холод"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 18,
+  "fields": {
+    "name": "Огонь"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 19,
+  "fields": {
+    "name": "Судьба"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 20,
+  "fields": {
+    "name": "Магия"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 21,
+  "fields": {
+    "name": "Время"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 22,
+  "fields": {
+    "name": "Разрушение"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 23,
+  "fields": {
+    "name": "Долг"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 24,
+  "fields": {
+    "name": "Солнце"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 25,
+  "fields": {
+    "name": "Молния"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 26,
+  "fields": {
+    "name": "Глиф"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 27,
+  "fields": {
+    "name": "Душа"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 28,
+  "fields": {
+    "name": "Земля"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 29,
+  "fields": {
+    "name": "Семья"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 30,
+  "fields": {
+    "name": "Богатство"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 31,
+  "fields": {
+    "name": "Творчество"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 32,
+  "fields": {
+    "name": "Страсть"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 33,
+  "fields": {
+    "name": "Покой"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 34,
+  "fields": {
+    "name": "Потворство"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 35,
+  "fields": {
+    "name": "Луна"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 36,
+  "fields": {
+    "name": "Тьма"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 37,
+  "fields": {
+    "name": "Звёзды"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 38,
+  "fields": {
+    "name": "Пыль"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 39,
+  "fields": {
+    "name": "Тирания"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 40,
+  "fields": {
+    "name": "Изменения"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 41,
+  "fields": {
+    "name": "Города"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 42,
+  "fields": {
+    "name": "Пустота"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 43,
+  "fields": {
+    "name": "Нежить"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 44,
+  "fields": {
+    "name": "Разложение"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 45,
+  "fields": {
+    "name": "Мор"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 46,
+  "fields": {
+    "name": "Труд"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 47,
+  "fields": {
+    "name": "Исцеление"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 48,
+  "fields": {
+    "name": "Вода"
+  }
+},
+{
+  "model": "god.domains",
+  "pk": 49,
+  "fields": {
+    "name": "Ветер"
+  }
+},
+{
+  "model": "god.god",
+  "pk": 1,
+  "fields": {
+    "name": "Дункан",
+    "alias": "Странник",
+    "edict": "Помогать путешественникам, исследовать новые места",
+    "anathema": "Лишать свободы",
+    "areas_of_interest": "Таверна, удача, успех, приключения, путешествия",
+    "temples": "Музеи Дункана",
+    "worship": "Приключенцы, путешественники",
+    "sacred_animal": "Волк",
+    "sacred_color": "Серебряный",
+    "chosen_weapon": "Нож-звезда Реквием по Мечте",
+    "taro": "Звезда",
+    "alignment": "ISTP",
+    "domain": [
+      1,
+      2,
+      3,
+      4
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 2,
+  "fields": {
+    "name": "Алатейя",
+    "alias": "Вестник Прогресса",
+    "edict": "Доводить проект до финала, а исследование до результата, оттачивать разум до совершенного состояния, создавать новые творения",
+    "anathema": "Уничтожать важные исследования, поддаваться зависти к более талантливым людям, отказываться признавать ошибки",
+    "areas_of_interest": "Знание, вдохновение, изобретательность, совершенствование",
+    "temples": "Обсерватории и библиотеки",
+    "worship": "Изобретатели, картографы, писцы, ученые, волшебники, мудрецы, алхимики",
+    "sacred_animal": "Черепаха",
+    "sacred_color": "Бирюзовый и Розовый",
+    "chosen_weapon": "Двуручный молот Хранитель Вечности",
+    "taro": "Звезда",
+    "alignment": "INTJ",
+    "domain": [
+      5,
+      6,
+      7,
+      8
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 3,
+  "fields": {
+    "name": "Розмари Карни",
+    "alias": "Покорительница Штормов",
+    "edict": "Бороздить моря, оставаться верным капитану и команде, брать то, что хочешь, быть верным своей общине",
+    "anathema": "Предать товарищей по кораблю или общине",
+    "areas_of_interest": "Моря, корабли, морские острова, прибрежные воды, морские чудища, подводные пещеры",
+    "temples": "Маяки",
+    "worship": "Моряки, Рыболовы, Пираты, Воины, Плуты",
+    "sacred_animal": "Морская выдра",
+    "sacred_color": "Черный и синий",
+    "chosen_weapon": "Двуручный меч, Вестник Северного Ветра",
+    "taro": "Верховная Жрица",
+    "alignment": "ESFP",
+    "domain": [
+      13,
+      30,
+      48,
+      49
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 4,
+  "fields": {
+    "name": "Онифэ",
+    "alias": "Непобедимая",
+    "edict": "Соревноваться в полную силу,  принимать победу или поражение с полным изяществом, всегда стремиться стать лучше",
+    "anathema": "Жульничать в честных состязаниях, поддаваться ради победы другого, бесчестить проигравших",
+    "areas_of_interest": "Здоровье, спорт, конкуренция",
+    "temples": "Арены",
+    "worship": "Циркачи, спортсмены, солдаты",
+    "sacred_animal": "Бык",
+    "sacred_color": "Золотой и красный",
+    "chosen_weapon": "Длинное копьё Ось Мироздания",
+    "taro": "ESFJ",
+    "alignment": "Умеренность",
+    "domain": [
+      7,
+      9,
+      10,
+      11
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 5,
+  "fields": {
+    "name": "Алистер Дрейк",
+    "alias": "Трикстер",
+    "edict": "Заниматься бандитизмом или пиратством, красть, нарушать законопослушный суд",
+    "anathema": "Зарабатывать богатство упорным трудом и торговлей, соблюдать верховенство закона",
+    "areas_of_interest": "Ложь, интрига, обман, иллюзии",
+    "temples": "Нелегальные игровые клубы",
+    "worship": "Дрейк",
+    "sacred_animal": "Розовый и Белый",
+    "sacred_color": "Разбойники, аристократы, нищие, плуты",
+    "chosen_weapon": "Пистоль Жнец Палящего Солнца",
+    "taro": "ESFP",
+    "alignment": "Шут",
+    "domain": [
+      12,
+      13,
+      14,
+      15
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 6,
+  "fields": {
+    "name": "Фаомерай",
+    "alias": "Мудрая Мать",
+    "edict": "Беречь, уважать и защищать природу во всех ее направлениях",
+    "anathema": "Создавать нежить, разрушать районы природной красоты",
+    "areas_of_interest": "Природа, погода",
+    "temples": "Мельницы, друидические круги",
+    "worship": "Друиды, крестьяне, отшельники",
+    "sacred_animal": "Лань",
+    "sacred_color": "Зеленый и желтый",
+    "chosen_weapon": "Коса, Дар Утраченной Жизни",
+    "taro": "Императрица",
+    "alignment": "ENFJ",
+    "domain": [
+      2,
+      16,
+      17,
+      18
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 7,
+  "fields": {
+    "name": "Ви",
+    "alias": "Хранители Реальности",
+    "edict": "Искать пророчества и расшифровывать их, распространять знания",
+    "anathema": "Игнорировать волшебство во всех его проявлениях",
+    "areas_of_interest": "Магия, предсказания, пророчества, рождение, смерть, время",
+    "temples": "Библиотеки и храмы",
+    "worship": "Волшебники, предсказатели, мудрецы, ученые, писцы",
+    "sacred_animal": "Рысь и змея",
+    "sacred_color": "Черный, красный и белый",
+    "chosen_weapon": "посохи Несущий Видения и Приносящий Пророчества",
+    "taro": "Колесо Судьбы",
+    "alignment": "ENTP",
+    "domain": [
+      5,
+      19,
+      20,
+      21
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 8,
+  "fields": {
+    "name": "Кантарос",
+    "alias": "Светоносец",
+    "edict": "Вдохновлять людей на свершения, ценить свою жизнь, защищать союзников и искать искупление",
+    "anathema": "Предавать товарищей, позволять материальным ценностям сдерживать вас",
+    "areas_of_interest": "Разрушения, гнев, порядок",
+    "temples": "Соборы и Церкви",
+    "worship": "Воины, солдаты, приключенцы, военачальники, целители, крестоносцы",
+    "sacred_animal": "Золотистый голубь",
+    "sacred_color": "Золотой и белый",
+    "chosen_weapon": "Двуручный Топор, Ярость Праведных",
+    "taro": "Император",
+    "alignment": "ENFJ",
+    "domain": [
+      11,
+      22,
+      23,
+      24
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 9,
+  "fields": {
+    "name": "Маэдон Моргус",
+    "alias": "Первейший",
+    "edict": "Искать магические силы и использовать их, быть терпеливым, ответственно относиться к магии",
+    "anathema": "Создавать нежить, жертвовать принципами и идеалами ради достижения цели",
+    "areas_of_interest": "Магия, стихии, обучение",
+    "temples": "Академии",
+    "worship": "Волшебники, мудрецы, чародеи",
+    "sacred_animal": "Ворон",
+    "sacred_color": "Фиолетовый и синий",
+    "chosen_weapon": "Жезл, Защитник Звездного Света",
+    "taro": "Маг",
+    "alignment": "INTJ",
+    "domain": [
+      18,
+      25,
+      26,
+      27
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 10,
+  "fields": {
+    "name": "Эрдли Антария",
+    "alias": "Зелёная Всадница",
+    "edict": "Заботиться о зверях, Развивать и обучать тех, что приручаешь",
+    "anathema": "Бросить своего верного зверя, обмануть зверей",
+    "areas_of_interest": "Природа, звери, семья",
+    "temples": "Большие Деревянные дома, в основном в пригородах",
+    "worship": "Охотники, рейнджеры, друиды, звероловы, пастухи, рыцари",
+    "sacred_animal": "Все",
+    "sacred_color": "Зеленый",
+    "chosen_weapon": "Посох, Зов Великого Древа",
+    "taro": "Солнце",
+    "alignment": "INFP",
+    "domain": [
+      16,
+      28,
+      29,
+      30
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 11,
+  "fields": {
+    "name": "Падрафэр",
+    "alias": "Глас Истины",
+    "edict": "Совершенствовать и защищать искусство, искать красоту",
+    "anathema": "Уничтожать искусство, не препятствовать его уничтожению, если только не ради жертв к большему искусству",
+    "areas_of_interest": "Искусство, красота, любовь, музыка",
+    "temples": "Художественные галереи и театры",
+    "worship": "Актеры, барды, художники, артисты, музыканты, любовники",
+    "sacred_animal": "Павлин",
+    "sacred_color": "Все",
+    "chosen_weapon": "Арфа Дар Вечной Песни",
+    "taro": "Влюблённые",
+    "alignment": "ESFP",
+    "domain": [
+      29,
+      31,
+      32,
+      33
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 12,
+  "fields": {
+    "name": "Мархосиас",
+    "alias": "Хозяин Монет",
+    "edict": "Хранить свою истинную личность в секрете, жертвовать чем угодно ради достижения цели",
+    "anathema": "Свободно делиться секретами, упускать выгоду",
+    "areas_of_interest": "Жадность, секреты, торговля",
+    "temples": "Купцы, аристократы, предприниматели, алхимики",
+    "worship": "Алхимические дома и купеческие гильдии",
+    "sacred_animal": "Лиса",
+    "sacred_color": "Лиловый и черный",
+    "chosen_weapon": "Неизвестно",
+    "taro": "Дьявол",
+    "alignment": "ENTJ",
+    "domain": [
+      8,
+      13,
+      30,
+      34
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 13,
+  "fields": {
+    "name": "Хемунд",
+    "alias": "Щит Невиновных",
+    "edict": "Бороться за справедливость и честь, показывать свою доблесть, защищать невинных",
+    "anathema": "Бросить товарища в беде, обесчестить себя, убить безоружного",
+    "areas_of_interest": "Честь, Справедливость, Доблесть",
+    "temples": "Соборы в крупных городах",
+    "worship": "Офицеры, предприниматели, аристократы, судьи, наставники, крестоносцы, рыцари, правители",
+    "sacred_animal": "Собака",
+    "sacred_color": "Черный и белый",
+    "chosen_weapon": "Катана, Защитник Небес",
+    "taro": "Страшный Суд",
+    "alignment": "ENFJ",
+    "domain": [
+      3,
+      9,
+      10,
+      11
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 14,
+  "fields": {
+    "name": "Эллейн",
+    "alias": "Леди Ночь",
+    "edict": "Работать в тени, скрывать свои мотивы, всегда находить время для сна",
+    "anathema": "Атаковать спящего человека",
+    "areas_of_interest": "Изгнанники, полночь, луна, сон. судьба",
+    "temples": "Храмы под открытым небом",
+    "worship": "Плуты, разбойники, шпионы",
+    "sacred_animal": "Сова",
+    "sacred_color": "Голубой, белый",
+    "chosen_weapon": "Кинжалы, Последняя Надежда Ходящего по луне и Средоточие Вечной ночи",
+    "taro": "Луна",
+    "alignment": "ESTP",
+    "domain": [
+      2,
+      35,
+      36,
+      37
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 15,
+  "fields": {
+    "name": "Жаргот",
+    "alias": "Король Королей",
+    "edict": "Править тиранией и пытать более слабых существ, проявлять подхалимство перед теми, кто лучше вас",
+    "anathema": "Разорвать контракт, освободить раба, оскорблять Жаргота, проявив Милосердие ко врагам; оскорблять Жаргота, призывая придти в этот мир Жаргота, Короля Королей; оскорблять Жаргота",
+    "areas_of_interest": "Гордость, рабство, тирания",
+    "temples": "Темные Храмы возле правительственных зданий, скрытые подземные темные храмы в бедных районах, главны",
+    "worship": "Разбойники, аристократы, предприниматели, дьяволопоклонники, демонопоклонники, юристы, стремящиеся к",
+    "sacred_animal": "Лев",
+    "sacred_color": "Красный и Оранжевый",
+    "chosen_weapon": "Кистень Кулак Личного Правосудия",
+    "taro": "Верховынй Жрец",
+    "alignment": "ENTJ",
+    "domain": [
+      3,
+      13,
+      38,
+      39
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 16,
+  "fields": {
+    "name": "Дарли",
+    "alias": "Поступь Ветра",
+    "edict": "Скрывать опасные секреты, собирать информацию, смотреть в лицо своим страхам, расследовать преступления",
+    "anathema": "Убивать не убедившись в их виновности, регулярно избегать того, что вас пугает",
+    "areas_of_interest": "Исследование, разведка, тайна",
+    "temples": "Хижины в пригородах",
+    "worship": "Солдаты, плуты, шпионы, сыщики, монахи",
+    "sacred_animal": "Мышь",
+    "sacred_color": "Зелёный и коричневый",
+    "chosen_weapon": "Короткий лук, Память о Забытых Звёздах",
+    "taro": "Справедливость",
+    "alignment": "ISTJ",
+    "domain": [
+      40,
+      16,
+      3,
+      6
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 17,
+  "fields": {
+    "name": "Джан Джак",
+    "alias": "Простак",
+    "edict": "Жить моментом, выпивать, помогать угнетенным, искать славы и приключений",
+    "anathema": "Понапрасну тратить алкоголь, быть злым",
+    "areas_of_interest": "Алкоголь, храбрость, путешествия",
+    "temples": "Таверны и гостиницы",
+    "worship": "Домашняя Веспа",
+    "sacred_animal": "Желтый",
+    "sacred_color": "Путешественники, горожане, азартные игроки, завсегдатаи таверн, бармены, сироты, бунтари",
+    "chosen_weapon": "Ручной арбалет, Вопрос",
+    "taro": "Колесница",
+    "alignment": "ENFP",
+    "domain": [
+      41,
+      34,
+      2,
+      33
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 18,
+  "fields": {
+    "name": "Шоургронд",
+    "alias": "Моровой Всадник",
+    "edict": "Пользоваться всеми доступными ресурсами, удовлетворять свои желания",
+    "anathema": "Уничтожать нежить, жертвовать своей жизнью",
+    "areas_of_interest": "Болезнь, нежить",
+    "temples": "Склепы",
+    "worship": "Волшебники, аристократы, ученые, врачи, некроманты",
+    "sacred_animal": "Летучая мышь",
+    "sacred_color": "Персиковый и Синий",
+    "chosen_weapon": "Скипетр, Голос Призраков",
+    "taro": "Смерть",
+    "alignment": "INTP",
+    "domain": [
+      42,
+      43,
+      44,
+      45
+    ]
+  }
+},
+{
+  "model": "god.god",
+  "pk": 19,
+  "fields": {
+    "name": "Кантамэлла",
+    "alias": "Алая Смерть",
+    "edict": "Одерживать победы, преодолевать себя, проявлять тактическое превосходство",
+    "anathema": "Брать врагов в плен, сдаваться в плен",
+    "areas_of_interest": "Битва, оружие, сила",
+    "temples": "Крепости, переносные храмы в шатрах на полях сражений",
+    "worship": "Офицеры, генералы, стражники, солдаты",
+    "sacred_animal": "Кошка",
+    "sacred_color": "Серый и Чёрный",
+    "chosen_weapon": "Двухклинковый меч Голос Бессмертия",
+    "taro": "Сила",
+    "alignment": "ESTJ",
+    "domain": [
+      3,
+      11,
+      46,
+      47
+    ]
+  }
+},
+{
+  "model": "character.character",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "race": 1,
+    "first_name": "авыаы",
+    "last_name": null,
+    "alias": null,
+    "class_player": 1,
+    "god": 2,
+    "domain": null,
+    "age": 12,
+    "size": null,
+    "level": 1,
+    "description": ""
+  }
+},
+{
+  "model": "character.characterstats",
+  "pk": 1,
+  "fields": {
+    "character": 1,
+    "strength": 12,
+    "dexterity": 12,
+    "constitution": 12,
+    "intelligence": 12,
+    "wisdom": 12,
+    "charisma": 12,
+    "max_speed": 30,
+    "speed": 25,
+    "perception_mastery": "None",
+    "unarmed_mastery": "None",
+    "light_armor_mastery": "None",
+    "medium_armor_mastery": "None",
+    "heavy_armor_mastery": "None",
+    "fortitude_mastery": "None",
+    "reflex_mastery": "None",
+    "will_mastery": "None"
+  }
+},
+{
+  "model": "character.characterpoints",
+  "pk": 1,
+  "fields": {
+    "character": 1,
+    "strength": 0,
+    "dexterity": 0,
+    "constitution": 0,
+    "intelligence": 0,
+    "wisdom": 0,
+    "charisma": 0,
+    "free": 0
+  }
+},
+{
+  "model": "character.secondarystats",
+  "pk": 1,
+  "fields": {
+    "character": 1,
+    "perception": 0,
+    "armor_class": 10,
+    "attack_class": 0,
+    "damage_bonus": 0,
+    "max_health": 6,
+    "health": 6,
+    "initiative": 0,
+    "fortitude_saving": 0,
+    "reflex_saving": 0,
+    "will_saving": 0
+  }
+},
+{
+  "model": "character.characterfeatlist",
+  "pk": 1,
+  "fields": {
+    "character": 1,
+    "feat_class": []
+  }
+},
+{
+  "model": "character.characterskilllist",
+  "pk": 1,
+  "fields": {
+    "character": 1,
+    "skill": []
+  }
+},
+{
+  "model": "character.weaponlist",
+  "pk": 1,
+  "fields": {
+    "character": 1,
+    "weapon": []
+  }
+},
+{
+  "model": "character.spelllist",
+  "pk": 1,
+  "fields": {
+    "character": 1,
+    "spell": []
+  }
+},
+{
+  "model": "character.characterbag",
+  "pk": 1,
+  "fields": {
+    "character": 1,
+    "max_capacity": 0,
+    "capacity": "0.00"
+  }
+},
+{
+  "model": "character.equippeditems",
+  "pk": 1,
+  "fields": {
+    "bag": 1,
+    "plate_armor": null,
+    "first_weapon": null,
+    "second_weapon": null,
+    "worn_items": []
+  }
+},
+{
+  "model": "character.defenceandvulnerabilitydamage",
+  "pk": 1,
+  "fields": {
+    "character": 1,
+    "immunity": [],
+    "resistance": [],
+    "weakness": []
+  }
+},
+{
+  "model": "player_class.classcharacter",
+  "pk": 1,
+  "fields": {
+    "name": "ыва",
+    "health_by_level": 6,
+    "perception_mastery": "None",
+    "fortitude_mastery": "None",
+    "reflex_mastery": "None",
+    "will_mastery": "None",
+    "unarmed_mastery": "None",
+    "light_armor_mastery": "None",
+    "medium_armor_mastery": "None",
+    "heavy_armor_mastery": "None",
+    "tradition": null
+  }
+}
+]
